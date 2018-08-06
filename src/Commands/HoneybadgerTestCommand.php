@@ -5,6 +5,7 @@ namespace Honeybadger\HoneybadgerLaravel\Commands;
 use Exception;
 use Honeybadger\Honeybadger;
 use Illuminate\Console\Command;
+use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 
 class HoneybadgerTestCommand extends Command
 {
@@ -30,7 +31,7 @@ class HoneybadgerTestCommand extends Command
     public function handle(Honeybadger $honeybadger)
     {
         try {
-            $honeybadger->notify(new Exception('This is an example exception for Honeybadger'));
+            $honeybadger->notify(new TestException);
             $this->line('A test exception was sent to Honeybadger');
         } catch (Exception $e) {
             $this->error($e->getMessage());

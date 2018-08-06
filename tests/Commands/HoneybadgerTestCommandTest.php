@@ -7,6 +7,7 @@ use Exception;
 use Honeybadger\Honeybadger;
 use Honeybadger\Tests\TestCase;
 use Illuminate\Contracts\Console\Kernel;
+use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 
 class HoneybadgerTestCommandTest extends TestCase
 {
@@ -18,7 +19,7 @@ class HoneybadgerTestCommandTest extends TestCase
             ->shouldReceive('notify')
             ->once()
             ->with(Mockery::on(function ($argument) {
-                return $argument instanceof Exception
+                return $argument instanceof TestException
                     && $argument->getMessage() === 'This is an example exception for Honeybadger';
             }))
             ->getMock();
