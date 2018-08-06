@@ -26,16 +26,12 @@ This package uses Laravel's [package discovery](https://laravel.com/docs/5.6/pac
 `config/app.php`  
 
 ```php
-...
 'providers' => [
-    ...
     /*
     * Package Service Providers...
     */
     \Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider::class,
-    ...
 ]
-...
 ```
 
 ### Register the facade with the framework
@@ -43,12 +39,9 @@ This package uses Laravel's [package discovery](https://laravel.com/docs/5.6/pac
 `config/app.php`  
 
 ```php
-...
 'aliases' => [
-    ...
     'Honeybadger' => \Honeybadger\HoneybadgerLaravel\Facades\Honeybadger::class,
 ]
-...
 ```
 
 ### Publish the configuration
@@ -103,10 +96,11 @@ return [
 ```
 
 ## Usage
+Add the honeybadger notifier to the application exception handler's report method.
+
 `app/Exceptions/Handler.php`  
 
 ```php
-...
 public function report(Exception $exception)
 {
     if (app()->bound('honeybadger') && $this->shouldReport($exception)) {
@@ -115,25 +109,35 @@ public function report(Exception $exception)
 
     parent::report($exception);
 }
-...
 ```
 
 ### Adding Context
 Context can be added by either the provided Facade or by resolving from the service container.
 
+**Facade**
 ```php
 Honeybadger::context('key', $value);
 ```
 
+**DI Resolution**
 ```php
 use Honeybadger\Honeybadger;
 
-...
 public function __construct(Honeybadger $honeybadger)
 {
     $honeybadger->context('key', $value);
 }
-...
+```
+
+**Helper Resolution**
+```php
+use Honeybadger\Honeybadger;
+
+public function __construct()
+{
+    app('honeybadger')->context('key', $value);
+    app(Honeybadger::class)->context('key', $value)
+}
 ```
 
 ### Adding Default User Context
@@ -143,31 +147,24 @@ The provided middleware will add the users auth identifier context automatically
 `app/Http/Kernel.php`  
 
 ```php
-...
 protected $middlewareGroup = [
-    ...
     'web' => [
-        ...
         \Honeybadger\HoneybadgerLaravel\Middleware\UserContext::class,
     ]
-    ...
 ];
-...
 ```
 
 #### Lumen
 `bootstrap/app.php`  
 ```php
-...
  $app->middleware([
-     ...
      \Honeybadger\HoneybadgerLaravel\Middleware\UserContext::class
-     ...
  ]);
- ...
 ```
 
 ### Test Honeybadger Connection
+This will send a test exception to the HB application for you to verify everything is working correctly.
+
 ```bash
 > php artisan honeybadger:test
 ```
@@ -176,17 +173,29 @@ protected $middlewareGroup = [
 The library allows for easy integration with [Honeybadger's Check-In feature](https://www.honeybadger.io/check-ins).
 
 #### Scheduled Command
+This method is great for ensuring your application is up and running.
+
 `app/Console/Kernel.php`  
 
 ```php
-...
 protected function schedule(Schedule $schedule)
 {
-    ...
     $schedule->command('honeybadger:checkin 1234')->everyFiveMinutes();
-    ...
 }
-...
+```
+
+#### After a Scheduled Command
+This method is great for making sure specific scheduled commands are running on time.
+
+`app/Console/Kernel.php`  
+
+```php
+protected function schedule(Schedule $schedule)
+{
+    $schedule->command('inspire')
+        ->everyFiveMinutes()
+        ->thenPingHoneybadger('1234');
+}
 ```
 
 #### Command
@@ -205,7 +214,6 @@ In addition to the php-cs-fixer rules, StyleCI will apply the [Laravel preset](h
 > composer styles:lint
 > composer styles:fix
 ```
-
 
 ## Changelog
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
