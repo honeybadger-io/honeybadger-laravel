@@ -4,6 +4,7 @@ namespace Honeybadger\HoneybadgerLaravel;
 
 use Honeybadger\Honeybadger;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Console\Scheduling\Event;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
 
@@ -27,6 +28,12 @@ class HoneybadgerServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/honeybadger.php' => base_path('config/honeybadger.php'),
         ], 'config');
+
+        Event::macro('thenPingHoneybadger', function ($id) {
+            return $this->then(function () use ($id) {
+                app(Honeybadger::class)->checkin($id);
+            });
+        });
     }
 
     /**
