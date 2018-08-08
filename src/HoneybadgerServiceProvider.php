@@ -4,6 +4,7 @@ namespace Honeybadger\HoneybadgerLaravel;
 
 use Honeybadger\Honeybadger;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Console\Scheduling\Event;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
 
@@ -15,18 +16,15 @@ class HoneybadgerServiceProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
-            $this->bindTestCommand();
-            $this->bindCheckinCommand();
+            $this->bindCommands();
+            $this->registerCommands();
 
-            $this->commands([
-                'command.honeybadger:test',
-                'command.honeybadger:checkin',
-            ]);
+            $this->publishes([
+                __DIR__.'/../config/honeybadger.php' => base_path('config/honeybadger.php'),
+            ], 'config');
         }
 
-        $this->publishes([
-            __DIR__.'/../config/honeybadger.php' => base_path('config/honeybadger.php'),
-        ], 'config');
+        $this->registerMacros();
     }
 
     /**
@@ -46,22 +44,39 @@ class HoneybadgerServiceProvider extends ServiceProvider
     /**
      * @return void
      */
-    private function bindTestCommand()
+    private function registerCommands()
+    {
+        $this->commands([
+            'command.honeybadger:test',
+            'command.honeybadger:checkin',
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    private function bindCommands()
     {
         $this->app->bind(
             'command.honeybadger:test',
             HoneybadgerTestCommand::class
+        );
+
+        $this->app->bind(
+            'command.honeybadger:checkin',
+            HoneybadgerCheckinCommand::class
         );
     }
 
     /**
      * @return void
      */
-    private function bindCheckinCommand()
+    private function registerMacros()
     {
-        $this->app->bind(
-            'command.honeybadger:checkin',
-            HoneybadgerCheckinCommand::class
-        );
+        Event::macro('thenPingHoneybadger', function ($id) {
+            return $this->then(function () use ($id) {
+                app(Honeybadger::class)->checkin($id);
+            });
+        });
     }
 }
