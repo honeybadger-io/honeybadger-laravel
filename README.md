@@ -198,18 +198,6 @@ protected function schedule(Schedule $schedule)
 }
 ```
 
-#### After a Scheduled Command
-`app/Console/Kernel.php`  
-
-```php
-protected function schedule(Schedule $schedule)
-{
-    $schedule->command('inspire')
-        ->everyFiveMinutes()
-        ->thenPingHoneybadger('1234');
-}
-```
-
 #### Command
 ```bash
 > php artisan honeybadger:checkin 1234
