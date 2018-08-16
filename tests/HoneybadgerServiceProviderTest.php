@@ -3,7 +3,10 @@
 namespace Honeybadger\Tests;
 
 use Honeybadger\Honeybadger;
+use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLumenInstallCommand;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger as HoneybadgerFacade;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLaravelInstallCommand;
 
 class HoneybadgerServiceProviderTest extends TestCase
 {
@@ -23,5 +26,35 @@ class HoneybadgerServiceProviderTest extends TestCase
         $this->assertEquals(Honeybadger::class, $this->app->getAlias('honeybadger'));
 
         $this->assertEquals('honeybadger', HoneybadgerFacade::getFacadeAccessor());
+    }
+
+    /** @test */
+    public function uses_the_lumen_install_command()
+    {
+        $this->app->singleton('honeybadger.isLumen', function () {
+            return true;
+        });
+
+        $this->app->getProvider(HoneybadgerServiceProvider::class)->boot();
+
+        $this->assertEquals(
+            HoneybadgerLumenInstallCommand::class,
+            get_class($this->app->make('command.honeybadger:install'))
+        );
+    }
+
+    /** @test */
+    public function uses_the_laravel_install_command()
+    {
+        $this->app->singleton('honeybadger.isLumen', function () {
+            return false;
+        });
+
+        $this->app->getProvider(HoneybadgerServiceProvider::class)->boot();
+
+        $this->assertEquals(
+            HoneybadgerLaravelInstallCommand::class,
+            get_class($this->app->make('command.honeybadger:install'))
+        );
     }
 }

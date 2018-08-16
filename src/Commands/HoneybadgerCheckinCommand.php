@@ -31,7 +31,7 @@ class HoneybadgerCheckinCommand extends Command
     {
         try {
             $honeybadger->checkin($this->argument('id'));
-            $this->line(sprintf('Checkin %s was sent to Honeybadger', $this->argument('id')));
+            $this->info(sprintf('Checkin %s was sent to Honeybadger', $this->argument('id')));
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }

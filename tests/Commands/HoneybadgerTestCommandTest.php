@@ -32,8 +32,8 @@ class HoneybadgerTestCommandTest extends TestCase
     /** @test */
     public function it_outputs_success()
     {
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand[line]')
-            ->shouldReceive('line')
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand[info]')
+            ->shouldReceive('info')
             ->once()
             ->with('A test exception was sent to Honeybadger')
             ->getMock();
