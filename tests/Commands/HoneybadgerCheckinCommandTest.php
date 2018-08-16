@@ -28,8 +28,8 @@ class HoneybadgerCheckinCommandTest extends TestCase
     /** @test */
     public function it_outputs_success()
     {
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand[line]')
-            ->shouldReceive('line')
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand[info]')
+            ->shouldReceive('info')
             ->once()
             ->with('Checkin 1234 was sent to Honeybadger')
             ->getMock();

@@ -7,6 +7,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Console\Scheduling\Event;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLumenInstallCommand;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLaravelInstallCommand;
 
 class HoneybadgerServiceProvider extends ServiceProvider
 {
@@ -39,6 +41,10 @@ class HoneybadgerServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(Honeybadger::class, 'honeybadger');
+
+        $this->app->singleton('honeybadger.isLumen', function () {
+            return preg_match('/lumen/i', $this->app->version());
+        });
     }
 
     /**
@@ -49,6 +55,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         $this->commands([
             'command.honeybadger:test',
             'command.honeybadger:checkin',
+            'command.honeybadger:install',
         ]);
     }
 
@@ -66,6 +73,18 @@ class HoneybadgerServiceProvider extends ServiceProvider
             'command.honeybadger:checkin',
             HoneybadgerCheckinCommand::class
         );
+
+        if ($this->app['honeybadger.isLumen']) {
+            $this->app->bind(
+                'command.honeybadger:install',
+                HoneybadgerLumenInstallCommand::class
+            );
+        } else {
+            $this->app->bind(
+                'command.honeybadger:install',
+                HoneybadgerLaravelInstallCommand::class
+            );
+        }
     }
 
     /**
