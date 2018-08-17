@@ -5,8 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.2.0] - 2018-08-17
 ### Changed
-* Updated [honeybadger-io/honeybadger-php](https://github.com/honeybadger-io/honeybadger-php) to `^1.1`
+* Updated [honeybadger-io/honeybadger-php](https://github.com/honeybadger-io/honeybadger-php) to `^1.1` ([#10](https://github.com/honeybadger-io/honeybadger-laravel/pull/10))
 
 ## [1.1.0] - 2018-08-08
 ### Added
