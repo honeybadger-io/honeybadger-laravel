@@ -5,12 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+* Updated [honeybadger-io/honeybadger-php](https://github.com/honeybadger-io/honeybadger-php) to `^1.1`
 
 ## [1.1.0] - 2018-08-08
 ### Added
 * Scheduled event helper to ping honeybadger after task is complete (#5)
 
-### Changes
+### Changed
 * Changes exception type reported by the test command for more clarity in the HB application UI. (#4)
 
 ## [1.0.0] - 2018-07-10
