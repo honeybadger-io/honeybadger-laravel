@@ -158,7 +158,6 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->artisan('honeybadger:install');
     }
 
-
     /** @test */
     public function sends_a_test_to_honeybadger()
     {

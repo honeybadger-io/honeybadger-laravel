@@ -84,7 +84,7 @@ abstract class HoneybadgerInstallCommand extends Command
     }
 
     /**
-     * Send test exception to Honeybadger
+     * Send test exception to Honeybadger.
      *
      * @return void
      */

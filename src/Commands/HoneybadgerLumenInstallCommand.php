@@ -7,7 +7,7 @@ use Honeybadger\Honeybadger;
 class HoneybadgerLumenInstallCommand extends HoneybadgerInstallCommand
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function publishConfig()
     {

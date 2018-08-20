@@ -9,7 +9,6 @@ use Honeybadger\HoneybadgerLaravel\Middleware\UserContext;
 
 class UserContextMiddlewareTest extends TestCase
 {
-
     /** @test */
     public function it_adds_the_user_context()
     {

@@ -2,13 +2,12 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
-use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
 
 class HoneybadgerLaravelInstallCommand extends HoneybadgerInstallCommand
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function publishConfig()
     {
