@@ -14,6 +14,7 @@ class HoneybadgerLumenInstallCommandTest extends TestCase
     {
         parent::setup();
 
+        $this->app->setBasePath(__DIR__.'/tmp/lumen');
         $this->app['honeybadger.isLumen'] = true;
 
         $this->app->getProvider(HoneybadgerServiceProvider::class)->boot();
@@ -49,9 +50,6 @@ class HoneybadgerLumenInstallCommandTest extends TestCase
     {
         // So we manually need to manually create the directory and copy
         // the configuration if its lumen
-
-        $this->app->setBasePath(__DIR__.'/tmp/lumen');
-
         $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLumenInstallCommand[confirm,secret]');
 
         // API key
