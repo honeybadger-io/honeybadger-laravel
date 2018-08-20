@@ -8,7 +8,7 @@ use Honeybadger\Tests\TestCase;
 use Illuminate\Contracts\Console\Kernel;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
 
-class HoneybadgerLaravelInstallCommandTest extends TestCase
+class HoneybadgerLaravelCommandTest extends TestCase
 {
     public function setUp()
     {
