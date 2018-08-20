@@ -129,7 +129,7 @@ abstract class HoneybadgerInstallCommand extends Command
     /**
      * Write the configurations to dotenv files.
      *
-     * @param  string  $config
+     * @param  array  $config
      * @param  string  $file
      * @return bool
      */

@@ -30,10 +30,22 @@ class HoneybadgerCheckinCommand extends Command
     public function handle(Honeybadger $honeybadger)
     {
         try {
-            $honeybadger->checkin($this->argument('id'));
+            $honeybadger->checkin($this->apiKey());
             $this->info(sprintf('Checkin %s was sent to Honeybadger', $this->argument('id')));
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
+    }
+
+    /**
+     * Get the API key from input.
+     *
+     * @return string
+     */
+    private function apiKey()
+    {
+        return is_array($this->argument('id'))
+            ? $this->argument('id')[0]
+            : $this->argument('id');
     }
 }

@@ -31,7 +31,7 @@ class HoneybadgerTestCommand extends Command
     public function handle(Honeybadger $honeybadger)
     {
         try {
-            $result = $honeybadger->notify(new TestException);
+            $honeybadger->notify(new TestException);
             $this->info('A test exception was sent to Honeybadger');
         } catch (Exception $e) {
             $this->error($e->getMessage());
