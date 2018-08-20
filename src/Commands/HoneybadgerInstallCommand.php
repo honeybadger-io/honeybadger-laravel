@@ -153,7 +153,7 @@ abstract class HoneybadgerInstallCommand extends Command
      * Add the results of each installation step.
      *
      * @param  string  $name
-     * @param  string  $result
+     * @param  bool  $result
      * @return void
      */
     public function task($name, $result)
