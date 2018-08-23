@@ -12,7 +12,10 @@ This is the Laravel library for integrating apps with the :zap: [Honeybadger Exc
 
 ## Documentation and Support
 
-For comprehensive documentation and support, [check out our documentation site](https://docs.honeybadger.io/lib/php/integration/laravel.html).
+For comprehensive documentation and support, check out our [documentation site](https://docs.honeybadger.io/lib/php/index.html):
+
+- [Laravel Integration Guide](https://docs.honeybadger.io/lib/php/integration/laravel.html)
+- [Lumen Integration Guide](https://docs.honeybadger.io/lib/php/integration/lumen.html)
 
 ## Testing
 ``` bash
