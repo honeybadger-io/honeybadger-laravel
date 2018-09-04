@@ -26,10 +26,10 @@ class HoneybadgerLumenInstallCommandTest extends TestCase
         mkdir(__DIR__.'/tmp/lumen/config');
         touch(__DIR__.'/tmp/lumen/config/honeybadger.php');
 
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLumenInstallCommand[confirm,secret,task]');
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLumenInstallCommand[confirm,requiredSecret,task]');
 
         // API key
-        $command->shouldReceive('secret')->once();
+        $command->shouldReceive('requiredSecret')->once();
 
         // Send test exception
         $command->shouldReceive('confirm')->once()->andReturn(false);
@@ -50,10 +50,10 @@ class HoneybadgerLumenInstallCommandTest extends TestCase
     {
         // So we manually need to manually create the directory and copy
         // the configuration if its lumen
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLumenInstallCommand[confirm,secret]');
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLumenInstallCommand[confirm,requiredSecret]');
 
         // API key
-        $command->shouldReceive('secret')->once();
+        $command->shouldReceive('requiredSecret')->once();
 
         // Send test exception
         $command->shouldReceive('confirm')->once()->andReturn(false);

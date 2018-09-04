@@ -39,11 +39,10 @@ class HoneybadgerInstallCommandTest extends TestCase
     /** @test */
     public function prompts_for_options_and_outputs_all_successful_operations()
     {
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,secret,task,callSilent]');
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,task,callSilent]');
 
-        $command->shouldReceive('secret')
-            ->once()
-            ->with('Please enter your API key')
+        $command->shouldReceive('requiredSecret')
+            ->with('Your API key', 'The API key is required')
             ->andReturn('supersecret');
 
         $command->shouldReceive('confirm')
@@ -78,10 +77,10 @@ class HoneybadgerInstallCommandTest extends TestCase
     /** @test */
     public function env_configartions_are_written()
     {
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,secret,task]');
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,task]');
 
         // API key
-        $command->shouldReceive('secret')->andReturn('supersecret');
+        $command->shouldReceive('requiredSecret')->andReturn('supersecret');
 
         // Test exception
         $command->shouldReceive('confirm')->once()->andReturn(false);
@@ -110,10 +109,10 @@ class HoneybadgerInstallCommandTest extends TestCase
     /** @test */
     public function sending_test_exception_does_not_run_based_on_input()
     {
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,secret,task,callSilent]');
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,task,callSilent]');
 
         // API key
-        $command->shouldReceive('secret')->once();
+        $command->shouldReceive('requiredSecret')->once();
 
         // Send test exception
         $command->shouldReceive('confirm')->once()->andReturn(false);
@@ -138,10 +137,10 @@ class HoneybadgerInstallCommandTest extends TestCase
     {
         touch(__DIR__.'/tmp/config/honeybadger.php');
 
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,secret,task]');
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,task]');
 
         // API key
-        $command->shouldReceive('secret')->once();
+        $command->shouldReceive('requiredSecret')->once();
 
         // Send test exception
         $command->shouldReceive('confirm')->once()->andReturn(false);
@@ -161,10 +160,10 @@ class HoneybadgerInstallCommandTest extends TestCase
     /** @test */
     public function sends_a_test_to_honeybadger()
     {
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,secret,task,callSilent]');
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,task,callSilent]');
 
         // API key
-        $command->shouldReceive('secret')->once()->andReturn('supersecret');
+        $command->shouldReceive('requiredSecret')->once()->andReturn('supersecret');
 
         // Send test exception
         $command->shouldReceive('confirm')->once()->andReturn(true);
@@ -195,10 +194,10 @@ class HoneybadgerInstallCommandTest extends TestCase
             __DIR__.'/tmp/.env.example',
         ]);
 
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,secret,task]');
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,task]');
 
         // API key
-        $command->shouldReceive('secret')->andReturn('supersecret');
+        $command->shouldReceive('requiredSecret')->andReturn('supersecret');
 
         // Test exception
         $command->shouldReceive('confirm')->once()->andReturn(false);
@@ -229,10 +228,10 @@ class HoneybadgerInstallCommandTest extends TestCase
             __DIR__.'/tmp/.env.example',
         ]);
 
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,secret,task]');
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,task]');
 
         // API key
-        $command->shouldNotReceive('secret');
+        $command->shouldNotReceive('requiredSecret');
 
         // Test exception
         $command->shouldReceive('confirm')->once()->andReturn(false);

@@ -40,10 +40,10 @@ class HoneybadgerLaravelCommandTest extends TestCase
     /** @test */
     public function the_config_gets_published()
     {
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLaravelInstallCommand[confirm,secret,task,callSilent]');
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLaravelInstallCommand[confirm,requiredSecret,task,callSilent]');
 
         // API key
-        $command->shouldReceive('secret')->once();
+        $command->shouldReceive('requiredSecret')->once();
 
         // Send test exception
         $command->shouldReceive('confirm')->once()->andReturn(false);

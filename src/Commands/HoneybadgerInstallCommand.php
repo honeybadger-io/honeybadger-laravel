@@ -7,9 +7,12 @@ use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use sixlive\DotenvEditor\DotenvEditor;
+use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
 
 abstract class HoneybadgerInstallCommand extends Command
 {
+    use RequiredInput;
+
     /**
      * The name and signature of the console command.
      *
@@ -78,9 +81,19 @@ abstract class HoneybadgerInstallCommand extends Command
     private function gatherConfig()
     {
         return [
-            'api_key' => $this->argument('apiKey') ?? $this->secret('Please enter your API key'),
+            'api_key' => $this->argument('apiKey') ?? $this->promptForApiKey(),
             'send_test' => $this->confirm('Would you like to send a test exception now?', true),
         ];
+    }
+
+    /**
+     * Prompt for the API key.
+     *
+     * @return string
+     */
+    private function promptForApiKey()
+    {
+        return $this->requiredSecret('Your API key', 'The API key is required');
     }
 
     /**
