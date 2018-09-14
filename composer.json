@@ -30,7 +30,7 @@
         "friendsofphp/php-cs-fixer": "^2.10",
         "larapack/dd": "^1.0",
         "mockery/mockery": "^1.1",
-        "orchestra/testbench": "^3.5|^3.6",
+        "orchestra/testbench": "^3.5|^3.6|^3.7",
         "phpunit/phpunit": "^6.0|^7.0"
     },
     "autoload": {
