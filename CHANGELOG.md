@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+* Support for Laravel 5.7 ([#13](https://github.com/honeybadger-io/honeybadger-laravel/pull/13))
+
 ### Changed
 * Updated the Travis CI config ([#14](https://github.com/honeybadger-io/honeybadger-laravel/pull/14))
 * Updated [honeybadger-io/honeybadger-php](https://github.com/honeybadger-io/honeybadger-php) ([#14](https://github.com/honeybadger-io/honeybadger-laravel/pull/14))
