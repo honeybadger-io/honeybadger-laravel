@@ -8,7 +8,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8fdf4e1917297a9921d4/test_coverage)](https://codeclimate.com/github/honeybadger-io/honeybadger-laravel/test_coverage)
 [![StyleCI](https://styleci.io/repos/138627377/shield)](https://github.styleci.io/repos/138627377)
 
-This is the Laravel library for integrating apps with the :zap: [Honeybadger Exception Notifier for PHP](http://honeybadger.io).
+This is the Laravel library for integrating apps with the :zap: [Honeybadger Exception Notifier for Laravel](https://www.honeybadger.io/for/laravel/?utm_source=github&utm_medium=readme&utm_campaign=laravel&utm_content=Honeybadger+Exception+Notifier+for+Laravel).
 
 ## Documentation and Support
 
