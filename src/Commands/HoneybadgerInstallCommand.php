@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use sixlive\DotenvEditor\DotenvEditor;
 use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
+use Honeybadger\HoneybadgerLaravel\Installer;
 
 abstract class HoneybadgerInstallCommand extends Command
 {
@@ -41,6 +42,8 @@ abstract class HoneybadgerInstallCommand extends Command
      */
     protected $config = [];
 
+    protected $installer;
+
     /**
      * Execute the console command.
      *
@@ -49,6 +52,8 @@ abstract class HoneybadgerInstallCommand extends Command
     public function handle()
     {
         $this->config = $this->gatherConfig();
+
+        $this->installer = new Installer;
 
         $this->writeEnv();
 
@@ -122,12 +127,18 @@ abstract class HoneybadgerInstallCommand extends Command
     {
         $this->task(
             'Write HONEYBADGER_API_KEY to .env',
-            $this->writeConfig(['HONEYBADGER_API_KEY' => $this->config['api_key']])
+            $this->installer->writeConfig(
+                ['HONEYBADGER_API_KEY' => $this->config['api_key']],
+                base_path('.env')
+            )
         );
 
         $this->task(
             'Write HONEYBADGER_API_KEY placeholder to .env.example',
-            $this->writeConfig(['HONEYBADGER_API_KEY' => ''], '.env.example')
+            $this->installer->writeConfig(
+                ['HONEYBADGER_API_KEY' => ''],
+                base_path('.env.example')
+            )
         );
     }
 
@@ -139,29 +150,6 @@ abstract class HoneybadgerInstallCommand extends Command
     private function shouldPublishConfig()
     {
         return ! file_exists(base_path('config/honeybadger.php'));
-    }
-
-    /**
-     * Write the configurations to dotenv files.
-     *
-     * @param  array  $config
-     * @param  string  $file
-     * @return bool
-     */
-    private function writeConfig($config, $file = '.env')
-    {
-        try {
-            $env = new DotenvEditor;
-            $env->load(base_path($file));
-        } catch (InvalidArgumentException $e) {
-            return false;
-        }
-
-        collect($config)->each(function ($value, $key) use ($env) {
-            $env->set($key, $value);
-        });
-
-        return $env->save();
     }
 
     /**
