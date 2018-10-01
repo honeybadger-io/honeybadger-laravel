@@ -11,5 +11,9 @@ interface Installer
      * @param  string  $file
      * @return bool
      */
-    public function writeConfig(array $cofng, string $filePath) : bool;
+    public function writeConfig(array $config, string $filePath) : bool;
+
+    public function publishLaravelConfig() : bool;
+
+    public function publishLumenConfig() : bool;
 }

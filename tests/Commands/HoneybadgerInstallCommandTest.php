@@ -6,6 +6,8 @@ use Mockery;
 use Honeybadger\Honeybadger;
 use Honeybadger\Tests\TestCase;
 use Illuminate\Contracts\Console\Kernel;
+use Honeybadger\HoneybadgerLaravel\CommandTasks;
+use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
 
 class HoneybadgerInstallCommandTest extends TestCase
 {
@@ -39,7 +41,12 @@ class HoneybadgerInstallCommandTest extends TestCase
     /** @test */
     public function prompts_for_options_and_outputs_all_successful_operations()
     {
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,task,callSilent]');
+        $this->app[Installer::class] = new InstallerFake;
+
+        $commandTasks = new CommandTasks;
+        $this->app[CommandTasks::class] = $commandTasks;
+
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,publishConfig]');
 
         $command->shouldReceive('requiredSecret')
             ->with('Your API key', 'The API key is required')
@@ -50,66 +57,30 @@ class HoneybadgerInstallCommandTest extends TestCase
             ->with('Would you like to send a test exception now?', true)
             ->andReturn(true);
 
-        $command->shouldReceive('task')
-            ->once()
-            ->with('Write HONEYBADGER_API_KEY to .env', true);
-
-        $command->shouldReceive('task')
-            ->once()
-            ->with('Write HONEYBADGER_API_KEY placeholder to .env.example', true);
-
-        $command->shouldreceive('task')
-            ->once()
-            ->with('Publish the config file', true);
-
-        $command->shouldReceive('task')
-            ->once()
-            ->with('Send test exception to Honeybadger', true);
-
-        $command->shouldReceive('callSilent')->times(1)->andReturn(0);
         $command->shouldReceive('publishConfig')->andReturn(true);
 
         $this->app[Kernel::class]->registerCommand($command);
 
         $this->artisan('honeybadger:install');
-    }
 
-    /** @test */
-    public function env_configartions_are_written()
-    {
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,task]');
-
-        // API key
-        $command->shouldReceive('requiredSecret')->andReturn('supersecret');
-
-        // Test exception
-        $command->shouldReceive('confirm')->once()->andReturn(false);
-
-        $command->shouldReceive('task')
-            ->once()
-            ->with('Write HONEYBADGER_API_KEY to .env', true);
-
-        $command->shouldReceive('task')
-            ->once()
-            ->with('Write HONEYBADGER_API_KEY placeholder to .env.example', true);
-
-        // Remaining tasks
-        $command->shouldReceive('task')->once();
-
-        $command->shouldReceive('publishConfig');
-
-        $this->app[Kernel::class]->registerCommand($command);
-
-        $this->artisan('honeybadger:install');
-
-        $this->assertEquals('HONEYBADGER_API_KEY=supersecret', file_get_contents(__DIR__.'/tmp/.env'));
-        $this->assertEquals('HONEYBADGER_API_KEY=', file_get_contents(__DIR__.'/tmp/.env.example'));
+        $this->assertEquals([
+            'Write HONEYBADGER_API_KEY to .env' => true,
+            'Write HONEYBADGER_API_KEY placeholder to .env.example' => true,
+            'Publish the config file' => true,
+            'Send test exception to Honeybadger' => true,
+        ], $commandTasks->getResults());
     }
 
     /** @test */
     public function sending_test_exception_does_not_run_based_on_input()
     {
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,task,callSilent]');
+        $installerSpy = Mockery::spy(new InstallerFake);
+        $this->app[Installer::class] = $installerSpy;
+
+        $commandTasks = new CommandTasks;
+        $this->app[CommandTasks::class] = $commandTasks;
+
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,publishConfig]');
 
         // API key
         $command->shouldReceive('requiredSecret')->once();
@@ -117,44 +88,47 @@ class HoneybadgerInstallCommandTest extends TestCase
         // Send test exception
         $command->shouldReceive('confirm')->once()->andReturn(false);
 
-        $command->shouldReceive('callSilent')
-            ->with('vendor:publish', Mockery::any());
-
-        $command->shouldNotReceive('callSilent')
-            ->with('honeybadger:test');
-
-        $command->shouldReceive('task')->times(3);
-
-        $command->shouldReceive('publishConfig');
+        $command->shouldReceive('publishConfig')->andReturn(true);
 
         $this->app[Kernel::class]->registerCommand($command);
 
         $this->artisan('honeybadger:install');
+
+        $installerSpy->shouldNotHaveReceived('sendTestException');
+
+        $this->assertEquals([
+            'Write HONEYBADGER_API_KEY to .env' => true,
+            'Write HONEYBADGER_API_KEY placeholder to .env.example' => true,
+            'Publish the config file' => true,
+        ], $commandTasks->getResults());
     }
 
     /** @test */
     public function publish_does_not_run_if_config_file_exists()
     {
+        $commandTasks = new CommandTasks;
+        $this->app[CommandTasks::class] = $commandTasks;
+
         touch(__DIR__.'/tmp/config/honeybadger.php');
 
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,task]');
+        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret,publishConfig]');
 
         // API key
         $command->shouldReceive('requiredSecret')->once();
 
         // Send test exception
         $command->shouldReceive('confirm')->once()->andReturn(false);
-
-        $command->shouldReceive('task')->times(2);
-
-        $command->shouldNotReceive('task')
-            ->with('Publish the config file', false);
 
         $command->shouldNotReceive('publishConfig');
 
         $this->app[Kernel::class]->registerCommand($command);
 
         $this->artisan('honeybadger:install');
+
+        $this->assertEquals([
+            'Write HONEYBADGER_API_KEY to .env' => true,
+            'Write HONEYBADGER_API_KEY placeholder to .env.example' => true,
+        ], $commandTasks->getResults());
     }
 
     /** @test */

@@ -3,12 +3,15 @@
 namespace Honeybadger\HoneybadgerLaravel;
 
 use Honeybadger\Honeybadger;
+use Honeybadger\Contracts\Reporter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Console\Scheduling\Event;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLumenInstallCommand;
+use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLaravelInstallCommand;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
 
 class HoneybadgerServiceProvider extends ServiceProvider
 {
@@ -20,6 +23,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->bindCommands();
             $this->registerCommands();
+            $this->app->bind(InstallerContract::class, Installer::class);
 
             $this->publishes([
                 __DIR__.'/../config/honeybadger.php' => base_path('config/honeybadger.php'),
@@ -39,6 +43,8 @@ class HoneybadgerServiceProvider extends ServiceProvider
         $this->app->singleton(Honeybadger::class, function ($app) {
             return (new HoneybadgerLaravel)->make($app['config']['honeybadger']);
         });
+
+        $this->app->alias(Honeybadger::class, Reporter::class);
 
         $this->app->alias(Honeybadger::class, 'honeybadger');
 
@@ -74,17 +80,10 @@ class HoneybadgerServiceProvider extends ServiceProvider
             HoneybadgerCheckinCommand::class
         );
 
-        if ($this->app['honeybadger.isLumen']) {
-            $this->app->bind(
-                'command.honeybadger:install',
-                HoneybadgerLumenInstallCommand::class
-            );
-        } else {
-            $this->app->bind(
-                'command.honeybadger:install',
-                HoneybadgerLaravelInstallCommand::class
-            );
-        }
+        $this->app->bind(
+            'command.honeybadger:install',
+            HoneybadgerInstallCommand::class
+        );
     }
 
     /**

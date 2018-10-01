@@ -3,14 +3,13 @@
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
 use Honeybadger\Honeybadger;
-use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
-use sixlive\DotenvEditor\DotenvEditor;
+use Honeybadger\HoneybadgerLaravel\CommandTasks;
+use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
 use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
-use Honeybadger\HoneybadgerLaravel\Installer;
 
-abstract class HoneybadgerInstallCommand extends Command
+class HoneybadgerInstallCommand extends Command
 {
     use RequiredInput;
 
@@ -29,36 +28,36 @@ abstract class HoneybadgerInstallCommand extends Command
     protected $description = 'Install and configure Honeybadger';
 
     /**
-     * Results of each step of the install.
-     *
-     * @var array
-     */
-    protected $results = [];
-
-    /**
      * Configuration from gathered input.
      *
      * @var array
      */
     protected $config = [];
 
+    /**
+     * @var \Honeybadger\HoneybadgerLaravel\Contracts\Installer;
+     */
     protected $installer;
+
+    protected $tasks;
 
     /**
      * Execute the console command.
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(Installer $installer, CommandTasks $commandTasks)
     {
-        $this->config = $this->gatherConfig();
+        $this->installer = $installer;
+        $this->tasks = $commandTasks;
+        $this->tasks->setOutput($this->output);
 
-        $this->installer = new Installer;
+        $this->config = $this->gatherConfig();
 
         $this->writeEnv();
 
         if ($this->shouldPublishConfig()) {
-            $this->task(
+            $this->tasks->addTask(
                 'Publish the config file',
                 $this->publishConfig()
             );
@@ -68,7 +67,7 @@ abstract class HoneybadgerInstallCommand extends Command
             $this->sendTest();
         }
 
-        $this->outputResults();
+        $this->tasks->outputResults();
 
         $this->outputSuccessMessage();
     }
@@ -78,7 +77,14 @@ abstract class HoneybadgerInstallCommand extends Command
      *
      * @return bool
      */
-    abstract public function publishConfig();
+    public function publishConfig()
+    {
+        if(app('honeybadger.isLumen')) {
+            return $this->installer->publishLumenConfig();
+        }
+
+        return $this->installer->publishLaravelConfig();
+    }
 
     /**
      * Prompt for input and gather responses.
@@ -112,9 +118,11 @@ abstract class HoneybadgerInstallCommand extends Command
     {
         Config::set('honeybadger.api_key', $this->config['api_key']);
 
-        $this->task(
+        $result = $this->installer->sendTestException();
+
+        $this->tasks->addTask(
             'Send test exception to Honeybadger',
-            $this->callSilent('honeybadger:test') === 0
+            ! empty($result)
         );
     }
 
@@ -125,7 +133,7 @@ abstract class HoneybadgerInstallCommand extends Command
      */
     private function writeEnv()
     {
-        $this->task(
+        $this->tasks->addTask(
             'Write HONEYBADGER_API_KEY to .env',
             $this->installer->writeConfig(
                 ['HONEYBADGER_API_KEY' => $this->config['api_key']],
@@ -133,7 +141,7 @@ abstract class HoneybadgerInstallCommand extends Command
             )
         );
 
-        $this->task(
+        $this->tasks->addTask(
             'Write HONEYBADGER_API_KEY placeholder to .env.example',
             $this->installer->writeConfig(
                 ['HONEYBADGER_API_KEY' => ''],
@@ -150,33 +158,6 @@ abstract class HoneybadgerInstallCommand extends Command
     private function shouldPublishConfig()
     {
         return ! file_exists(base_path('config/honeybadger.php'));
-    }
-
-    /**
-     * Add the results of each installation step.
-     *
-     * @param  string  $name
-     * @param  bool  $result
-     * @return void
-     */
-    public function task($name, $result)
-    {
-        $this->results[$name] = $result;
-    }
-
-    /**
-     * Output the results of each step of the installation.
-     *
-     * @return void
-     */
-    private function outputResults()
-    {
-        collect($this->results)->each(function ($result, $description) {
-            $this->line(vsprintf('%s: %s', [
-                $description,
-                $result ? '<fg=green>✔</>' : '<fg=red>✘</>',
-            ]));
-        });
     }
 
     private function outputSuccessMessage()
