@@ -239,6 +239,28 @@ class HoneybadgerInstallCommandTest extends TestCase
         ]);
     }
 
+    /** @test */
+    function the_success_block_is_output()
+    {
+        $this->markTestIncomplete();
+
+        $this->app[Installer::class] = $this->createMock(Installer::class);
+
+        $command = $this->commandMock();
+
+        // API key
+        $command->shouldNotReceive('requiredSecret');
+
+        // Test exception
+        $command->shouldReceive('confirm')->once()->andReturn(false);
+
+        $this->app[Kernel::class]->registerCommand($command);
+
+        $this->artisan('honeybadger:install', [
+            'apiKey' => 'asdf123',
+        ]);
+    }
+
     private function commandMock()
     {
         return Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret]');
