@@ -38,11 +38,11 @@ class HoneybadgerServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/honeybadger.php', 'honeybadger');
 
-        $this->app->singleton(Honeybadger::class, function ($app) {
+        $this->app->singleton(Reporter::class, function ($app) {
             return (new HoneybadgerLaravel)->make($app['config']['honeybadger']);
         });
 
-        $this->app->alias(Honeybadger::class, Reporter::class);
+        $this->app->alias(Reporter::class, Honeybadger::class);
 
         $this->app->alias(Honeybadger::class, 'honeybadger');
 
@@ -91,7 +91,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
     {
         Event::macro('thenPingHoneybadger', function ($id) {
             return $this->then(function () use ($id) {
-                app(Honeybadger::class)->checkin($id);
+                app(Reporter::class)->checkin($id);
             });
         });
     }

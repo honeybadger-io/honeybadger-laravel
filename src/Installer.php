@@ -55,17 +55,17 @@ class Installer implements InstallerContract
 
     public function shouldPublishConfig(): bool
     {
-        return file_exists(base_path('config/honeybadger.php'));
+        return ! file_exists(base_path('config/honeybadger.php'));
     }
 
-    public function publishLumenConfig(): bool
+    public function publishLumenConfig(string $stubPath = ''): bool
     {
         if (! is_dir(base_path('config'))) {
             mkdir(base_path('config'));
         }
 
         return copy(
-            __DIR__.'/../../config/honeybadger.php',
+            $stubPath ?? __DIR__.'/../../config/honeybadger.php',
             base_path('config/honeybadger.php')
         );
     }

@@ -3,7 +3,7 @@
 namespace Honeybadger\HoneybadgerLaravel\Middleware;
 
 use Closure;
-use Honeybadger\Honeybadger;
+use Honeybadger\Contracts\Reporter;
 
 class UserContext
 {
@@ -13,9 +13,9 @@ class UserContext
     protected $honeybadger;
 
     /**
-     * @param  \Honeybadger\Honeybadger  $honeybadger
+     * @param  \Honeybadger\Contracts\Reporter  $honeybadger
      */
-    public function __construct(Honeybadger $honeybadger)
+    public function __construct(Reporter $honeybadger)
     {
         $this->honeybadger = $honeybadger;
     }

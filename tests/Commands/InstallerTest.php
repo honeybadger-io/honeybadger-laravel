@@ -78,4 +78,56 @@ class InstallerTest extends TestCase
 
         $this->assertTrue($installer->publishLaravelConfig());
     }
+
+    /** @test */
+    public function publish_should_be_configed()
+    {
+        $honeybadger = $this->createMock(Reporter::class);
+
+        $installer = new Installer($honeybadger);
+
+        @mkdir(__DIR__.'/tmp/config');
+
+        $this->app->setBasePath(__DIR__.'/tmp');
+
+        $this->assertTrue($installer->shouldPublishConfig());
+
+        @rmdir(__DIR__.'/tmp/config');
+    }
+
+    /** @test */
+    public function publish_should_not_be_configed()
+    {
+        $honeybadger = $this->createMock(Reporter::class);
+
+        $installer = new Installer($honeybadger);
+
+        @mkdir(__DIR__.'/tmp/config');
+        @touch(__DIR__.'/tmp/config/honeybadger.php');
+
+        $this->app->setBasePath(__DIR__.'/tmp');
+
+        $this->assertFalse($installer->shouldPublishConfig());
+
+        @unlink(__DIR__.'/tmp/config/honeybadger.php');
+        @rmdir(__DIR__.'/tmp/config');
+    }
+
+    /** @test */
+    public function publishes_lumen_config()
+    {
+        $honeybadger = $this->createMock(Reporter::class);
+
+        $installer = new Installer($honeybadger);
+
+        $this->app->setBasePath(__DIR__.'/tmp');
+
+        $stubPath = __DIR__.'/../../config/honeybadger.php';
+
+        $this->assertTrue($installer->publishLumenConfig($stubPath));
+        $this->assertTrue(file_exists(__DIR__.'/tmp/config/honeybadger.php'));
+
+        @unlink(__DIR__.'/tmp/config/honeybadger.php');
+        @rmdir(__DIR__.'/tmp/config');
+    }
 }
