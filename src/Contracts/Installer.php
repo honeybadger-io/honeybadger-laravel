@@ -13,7 +13,9 @@ interface Installer
      */
     public function writeConfig(array $config, string $filePath) : bool;
 
-    public function publishLaravelConfig() : bool;
+    public function publishConfig() : bool;
 
-    public function publishLumenConfig() : bool;
+    public function shouldPublishConfig() : bool;
+
+    public function sendTestException() : array;
 }

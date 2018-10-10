@@ -8,10 +8,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Console\Scheduling\Event;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
-use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLumenInstallCommand;
-use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
-use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerLaravelInstallCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
+use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
 
 class HoneybadgerServiceProvider extends ServiceProvider
 {

@@ -39,6 +39,9 @@ class HoneybadgerInstallCommand extends Command
      */
     protected $installer;
 
+    /**
+     * @var \Honeybadger\HoneybadgerLaravel\CommandTasks
+     */
     protected $tasks;
 
     /**
@@ -56,10 +59,10 @@ class HoneybadgerInstallCommand extends Command
 
         $this->writeEnv();
 
-        if ($this->shouldPublishConfig()) {
+        if ($this->installer->shouldPublishConfig()) {
             $this->tasks->addTask(
                 'Publish the config file',
-                $this->publishConfig()
+                $this->installer->publishConfig()
             );
         }
 
@@ -70,20 +73,6 @@ class HoneybadgerInstallCommand extends Command
         $this->tasks->outputResults();
 
         $this->outputSuccessMessage();
-    }
-
-    /**
-     * Publish the configuration file to the framework.
-     *
-     * @return bool
-     */
-    public function publishConfig()
-    {
-        if(app('honeybadger.isLumen')) {
-            return $this->installer->publishLumenConfig();
-        }
-
-        return $this->installer->publishLaravelConfig();
     }
 
     /**
@@ -148,16 +137,6 @@ class HoneybadgerInstallCommand extends Command
                 base_path('.env.example')
             )
         );
-    }
-
-    /**
-     * Whether the configuration needs to be published or no.
-     *
-     * @return bool
-     */
-    private function shouldPublishConfig()
-    {
-        return ! file_exists(base_path('config/honeybadger.php'));
     }
 
     private function outputSuccessMessage()
