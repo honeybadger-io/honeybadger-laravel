@@ -62,7 +62,7 @@ class HoneybadgerInstallCommand extends Command
         if ($this->installer->shouldPublishConfig()) {
             $this->tasks->addTask(
                 'Publish the config file',
-                $this->installer->publishConfig()
+                $this->publishConfig()
             );
         }
 
@@ -137,6 +137,15 @@ class HoneybadgerInstallCommand extends Command
                 base_path('.env.example')
             )
         );
+    }
+
+    public function publishConfig()
+    {
+        if (app('honeybadger.isLumen')) {
+            return $this->installer->publishLumenConfig();
+        }
+
+        return $this->installer->publishLaravelConfig();
     }
 
     private function outputSuccessMessage()

@@ -5,6 +5,7 @@ namespace Honeybadger\HoneybadgerLaravel\Commands;
 use Exception;
 use Honeybadger\Honeybadger;
 use Illuminate\Console\Command;
+use Honeybadger\Contracts\Reporter;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 
 class HoneybadgerTestCommand extends Command
@@ -28,7 +29,7 @@ class HoneybadgerTestCommand extends Command
      *
      * @return mixed
      */
-    public function handle(Honeybadger $honeybadger)
+    public function handle(Reporter $honeybadger)
     {
         try {
             $result = $honeybadger->notify(new TestException);

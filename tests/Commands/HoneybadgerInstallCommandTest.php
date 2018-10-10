@@ -24,7 +24,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         $installer->method('shouldPublishConfig')
             ->willReturn(true);
 
-        $installer->method('publishConfig')
+        $installer->method('publishLaravelConfig')
             ->willReturn(true);
 
         $this->app[Installer::class] =  $installer;
@@ -54,6 +54,44 @@ class HoneybadgerInstallCommandTest extends TestCase
             'Publish the config file' => true,
             'Send test exception to Honeybadger' => true,
         ], $commandTasks->getResults());
+    }
+
+    /** @test */
+    public function the_correct_config_gets_published_for_lumen()
+    {
+        $this->app['honeybadger.isLumen'] = true;
+
+        $installer = $this->createMock(Installer::class);
+
+        $installer->method('shouldPublishConfig')
+            ->willReturn(true);
+
+        $installer->expects($this->once())
+            ->method('publishLumenConfig')
+            ->willReturn(true);
+
+        $this->app[Installer::class] =  $installer;
+
+        $commandTasks = new CommandTasks;
+
+        $this->app[CommandTasks::class] = $commandTasks;
+
+        $command = $this->commandMock();
+
+        $command->shouldReceive('requiredSecret')
+            ->with('Your API key', 'The API key is required')
+            ->andReturn('supersecret');
+
+        $command->shouldReceive('confirm')
+            ->once()
+            ->with('Would you like to send a test exception now?', true)
+            ->andReturn(true);
+
+        $this->app[Kernel::class]->registerCommand($command);
+
+        $this->artisan('honeybadger:install');
+
+        $this->assertTrue($commandTasks->getResults()['Publish the config file']);
     }
 
     /** @test */
@@ -93,7 +131,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         $installer = $this->createMock(Installer::class);
 
         $installer->expects($this->never())
-            ->method('publishConfig');
+            ->method('publishLaravelConfig');
 
         $installer->method('shouldPublishConfig')
             ->willReturn(false);

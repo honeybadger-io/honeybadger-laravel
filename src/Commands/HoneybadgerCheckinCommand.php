@@ -3,8 +3,8 @@
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
 use Exception;
-use Honeybadger\Honeybadger;
 use Illuminate\Console\Command;
+use Honeybadger\Contracts\Reporter;
 
 class HoneybadgerCheckinCommand extends Command
 {
@@ -27,7 +27,7 @@ class HoneybadgerCheckinCommand extends Command
      *
      * @return mixed
      */
-    public function handle(Honeybadger $honeybadger)
+    public function handle(Reporter $honeybadger)
     {
         try {
             $honeybadger->checkin($this->apiKey());

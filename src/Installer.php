@@ -53,6 +53,11 @@ class Installer implements InstallerContract
         ]) === 0;
     }
 
+    public function shouldPublishConfig(): bool
+    {
+        return file_exists(base_path('config/honeybadger.php'));
+    }
+
     public function publishLumenConfig(): bool
     {
         if (! is_dir(base_path('config'))) {
