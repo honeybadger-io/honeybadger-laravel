@@ -2,12 +2,12 @@
 
 namespace Honeybadger\Tests\Commands;
 
-use Mockery;
 use Honeybadger\Honeybadger;
 use Honeybadger\Tests\TestCase;
 use Illuminate\Contracts\Console\Kernel;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
 
 class HoneybadgerInstallCommandTest extends TestCase
 {
@@ -15,6 +15,7 @@ class HoneybadgerInstallCommandTest extends TestCase
     public function prompts_for_options_and_outputs_all_successful_operations()
     {
         $installer = $this->createMock(Installer::class);
+
         $installer->method('sendTestException')
             ->willReturn(['id' => '1234']);
 
@@ -35,14 +36,15 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command = $this->commandMock();
 
-        $command->shouldReceive('requiredSecret')
+        $command->expects($this->once())
+            ->method('requiredSecret')
             ->with('Your API key', 'The API key is required')
-            ->andReturn('supersecret');
+            ->willReturn('supersecret');
 
-        $command->shouldReceive('confirm')
-            ->once()
+        $command->expects($this->once())
+            ->method('confirm')
             ->with('Would you like to send a test exception now?', true)
-            ->andReturn(true);
+            ->willReturn(true);
 
         $this->app[Kernel::class]->registerCommand($command);
 
@@ -78,15 +80,6 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command = $this->commandMock();
 
-        $command->shouldReceive('requiredSecret')
-            ->with('Your API key', 'The API key is required')
-            ->andReturn('supersecret');
-
-        $command->shouldReceive('confirm')
-            ->once()
-            ->with('Would you like to send a test exception now?', true)
-            ->andReturn(true);
-
         $this->app[Kernel::class]->registerCommand($command);
 
         $this->artisan('honeybadger:install');
@@ -109,11 +102,9 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command = $this->commandMock();
 
-        // API key
-        $command->shouldReceive('requiredSecret')->once();
-
         // Send test exception
-        $command->shouldReceive('confirm')->once()->andReturn(false);
+        $command->method('confirm')
+            ->willReturn(false);
 
         $this->app[Kernel::class]->registerCommand($command);
 
@@ -143,12 +134,6 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command = $this->commandMock();
 
-        // API key
-        $command->shouldReceive('requiredSecret')->once();
-
-        // Send test exception
-        $command->shouldReceive('confirm')->once()->andReturn(false);
-
         $this->app[Kernel::class]->registerCommand($command);
 
         $this->artisan('honeybadger:install');
@@ -175,11 +160,8 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command = $this->commandMock();
 
-        // API key
-        $command->shouldReceive('requiredSecret')->once()->andReturn('supersecret');
-
         // Send test exception
-        $command->shouldReceive('confirm')->once()->andReturn(true);
+        $command->method('confirm')->willReturn(true);
 
         $this->app[Kernel::class]->registerCommand($command);
 
@@ -203,12 +185,6 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command = $this->commandMock();
 
-        // API key
-        $command->shouldReceive('requiredSecret')->andReturn('supersecret');
-
-        // Test exception
-        $command->shouldReceive('confirm')->once()->andReturn(false);
-
         $this->app[Kernel::class]->registerCommand($command);
 
         $this->artisan('honeybadger:install');
@@ -227,10 +203,8 @@ class HoneybadgerInstallCommandTest extends TestCase
         $command = $this->commandMock();
 
         // API key
-        $command->shouldNotReceive('requiredSecret');
-
-        // Test exception
-        $command->shouldReceive('confirm')->once()->andReturn(false);
+        $command->expects($this->never())
+            ->method('requiredSecret');
 
         $this->app[Kernel::class]->registerCommand($command);
 
@@ -240,19 +214,45 @@ class HoneybadgerInstallCommandTest extends TestCase
     }
 
     /** @test */
-    function the_success_block_is_output()
+    public function the_success_block_is_output()
     {
-        $this->markTestIncomplete();
-
         $this->app[Installer::class] = $this->createMock(Installer::class);
 
-        $command = $this->commandMock();
+        $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
+            ->disableOriginalClone()
+            ->setMethods([
+                'requiredSecret',
+                'confirm',
+                'line',
+            ])->getMock();
 
-        // API key
-        $command->shouldNotReceive('requiredSecret');
+        $message = <<<'EOT'
+⚡ --- Honeybadger is installed! -----------------------------------------------
+Good news: You're one deploy away from seeing all of your exceptions in
+Honeybadger. For now, we've generated a test exception for you:
 
-        // Test exception
-        $command->shouldReceive('confirm')->once()->andReturn(false);
+    https://app.honeybadger.io/
+
+If you ever need help:
+
+    - Check out the documentation: https://docs.honeybadger.io/lib/php/index.html
+    - Email the 'badgers: support@honeybadger.io
+
+Most people don't realize that Honeybadger is a small, bootstrapped company. We
+really couldn't do this without you. Thank you for allowing us to do what we
+love: making developers awesome.
+
+Happy 'badgering!
+
+Sincerely,
+Ben, Josh and Starr
+https://www.honeybadger.io/about/
+⚡ --- End --------------------------------------------------------------------
+EOT;
+
+        $command->expects($this->once())
+            ->method('line')
+            ->with($message);
 
         $this->app[Kernel::class]->registerCommand($command);
 
@@ -263,6 +263,12 @@ class HoneybadgerInstallCommandTest extends TestCase
 
     private function commandMock()
     {
-        return Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand[confirm,requiredSecret]');
+        return $this->getMockBuilder(HoneybadgerInstallCommand::class)
+            ->disableOriginalClone()
+            ->setMethods([
+                'requiredSecret',
+                'line',
+                'confirm',
+            ])->getMock();
     }
 }

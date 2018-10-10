@@ -2,12 +2,12 @@
 
 namespace Honeybadger\Tests\Commands;
 
-use Mockery;
 use Exception;
 use Honeybadger\Tests\TestCase;
 use Honeybadger\Contracts\Reporter;
 use Illuminate\Contracts\Console\Kernel;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 
 class HoneybadgerTestCommandTest extends TestCase
 {
@@ -33,11 +33,14 @@ class HoneybadgerTestCommandTest extends TestCase
 
         $this->app->instance(Reporter::class, $mock);
 
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand[info]')
-            ->shouldReceive('info')
-            ->once()
-            ->with('A test exception was sent to Honeybadger')
+        $command = $this->getMockBuilder(HoneybadgerTestCommand::class)
+            ->disableOriginalClone()
+            ->setMethods(['info'])
             ->getMock();
+
+        $command->expects($this->once())
+            ->method('info')
+            ->with('A test exception was sent to Honeybadger');
 
         $this->app[Kernel::class]->registerCommand($command);
 
@@ -53,11 +56,14 @@ class HoneybadgerTestCommandTest extends TestCase
 
         $this->app->instance(Reporter::class, $mock);
 
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand[error]')
-            ->shouldReceive('error')
-            ->once()
-            ->with('An error occured')
+        $command = $this->getMockBuilder(HoneybadgerTestCommand::class)
+            ->disableOriginalClone()
+            ->setMethods(['error'])
             ->getMock();
+
+        $command->expects($this->once())
+            ->method('error')
+            ->with('An error occured');
 
         $this->app[Kernel::class]->registerCommand($command);
 

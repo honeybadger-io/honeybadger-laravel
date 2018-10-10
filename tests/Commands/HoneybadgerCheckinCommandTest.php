@@ -2,12 +2,12 @@
 
 namespace Honeybadger\Tests\Commands;
 
-use Mockery;
 use Exception;
 use Honeybadger\Honeybadger;
 use Honeybadger\Tests\TestCase;
 use Honeybadger\Contracts\Reporter;
 use Illuminate\Contracts\Console\Kernel;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
 
 class HoneybadgerCheckinCommandTest extends TestCase
 {
@@ -30,11 +30,14 @@ class HoneybadgerCheckinCommandTest extends TestCase
         $mock = $this->createMock(Reporter::class);
         $this->app->instance(Honeybadger::class, $mock);
 
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand[info]')
-            ->shouldReceive('info')
-            ->once()
-            ->with('Checkin 1234 was sent to Honeybadger')
+        $command = $this->getMockBuilder(HoneybadgerCheckinCommand::class)
+            ->disableOriginalClone()
+            ->setMethods(['info'])
             ->getMock();
+
+        $command->expects($this->once())
+            ->method('info')
+            ->with('Checkin 1234 was sent to Honeybadger');
 
         $this->app[Kernel::class]->registerCommand($command);
 
@@ -50,11 +53,14 @@ class HoneybadgerCheckinCommandTest extends TestCase
 
         $this->app->instance(Reporter::class, $mock);
 
-        $command = Mockery::mock('Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand[error]')
-            ->shouldReceive('error')
-            ->once()
-            ->with('Some message')
+        $command = $this->getMockBuilder(HoneybadgerCheckinCommand::class)
+            ->disableOriginalClone()
+            ->setMethods(['error'])
             ->getMock();
+
+            $command->expects($this->once())
+                ->method('error')
+                ->with('Some message');
 
         $this->app[Kernel::class]->registerCommand($command);
 
