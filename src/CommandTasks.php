@@ -44,7 +44,7 @@ class CommandTasks
     }
 
     /**
-     * Send results to the command output
+     * Send results to the command output.
      *
      * @return void
      */
@@ -57,7 +57,6 @@ class CommandTasks
             ]));
         });
     }
-
 
     /**
      * Get the results of all tasks.
