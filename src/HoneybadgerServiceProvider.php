@@ -43,8 +43,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(Reporter::class, Honeybadger::class);
-
-        $this->app->alias(Honeybadger::class, 'honeybadger');
+        $this->app->alias(Reporter::class, 'honeybadger');
 
         $this->app->singleton('honeybadger.isLumen', function () {
             return preg_match('/lumen/i', $this->app->version());
