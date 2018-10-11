@@ -81,6 +81,9 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command = $this->commandMock();
 
+        $command->method('requiredSecret')
+            ->willReturn('');
+
         $this->app[Kernel::class]->registerCommand($command);
 
         $this->artisan('honeybadger:install');
@@ -102,6 +105,9 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->app[CommandTasks::class] = $commandTasks;
 
         $command = $this->commandMock();
+
+        $command->method('requiredSecret')
+            ->willReturn('');
 
         // Send test exception
         $command->method('confirm')
@@ -135,6 +141,9 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command = $this->commandMock();
 
+        $command->method('requiredSecret')
+            ->willReturn('');
+
         $this->app[Kernel::class]->registerCommand($command);
 
         $this->artisan('honeybadger:install');
@@ -161,6 +170,9 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command = $this->commandMock();
 
+        $command->method('requiredSecret')
+            ->willReturn('');
+
         // Send test exception
         $command->method('confirm')->willReturn(true);
 
@@ -185,6 +197,9 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->app[CommandTasks::class] = $commandTasks;
 
         $command = $this->commandMock();
+
+        $command->method('requiredSecret')
+            ->willReturn('');
 
         $this->app[Kernel::class]->registerCommand($command);
 

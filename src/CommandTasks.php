@@ -16,6 +16,12 @@ class CommandTasks
      */
     protected $results = [];
 
+    /**
+     * Set command output.
+     *
+     * @param  /Illuminate\Console\OutputStyle  $output
+     * @return self
+     */
     public function setOutput(OutputStyle $output) : self
     {
         $this->output = $output;
@@ -23,13 +29,25 @@ class CommandTasks
         return $this;
     }
 
-    public function addTask($name, $result) : self
+    /**
+     * Add task with result to the stack.
+     *
+     * @param  string  $name
+     * @param  bool  $result
+     * @return self
+     */
+    public function addTask(string $name, bool $result) : self
     {
         $this->results[$name] = $result;
 
         return $this;
     }
 
+    /**
+     * Send results to the command output
+     *
+     * @return void
+     */
     public function outputResults() : void
     {
         collect($this->results)->each(function ($result, $description) {
@@ -40,6 +58,12 @@ class CommandTasks
         });
     }
 
+
+    /**
+     * Get the results of all tasks.
+     *
+     * @return array
+     */
     public function getResults() : array
     {
         return $this->results;

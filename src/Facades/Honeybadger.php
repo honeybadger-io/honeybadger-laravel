@@ -6,7 +6,10 @@ use Illuminate\Support\Facades\Facade;
 
 class Honeybadger extends Facade
 {
-    public static function getFacadeAccessor()
+    /**
+     * @return string
+     */
+    public static function getFacadeAccessor() : string
     {
         return 'honeybadger';
     }

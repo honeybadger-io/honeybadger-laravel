@@ -4,6 +4,11 @@ namespace Honeybadger\HoneybadgerLaravel\Commands;
 
 class SuccessMessage
 {
+    /**
+     * Success message without links to notices.
+     *
+     * @return string
+     */
     public static function withoutLinkToNotices() : string
     {
         return <<<'EX'
@@ -28,6 +33,12 @@ https://www.honeybadger.io/about/
 EX;
     }
 
+    /**
+     * Success message with links to notices.
+     *
+     * @param  string  $noticeId
+     * @return string
+     */
     public static function withLinkToNotice(string $noticeId) : string
     {
         $message = <<<'EX'

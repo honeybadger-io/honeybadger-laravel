@@ -3,12 +3,19 @@
 namespace Honeybadger\HoneybadgerLaravel;
 
 use Honeybadger\Honeybadger;
+use Honeybadger\Contracts\Reporter;
 
 class HoneybadgerLaravel
 {
     const VERSION = '1.3.0';
 
-    public function make($config)
+    /**
+     * Honeybadger factory.
+     *
+     * @param  array  $config
+     * @return \Honeybadger\Contracts\Reporter
+     */
+    public function make($config) : Reporter
     {
         return Honeybadger::new(array_merge([
             'notifier' => [
