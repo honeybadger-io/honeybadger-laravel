@@ -71,4 +71,29 @@ class HoneybadgerTestCommandTest extends TestCase
 
         $this->artisan('honeybadger:test');
     }
+
+    /** @test */
+    public function it_outputs_an_error_based_on_honeybadger_response()
+    {
+        $mock = $this->createMock(Reporter::class);
+        $mock->method('notify')
+            ->willReturn([]);
+
+        $this->app->instance(Reporter::class, $mock);
+
+        $command = $this->getMockBuilder(HoneybadgerTestCommand::class)
+            ->disableOriginalClone()
+            ->setMethods(['error'])
+            ->getMock();
+
+        $command->expects($this->once())
+            ->method('error')
+            ->with('There was an error sending the exception to Honeybadger');
+
+        $this->app[Kernel::class]->registerCommand($command);
+
+        $this->app->instance(Honeybadger::class, $mock);
+
+        $this->artisan('honeybadger:test');
+    }
 }

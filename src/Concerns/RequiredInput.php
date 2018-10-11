@@ -23,4 +23,7 @@ trait RequiredInput
 
         return $input;
     }
+
+    abstract public function secret($message, $fallback = true);
+    abstract public function error($message, $verbosity = null);
 }

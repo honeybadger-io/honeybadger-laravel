@@ -13,6 +13,11 @@ class RquiredInputTest extends TestCase
         $command = new class {
             use RequiredInput;
 
+            public function error($text)
+            {
+                //
+            }
+
             public function secret($text)
             {
                 return 'secret answer';

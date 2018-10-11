@@ -8,7 +8,7 @@ interface Installer
      * Write the configurations to dotenv files.
      *
      * @param  array  $config
-     * @param  string  $file
+     * @param  string  $filePath
      * @return bool
      */
     public function writeConfig(array $config, string $filePath) : bool;
