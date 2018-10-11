@@ -4,9 +4,9 @@ namespace Honeybadger\HoneybadgerLaravel\Commands;
 
 class SuccessMessage
 {
-    public static function withoutLinkToNotices()
+    public static function withoutLinkToNotices() : string
     {
-        return <<<EX
+        return <<<'EX'
 ⚡ --- Honeybadger is installed! -----------------------------------------------
 If you ever need help:
 
@@ -25,14 +25,15 @@ https://www.honeybadger.io/about/
 ⚡ --- End --------------------------------------------------------------------
 EX;
     }
-    public static function withLinkToNotice($noticeId)
+
+    public static function withLinkToNotice(string $noticeId) : string
     {
-        return <<<EX
+        $message = <<<'EX'
 ⚡ --- Honeybadger is installed! -----------------------------------------------
 Good news: You're one deploy away from seeing all of your exceptions in
 Honeybadger. For now, we've generated a test exception for you:
 
-    https://app.honeybadger.io/notice/{$noticeId}
+    https://app.honeybadger.io/notice/%s
 
 If you ever need help:
 
@@ -50,5 +51,6 @@ Ben, Josh and Starr
 https://www.honeybadger.io/about/
 ⚡ --- End --------------------------------------------------------------------
 EX;
+        return sprintf($message, $noticeId);
     }
 }

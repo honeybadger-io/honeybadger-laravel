@@ -10,7 +10,7 @@ class SuccessMessageTest extends TestCase
     /** @test */
     public function message_is_formatted_with_the_notice_url()
     {
-        $message = <<<EX
+        $message = <<<'EX'
 ⚡ --- Honeybadger is installed! -----------------------------------------------
 Good news: You're one deploy away from seeing all of your exceptions in
 Honeybadger. For now, we've generated a test exception for you:
@@ -40,7 +40,7 @@ EX;
     /** @test */
     public function message_is_formatted_without_notice_url()
     {
-        $message = <<<EX
+        $message = <<<'EX'
 ⚡ --- Honeybadger is installed! -----------------------------------------------
 If you ever need help:
 

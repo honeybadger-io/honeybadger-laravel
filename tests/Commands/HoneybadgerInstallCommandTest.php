@@ -29,7 +29,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         $installer->method('publishLaravelConfig')
             ->willReturn(true);
 
-        $this->app[Installer::class] =  $installer;
+        $this->app[Installer::class] = $installer;
 
         $commandTasks = new CommandTasks;
 
@@ -73,7 +73,7 @@ class HoneybadgerInstallCommandTest extends TestCase
             ->method('publishLumenConfig')
             ->willReturn(true);
 
-        $this->app[Installer::class] =  $installer;
+        $this->app[Installer::class] = $installer;
 
         $commandTasks = new CommandTasks;
 
