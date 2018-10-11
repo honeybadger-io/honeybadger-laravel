@@ -7,6 +7,7 @@ use Honeybadger\Tests\TestCase;
 use Illuminate\Contracts\Console\Kernel;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
+use Honeybadger\HoneybadgerLaravel\Commands\SuccessMessage;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
 
 class HoneybadgerInstallCommandTest extends TestCase
@@ -214,9 +215,14 @@ class HoneybadgerInstallCommandTest extends TestCase
     }
 
     /** @test */
-    public function the_success_block_is_output()
+    public function the_success_block_is_output_with_link_to_notice()
     {
-        $this->app[Installer::class] = $this->createMock(Installer::class);
+        $installer = $this->createMock(Installer::class);
+
+        $installer->method('sendTestException')
+            ->willReturn(['id' => '1234']);
+
+        $this->app[Installer::class] = $installer;
 
         $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
             ->disableOriginalClone()
@@ -226,33 +232,76 @@ class HoneybadgerInstallCommandTest extends TestCase
                 'line',
             ])->getMock();
 
-        $message = <<<'EOT'
-⚡ --- Honeybadger is installed! -----------------------------------------------
-Good news: You're one deploy away from seeing all of your exceptions in
-Honeybadger. For now, we've generated a test exception for you:
-
-    https://app.honeybadger.io/
-
-If you ever need help:
-
-    - Check out the documentation: https://docs.honeybadger.io/lib/php/index.html
-    - Email the 'badgers: support@honeybadger.io
-
-Most people don't realize that Honeybadger is a small, bootstrapped company. We
-really couldn't do this without you. Thank you for allowing us to do what we
-love: making developers awesome.
-
-Happy 'badgering!
-
-Sincerely,
-Ben, Josh and Starr
-https://www.honeybadger.io/about/
-⚡ --- End --------------------------------------------------------------------
-EOT;
+        // Send test exception
+        $command->method('confirm')
+            ->willReturn(true);
 
         $command->expects($this->once())
             ->method('line')
-            ->with($message);
+            ->with(SuccessMessage::withLinkToNotice('1234'));
+
+        $this->app[Kernel::class]->registerCommand($command);
+
+        $this->artisan('honeybadger:install', [
+            'apiKey' => 'asdf123',
+        ]);
+    }
+
+    /** @test */
+    public function correct_success_output_when_failed_honeybadger_request()
+    {
+        $installer = $this->createMock(Installer::class);
+
+        $installer->method('sendTestException')
+            ->willReturn([]);
+
+        $this->app[Installer::class] = $installer;
+
+        $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
+            ->disableOriginalClone()
+            ->setMethods([
+                'requiredSecret',
+                'confirm',
+                'line',
+            ])->getMock();
+
+        // Send test exception
+        $command->method('confirm')
+            ->willReturn(true);
+
+        $command->expects($this->once())
+            ->method('line')
+            ->with(SuccessMessage::withoutLinkToNotices());
+
+        $this->app[Kernel::class]->registerCommand($command);
+
+        $this->artisan('honeybadger:install', [
+            'apiKey' => 'asdf123',
+        ]);
+    }
+
+    /** @test */
+    public function the_success_block_is_output_without_link_to_notice()
+    {
+        $installer = $this->createMock(Installer::class);
+
+        $this->app[Installer::class] = $installer;
+
+        $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
+            ->disableOriginalClone()
+            ->setMethods([
+                'requiredSecret',
+                'confirm',
+                'line',
+            ])->getMock();
+
+        // Send test exception
+        $command->method('confirm')
+            ->willReturn(false);
+
+        $command->expects($this->once())
+            ->method('line')
+            ->with(SuccessMessage::withoutLinkToNotices());
 
         $this->app[Kernel::class]->registerCommand($command);
 

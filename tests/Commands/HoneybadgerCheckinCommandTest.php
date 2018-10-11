@@ -58,7 +58,7 @@ class HoneybadgerCheckinCommandTest extends TestCase
             ->setMethods(['error'])
             ->getMock();
 
-            $command->expects($this->once())
+        $command->expects($this->once())
                 ->method('error')
                 ->with('Some message');
 
