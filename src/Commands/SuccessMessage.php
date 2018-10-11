@@ -51,6 +51,7 @@ Ben, Josh and Starr
 https://www.honeybadger.io/about/
 ⚡ --- End --------------------------------------------------------------------
 EX;
+
         return sprintf($message, $noticeId);
     }
 }
