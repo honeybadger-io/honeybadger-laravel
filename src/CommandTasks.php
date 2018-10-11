@@ -19,7 +19,7 @@ class CommandTasks
     /**
      * Set command output.
      *
-     * @param  /Illuminate\Console\OutputStyle  $output
+     * @param  \Illuminate\Console\OutputStyle  $output
      * @return self
      */
     public function setOutput(OutputStyle $output) : self
