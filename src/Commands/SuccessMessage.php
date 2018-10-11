@@ -7,6 +7,7 @@ class SuccessMessage
     public static function withoutLinkToNotices() : string
     {
         return <<<'EX'
+
 ⚡ --- Honeybadger is installed! -----------------------------------------------
 If you ever need help:
 
@@ -23,12 +24,14 @@ Sincerely,
 Ben, Josh and Starr
 https://www.honeybadger.io/about/
 ⚡ --- End --------------------------------------------------------------------
+
 EX;
     }
 
     public static function withLinkToNotice(string $noticeId) : string
     {
         $message = <<<'EX'
+
 ⚡ --- Honeybadger is installed! -----------------------------------------------
 Good news: You're one deploy away from seeing all of your exceptions in
 Honeybadger. For now, we've generated a test exception for you:
@@ -50,6 +53,7 @@ Sincerely,
 Ben, Josh and Starr
 https://www.honeybadger.io/about/
 ⚡ --- End --------------------------------------------------------------------
+
 EX;
 
         return sprintf($message, $noticeId);

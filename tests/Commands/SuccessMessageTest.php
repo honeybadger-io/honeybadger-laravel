@@ -11,6 +11,7 @@ class SuccessMessageTest extends TestCase
     public function message_is_formatted_with_the_notice_url()
     {
         $message = <<<'EX'
+
 ⚡ --- Honeybadger is installed! -----------------------------------------------
 Good news: You're one deploy away from seeing all of your exceptions in
 Honeybadger. For now, we've generated a test exception for you:
@@ -32,6 +33,7 @@ Sincerely,
 Ben, Josh and Starr
 https://www.honeybadger.io/about/
 ⚡ --- End --------------------------------------------------------------------
+
 EX;
 
         $this->assertEquals($message, SuccessMessage::withLinkToNotice('1234'));
@@ -41,6 +43,7 @@ EX;
     public function message_is_formatted_without_notice_url()
     {
         $message = <<<'EX'
+
 ⚡ --- Honeybadger is installed! -----------------------------------------------
 If you ever need help:
 
@@ -57,6 +60,7 @@ Sincerely,
 Ben, Josh and Starr
 https://www.honeybadger.io/about/
 ⚡ --- End --------------------------------------------------------------------
+
 EX;
         $this->assertEquals($message, SuccessMessage::withoutLinkToNotices());
     }
