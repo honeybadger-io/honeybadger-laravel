@@ -50,8 +50,8 @@ class LogHandler extends AbstractProcessingHandler
                         'level_name' => $record['level_name'],
                         'log_channel' => $record['channel'],
                         'message' => $record['message'],
-                    ]
-                ]
+                    ],
+                ],
             ];
         });
     }

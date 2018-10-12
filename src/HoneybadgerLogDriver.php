@@ -3,8 +3,8 @@
 namespace Honeybadger\HoneybadgerLaravel;
 
 use Monolog\Logger;
-use Illuminate\Support\Facades\App;
 use Honeybadger\Contracts\Reporter;
+use Illuminate\Support\Facades\App;
 
 class HoneybadgerLogDriver
 {
