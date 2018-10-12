@@ -44,10 +44,10 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
+        "test": "phpunit",
         "test-coverage": "phpunit --coverage-html coverage",
-        "styles:lint": "vendor/bin/php-cs-fixer fix --dry-run --diff",
-        "styles:fix": "vendor/bin/php-cs-fixer fix"
+        "styles:lint": "php-cs-fixer fix --dry-run --diff",
+        "styles:fix": "php-cs-fixer fix"
     },
     "config": {
         "sort-packages": true
