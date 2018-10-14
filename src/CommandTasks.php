@@ -2,6 +2,7 @@
 
 namespace Honeybadger\HoneybadgerLaravel;
 
+use Illuminate\Support\Collection;
 use Illuminate\Console\OutputStyle;
 
 class CommandTasks
@@ -50,7 +51,7 @@ class CommandTasks
      */
     public function outputResults() : void
     {
-        collect($this->results)->each(function ($result, $description) {
+        Collection::make($this->results)->each(function ($result, $description) {
             $this->output->writeLn(vsprintf('%s: %s', [
                 $description,
                 $result ? '<fg=green>✔</>' : '<fg=red>✘</>',
@@ -66,5 +67,13 @@ class CommandTasks
     public function getResults() : array
     {
         return $this->results;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFailedTasks() : bool
+    {
+        return in_array(false, $this->results);
     }
 }

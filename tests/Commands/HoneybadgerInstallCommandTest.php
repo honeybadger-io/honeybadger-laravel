@@ -42,11 +42,6 @@ class HoneybadgerInstallCommandTest extends TestCase
             ->with('Your API key', 'The API key is required')
             ->willReturn('supersecret');
 
-        $command->expects($this->once())
-            ->method('confirm')
-            ->with('Would you like to send a test exception now?', true)
-            ->willReturn(true);
-
         $this->app[Kernel::class]->registerCommand($command);
 
         $this->artisan('honeybadger:install');
@@ -89,38 +84,6 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->artisan('honeybadger:install');
 
         $this->assertTrue($commandTasks->getResults()['Publish the config file']);
-    }
-
-    /** @test */
-    public function test_exception_does_not_get_sent_based_on_input()
-    {
-        $installer = $this->createMock(Installer::class);
-
-        $installer->expects($this->never())
-            ->method('sendTestException');
-
-        $this->app[Installer::class] = $installer;
-
-        $commandTasks = new CommandTasks;
-        $this->app[CommandTasks::class] = $commandTasks;
-
-        $command = $this->commandMock();
-
-        $command->method('requiredSecret')
-            ->willReturn('');
-
-        // Send test exception
-        $command->method('confirm')
-            ->willReturn(false);
-
-        $this->app[Kernel::class]->registerCommand($command);
-
-        $this->artisan('honeybadger:install');
-
-        $this->assertArrayNotHasKey(
-            'Send test exception to Honeybadger',
-            $commandTasks->getResults()
-        );
     }
 
     /** @test */
@@ -239,84 +202,58 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $this->app[Installer::class] = $installer;
 
-        $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
-            ->disableOriginalClone()
-            ->setMethods([
-                'requiredSecret',
-                'confirm',
-                'line',
-            ])->getMock();
-
-        // Send test exception
-        $command->method('confirm')
-            ->willReturn(true);
-
-        $command->expects($this->once())
-            ->method('line')
-            ->with(SuccessMessage::withLinkToNotice('1234'));
-
-        $this->app[Kernel::class]->registerCommand($command);
-
-        $this->artisan('honeybadger:install', [
-            'apiKey' => 'asdf123',
-        ]);
-    }
-
-    /** @test */
-    public function correct_success_output_when_failed_honeybadger_request()
-    {
-        $installer = $this->createMock(Installer::class);
-
-        $installer->method('sendTestException')
-            ->willReturn([]);
-
-        $this->app[Installer::class] = $installer;
-
-        $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
-            ->disableOriginalClone()
-            ->setMethods([
-                'requiredSecret',
-                'confirm',
-                'line',
-            ])->getMock();
-
-        // Send test exception
-        $command->method('confirm')
-            ->willReturn(true);
-
-        $command->expects($this->once())
-            ->method('line')
-            ->with(SuccessMessage::withoutLinkToNotices());
-
-        $this->app[Kernel::class]->registerCommand($command);
-
-        $this->artisan('honeybadger:install', [
-            'apiKey' => 'asdf123',
-        ]);
-    }
-
-    /** @test */
-    public function the_success_block_is_output_without_link_to_notice()
-    {
-        $installer = $this->createMock(Installer::class);
-
-        $this->app[Installer::class] = $installer;
-
-        $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
-            ->disableOriginalClone()
-            ->setMethods([
-                'requiredSecret',
-                'confirm',
-                'line',
-            ])->getMock();
-
-        // Send test exception
-        $command->method('confirm')
+        $commandTasks = $this->createMock(CommandTasks::class);
+        $commandTasks->method('hasFailedTasks')
             ->willReturn(false);
 
+        $this->app[CommandTasks::class] = $commandTasks;
+
+        $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
+            ->disableOriginalClone()
+            ->setMethods([
+                'requiredSecret',
+                'confirm',
+                'line',
+            ])->getMock();
+
+        // Send test exception
+        $command->method('confirm')
+            ->willReturn(true);
+
         $command->expects($this->once())
             ->method('line')
-            ->with(SuccessMessage::withoutLinkToNotices());
+            ->with(SuccessMessage::make('1234'));
+
+        $this->app[Kernel::class]->registerCommand($command);
+
+        $this->artisan('honeybadger:install', [
+            'apiKey' => 'asdf123',
+        ]);
+    }
+
+    /** @test */
+    public function outputs_retry_text_if_any_tasks_fail()
+    {
+        $installer = $this->createMock(Installer::class);
+        $this->app[Installer::class] = $installer;
+
+        $commandTasks = $this->createMock(CommandTasks::class);
+        $commandTasks->method('hasFailedTasks')
+            ->willReturn(true);
+
+        $this->app[CommandTasks::class] = $commandTasks;
+
+        $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
+            ->disableOriginalClone()
+            ->setMethods([
+                'requiredSecret',
+                'confirm',
+                'info',
+            ])->getMock();
+
+        $command->expects($this->once())
+            ->method('info')
+            ->with('Looks like there were some errors. Please resolve the issues and re-try the installation.');
 
         $this->app[Kernel::class]->registerCommand($command);
 

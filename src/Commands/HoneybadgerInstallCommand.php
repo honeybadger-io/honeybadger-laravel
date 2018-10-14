@@ -5,6 +5,7 @@ namespace Honeybadger\HoneybadgerLaravel\Commands;
 use Honeybadger\Honeybadger;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
+use Honeybadger\Exceptions\ServiceException;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
 use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
@@ -66,13 +67,17 @@ class HoneybadgerInstallCommand extends Command
             );
         }
 
-        if ($this->config['send_test']) {
-            $results = $this->sendTest();
-        }
+        $results = $this->sendTest();
 
         $this->tasks->outputResults();
 
-        $this->outputSuccessMessage(array_get($results ?? [], 'id', ''));
+        if ($this->tasks->hasFailedTasks()) {
+            $this->line('');
+            $this->info('Looks like there were some errors. Please resolve the issues and re-try the installation.');
+        } else {
+            sleep(3);
+            $this->outputSuccessMessage(array_get($results ?? [], 'id', ''));
+        }
     }
 
     /**
@@ -84,7 +89,6 @@ class HoneybadgerInstallCommand extends Command
     {
         return [
             'api_key' => $this->argument('apiKey') ?? $this->promptForApiKey(),
-            'send_test' => $this->confirm('Would you like to send a test exception now?', true),
         ];
     }
 
@@ -107,7 +111,11 @@ class HoneybadgerInstallCommand extends Command
     {
         Config::set('honeybadger.api_key', $this->config['api_key']);
 
-        $result = $this->installer->sendTestException();
+        try {
+            $result = $this->installer->sendTestException();
+        } catch (ServiceException $e) {
+            $result = [];
+        }
 
         $this->tasks->addTask(
             'Send test exception to Honeybadger',
@@ -163,10 +171,6 @@ class HoneybadgerInstallCommand extends Command
      */
     private function outputSuccessMessage(string $noticeId) : void
     {
-        if ($noticeId) {
-            $this->line(SuccessMessage::withLinkToNotice($noticeId));
-        } else {
-            $this->line(SuccessMessage::withoutLinkToNotices());
-        }
+        $this->line(SuccessMessage::make($noticeId));
     }
 }

@@ -5,41 +5,12 @@ namespace Honeybadger\HoneybadgerLaravel\Commands;
 class SuccessMessage
 {
     /**
-     * Success message without links to notices.
-     *
-     * @return string
-     */
-    public static function withoutLinkToNotices() : string
-    {
-        return <<<'EX'
-
-⚡ --- Honeybadger is installed! -----------------------------------------------
-If you ever need help:
-
-    - Check out the documentation: https://docs.honeybadger.io/lib/php/index.html
-    - Email the 'badgers: support@honeybadger.io
-
-Most people don't realize that Honeybadger is a small, bootstrapped company. We
-really couldn't do this without you. Thank you for allowing us to do what we
-love: making developers awesome.
-
-Happy 'badgering!
-
-Sincerely,
-Ben, Josh and Starr
-https://www.honeybadger.io/about/
-⚡ --- End --------------------------------------------------------------------
-
-EX;
-    }
-
-    /**
      * Success message with links to notices.
      *
      * @param  string  $noticeId
      * @return string
      */
-    public static function withLinkToNotice(string $noticeId) : string
+    public static function make(string $noticeId) : string
     {
         $message = <<<'EX'
 

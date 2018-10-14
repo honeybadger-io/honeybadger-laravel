@@ -36,32 +36,6 @@ https://www.honeybadger.io/about/
 
 EX;
 
-        $this->assertEquals($message, SuccessMessage::withLinkToNotice('1234'));
-    }
-
-    /** @test */
-    public function message_is_formatted_without_notice_url()
-    {
-        $message = <<<'EX'
-
-⚡ --- Honeybadger is installed! -----------------------------------------------
-If you ever need help:
-
-    - Check out the documentation: https://docs.honeybadger.io/lib/php/index.html
-    - Email the 'badgers: support@honeybadger.io
-
-Most people don't realize that Honeybadger is a small, bootstrapped company. We
-really couldn't do this without you. Thank you for allowing us to do what we
-love: making developers awesome.
-
-Happy 'badgering!
-
-Sincerely,
-Ben, Josh and Starr
-https://www.honeybadger.io/about/
-⚡ --- End --------------------------------------------------------------------
-
-EX;
-        $this->assertEquals($message, SuccessMessage::withoutLinkToNotices());
+        $this->assertEquals($message, SuccessMessage::make('1234'));
     }
 }

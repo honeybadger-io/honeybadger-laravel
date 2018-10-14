@@ -71,4 +71,24 @@ class CommandTasksTest extends TestCase
             'Example failed task' => false,
         ], $commandTasks->getResults());
     }
+
+    /** @test */
+    public function whether_any_tasks_have_failed()
+    {
+        $commandTasks = new CommandTasks;
+        $commandTasks->addTask('Example successful task', true);
+        $commandTasks->addTask('Example failed task', false);
+
+        $this->assertTrue($commandTasks->hasFailedTasks());
+    }
+
+    /** @test */
+    public function whether_any_tasks_have_passed()
+    {
+        $commandTasks = new CommandTasks;
+        $commandTasks->addTask('Example successful task', true);
+        $commandTasks->addTask('Example failed task', true);
+
+        $this->assertFalse($commandTasks->hasFailedTasks());
+    }
 }
