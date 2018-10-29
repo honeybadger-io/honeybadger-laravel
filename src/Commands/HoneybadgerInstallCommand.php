@@ -76,7 +76,8 @@ class HoneybadgerInstallCommand extends Command
             $this->tasks->runTasks();
             $this->outputSuccessMessage(array_get($results ?? [], 'id', ''));
         } catch (TaskFailed $e) {
-            $this->info($e->getMessage());
+            $this->line('');
+            $this->error($e->getMessage());
         }
     }
 

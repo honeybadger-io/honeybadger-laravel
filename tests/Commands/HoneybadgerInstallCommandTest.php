@@ -4,6 +4,7 @@ namespace Honeybadger\Tests\Commands;
 
 use Honeybadger\Honeybadger;
 use Honeybadger\Tests\TestCase;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Contracts\Console\Kernel;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
@@ -142,16 +143,14 @@ class HoneybadgerInstallCommandTest extends TestCase
         $command = $this->commandMock();
 
         $command->method('requiredSecret')
-            ->willReturn('');
-
-        // Send test exception
-        $command->method('confirm')->willReturn(true);
+            ->willReturn('asdf123');
 
         $this->app[Kernel::class]->registerCommand($command);
 
         $this->artisan('honeybadger:install');
 
         $this->assertTrue($commandTasks->getResults()['Send test exception to Honeybadger']);
+        $this->assertEquals(Config::get('honeybadger.api_key'), 'asdf123');
     }
 
     /** @test */
@@ -223,7 +222,6 @@ class HoneybadgerInstallCommandTest extends TestCase
                 'line',
             ])->getMock();
 
-
         $command->expects($this->once())
             ->method('line')
             ->with(SuccessMessage::make('1234'));
@@ -254,11 +252,11 @@ class HoneybadgerInstallCommandTest extends TestCase
             ->setMethods([
                 'requiredSecret',
                 'confirm',
-                'info',
+                'error',
             ])->getMock();
 
         $command->expects($this->once())
-            ->method('info')
+            ->method('error')
             ->with('Write HONEYBADGER_API_KEY to .env failed, please review output and try again.');
 
         $this->app[Kernel::class]->registerCommand($command);

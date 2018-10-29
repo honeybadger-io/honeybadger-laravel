@@ -2,8 +2,10 @@
 
 namespace Honeybadger\Tests\Commands;
 
+use Honeybadger\Honeybadger;
 use Honeybadger\Tests\TestCase;
 use Honeybadger\Contracts\Reporter;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Artisan;
 use Honeybadger\HoneybadgerLaravel\Installer;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
@@ -58,7 +60,29 @@ class InstallerTest extends TestCase
             ->method('notify')
             ->with($this->isInstanceOf(TestException::class));
 
-        $installer = new Installer($honeybadger);
+        $this->app[Reporter::class] = $honeybadger;
+
+        $installer = new Installer;
+
+        $installer->sendTestException();
+    }
+
+    /** @test */
+    public function a_test_exception_is_sent_with_config()
+    {
+        $honeybadger = $this->createMock(Reporter::class);
+
+        $this->app[Reporter::class] = $honeybadger;
+
+        $installer = new Installer;
+
+        $this->app->resolving(Reporter::class, function ($api, $app) {
+            $this->assertEquals('asdf123', $app['config']['honeybadger']['api_key']);
+        });
+
+        $this->assertEquals('asdf', Config::get('honeybadger.api_key'));
+
+        Config::set('honeybadger.api_key', 'asdf123');
 
         $installer->sendTestException();
     }
