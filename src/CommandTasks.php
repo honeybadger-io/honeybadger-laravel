@@ -4,6 +4,7 @@ namespace Honeybadger\HoneybadgerLaravel;
 
 use Illuminate\Support\Collection;
 use Illuminate\Console\OutputStyle;
+use Honeybadger\HoneybadgerLaravel\Exceptions\TaskFailed;
 
 class CommandTasks
 {
@@ -16,6 +17,16 @@ class CommandTasks
      * @var array
      */
     protected $results = [];
+
+    /**
+     * @var array
+     */
+    protected $tasks = [];
+
+    /**
+     * @var bool
+     */
+    protected $throwOnError = true;
 
     /**
      * Set command output.
@@ -34,33 +45,45 @@ class CommandTasks
      * Add task with result to the stack.
      *
      * @param  string  $name
-     * @param  bool  $result
+     * @param  callable  $task
      * @return self
      */
-    public function addTask(string $name, bool $result) : self
+    public function addTask(string $name, callable $task) : self
     {
-        $this->results[$name] = $result;
+        $this->tasks[$name] = $task;
 
         return $this;
     }
 
     /**
-     * Send results to the command output.
+     * Send tasks to the command output.
      *
      * @return void
+     *
+     * @throws \Honeybadger\HoneybadgerLaravel\TaskFailed
      */
-    public function outputResults() : void
+    public function runTasks() : void
     {
-        Collection::make($this->results)->each(function ($result, $description) {
-            $this->output->writeLn(vsprintf('%s: %s', [
-                $description,
-                $result ? '<fg=green>✔</>' : '<fg=red>✘</>',
-            ]));
+        Collection::make($this->tasks)->each(function ($task, $description) {
+            $result = $task();
+
+            if ($this->output) {
+                $this->output->writeLn(vsprintf('%s: %s', [
+                    $description,
+                    $result ? '<fg=green>✔</>' : '<fg=red>✘</>',
+                ]));
+            }
+
+            $this->results[$description] = $result;
+
+            if (! $result && $this->throwOnError) {
+                throw new TaskFailed(sprintf('%s failed, please review output and try again.', $description));
+            }
         });
     }
 
     /**
-     * Get the results of all tasks.
+     * Get all task results.
      *
      * @return array
      */
@@ -75,5 +98,15 @@ class CommandTasks
     public function hasFailedTasks() : bool
     {
         return in_array(false, $this->results);
+    }
+
+    /**
+     * @return self
+     */
+    public function doNotThrowOnError() : self
+    {
+        $this->throwOnError = false;
+
+        return $this;
     }
 }

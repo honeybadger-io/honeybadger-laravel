@@ -33,6 +33,8 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $commandTasks = new CommandTasks;
 
+        $commandTasks->doNotThrowOnError();
+
         $this->app[CommandTasks::class] = $commandTasks;
 
         $command = $this->commandMock();
@@ -72,6 +74,8 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $commandTasks = new CommandTasks;
 
+        $commandTasks->doNotThrowOnError();
+
         $this->app[CommandTasks::class] = $commandTasks;
 
         $command = $this->commandMock();
@@ -100,6 +104,8 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->app[Installer::class] = $installer;
 
         $commandTasks = new CommandTasks;
+        $commandTasks->doNotThrowOnError();
+
         $this->app[CommandTasks::class] = $commandTasks;
 
         $command = $this->commandMock();
@@ -129,6 +135,8 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->app[Installer::class] = $installer;
 
         $commandTasks = new CommandTasks;
+        $commandTasks->doNotThrowOnError();
+
         $this->app[CommandTasks::class] = $commandTasks;
 
         $command = $this->commandMock();
@@ -157,6 +165,8 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->app[Installer::class] = $installer;
 
         $commandTasks = new CommandTasks;
+        $commandTasks->doNotThrowOnError();
+
         $this->app[CommandTasks::class] = $commandTasks;
 
         $command = $this->commandMock();
@@ -203,9 +213,6 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->app[Installer::class] = $installer;
 
         $commandTasks = $this->createMock(CommandTasks::class);
-        $commandTasks->method('hasFailedTasks')
-            ->willReturn(false);
-
         $this->app[CommandTasks::class] = $commandTasks;
 
         $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
@@ -216,9 +223,6 @@ class HoneybadgerInstallCommandTest extends TestCase
                 'line',
             ])->getMock();
 
-        // Send test exception
-        $command->method('confirm')
-            ->willReturn(true);
 
         $command->expects($this->once())
             ->method('line')
@@ -235,11 +239,13 @@ class HoneybadgerInstallCommandTest extends TestCase
     public function outputs_retry_text_if_any_tasks_fail()
     {
         $installer = $this->createMock(Installer::class);
+
+        $installer->method('writeConfig')
+            ->willReturn(false);
+
         $this->app[Installer::class] = $installer;
 
-        $commandTasks = $this->createMock(CommandTasks::class);
-        $commandTasks->method('hasFailedTasks')
-            ->willReturn(true);
+        $commandTasks = new CommandTasks;
 
         $this->app[CommandTasks::class] = $commandTasks;
 
@@ -253,7 +259,7 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command->expects($this->once())
             ->method('info')
-            ->with('Looks like there were some errors. Please resolve the issues and re-try the installation.');
+            ->with('Write HONEYBADGER_API_KEY to .env failed, please review output and try again.');
 
         $this->app[Kernel::class]->registerCommand($command);
 

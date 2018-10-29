@@ -4,6 +4,7 @@ namespace Honeybadger\Tests;
 
 use Illuminate\Console\OutputStyle;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
+use Honeybadger\HoneybadgerLaravel\Exceptions\TaskFailed;
 
 class CommandTasksTest extends TestCase
 {
@@ -18,9 +19,11 @@ class CommandTasksTest extends TestCase
 
         $commandTasks = new CommandTasks;
         $commandTasks->setOutput($output);
-        $commandTasks->addTask('Example Task', true);
+        $commandTasks->addTask('Example Task', function () {
+            return true;
+        });
 
-        $commandTasks->outputResults();
+        $commandTasks->runTasks();
 
         $this->assertEquals([
             'Example Task' => true,
@@ -30,6 +33,7 @@ class CommandTasksTest extends TestCase
     /** @test */
     public function outputs_unsuccessful_tasks()
     {
+        $this->expectException(TaskFailed::class);
         $output = $this->createMock(OutputStyle::class);
 
         $output->expects($this->once())
@@ -38,9 +42,11 @@ class CommandTasksTest extends TestCase
 
         $commandTasks = new CommandTasks;
         $commandTasks->setOutput($output);
-        $commandTasks->addTask('Example Task', false);
+        $commandTasks->addTask('Example Task', function () {
+            return false;
+        });
 
-        $commandTasks->outputResults();
+        $commandTasks->runTasks();
 
         $this->assertEquals([
             'Example Task' => false,
@@ -50,6 +56,7 @@ class CommandTasksTest extends TestCase
     /** @test */
     public function outputs_multiple_tasks()
     {
+        $this->expectException(TaskFailed::class);
         $output = $this->createMock(OutputStyle::class);
 
         $output->expects($this->exactly(2))
@@ -61,10 +68,14 @@ class CommandTasksTest extends TestCase
 
         $commandTasks = new CommandTasks;
         $commandTasks->setOutput($output);
-        $commandTasks->addTask('Example successful task', true);
-        $commandTasks->addTask('Example failed task', false);
+        $commandTasks->addTask('Example successful task', function () {
+            return true;
+        });
+        $commandTasks->addTask('Example failed task', function () {
+            return false;
+        });
 
-        $commandTasks->outputResults();
+        $commandTasks->runTasks();
 
         $this->assertEquals([
             'Example successful task' => true,
@@ -75,9 +86,17 @@ class CommandTasksTest extends TestCase
     /** @test */
     public function whether_any_tasks_have_failed()
     {
+        $this->expectException(TaskFailed::class);
+
         $commandTasks = new CommandTasks;
-        $commandTasks->addTask('Example successful task', true);
-        $commandTasks->addTask('Example failed task', false);
+        $commandTasks->addTask('Example successful task', function () {
+            return true;
+        });
+        $commandTasks->addTask('Example failed task', function () {
+            return false;
+        });
+
+        $commandTasks->runTasks();
 
         $this->assertTrue($commandTasks->hasFailedTasks());
     }
@@ -86,8 +105,11 @@ class CommandTasksTest extends TestCase
     public function whether_any_tasks_have_passed()
     {
         $commandTasks = new CommandTasks;
-        $commandTasks->addTask('Example successful task', true);
-        $commandTasks->addTask('Example failed task', true);
+        $commandTasks->addTask('Example successful task', function () {
+            return true;
+        });
+
+        $commandTasks->runTasks();
 
         $this->assertFalse($commandTasks->hasFailedTasks());
     }

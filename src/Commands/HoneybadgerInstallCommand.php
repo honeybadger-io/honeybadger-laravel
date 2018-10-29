@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Config;
 use Honeybadger\Exceptions\ServiceException;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
+use Honeybadger\HoneybadgerLaravel\Exceptions\TaskFailed;
 use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
 
 class HoneybadgerInstallCommand extends Command
@@ -63,20 +64,19 @@ class HoneybadgerInstallCommand extends Command
         if ($this->installer->shouldPublishConfig()) {
             $this->tasks->addTask(
                 'Publish the config file',
-                $this->publishConfig()
+                function () {
+                    return $this->publishConfig();
+                }
             );
         }
 
         $results = $this->sendTest();
 
-        $this->tasks->outputResults();
-
-        if ($this->tasks->hasFailedTasks()) {
-            $this->line('');
-            $this->info('Looks like there were some errors. Please resolve the issues and re-try the installation.');
-        } else {
-            sleep(3);
+        try {
+            $this->tasks->runTasks();
             $this->outputSuccessMessage(array_get($results ?? [], 'id', ''));
+        } catch (TaskFailed $e) {
+            $this->info($e->getMessage());
         }
     }
 
@@ -119,7 +119,9 @@ class HoneybadgerInstallCommand extends Command
 
         $this->tasks->addTask(
             'Send test exception to Honeybadger',
-            ! empty($result)
+            function () use ($result) {
+                return ! empty($result);
+            }
         );
 
         return $result;
@@ -134,18 +136,22 @@ class HoneybadgerInstallCommand extends Command
     {
         $this->tasks->addTask(
             'Write HONEYBADGER_API_KEY to .env',
-            $this->installer->writeConfig(
-                ['HONEYBADGER_API_KEY' => $this->config['api_key']],
-                base_path('.env')
-            )
+            function () {
+                return $this->installer->writeConfig(
+                    ['HONEYBADGER_API_KEY' => $this->config['api_key']],
+                    base_path('.env')
+                );
+            }
         );
 
         $this->tasks->addTask(
             'Write HONEYBADGER_API_KEY placeholder to .env.example',
-            $this->installer->writeConfig(
-                ['HONEYBADGER_API_KEY' => ''],
-                base_path('.env.example')
-            )
+            function () {
+                return $this->installer->writeConfig(
+                    ['HONEYBADGER_API_KEY' => ''],
+                    base_path('.env.example')
+                );
+            }
         );
     }
 
