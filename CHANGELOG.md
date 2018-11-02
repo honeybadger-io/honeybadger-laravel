@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.4.0] - 2018-11-02
 ### Added
 * Installer command for PHP & Laravel ([#11](https://github.com/honeybadger-io/honeybadger-laravel/pull/11))
+* Updated version contraints ([#15](https://github.com/honeybadger-io/honeybadger-laravel/pull/15))
 
 ## [1.3.0] - 2018-09-13
 ### Added
