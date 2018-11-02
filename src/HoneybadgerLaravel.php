@@ -7,7 +7,7 @@ use Honeybadger\Contracts\Reporter;
 
 class HoneybadgerLaravel
 {
-    const VERSION = '1.3.0';
+    const VERSION = '1.4.0';
 
     /**
      * Honeybadger factory.
