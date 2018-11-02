@@ -11,4 +11,9 @@ class TestCase extends BaseTestCase
     {
         return [HoneybadgerServiceProvider::class];
     }
+
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('honeybadger.api_key', 'asdf');
+    }
 }

@@ -3,8 +3,8 @@
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
 use Exception;
-use Honeybadger\Honeybadger;
 use Illuminate\Console\Command;
+use Honeybadger\Contracts\Reporter;
 
 class HoneybadgerCheckinCommand extends Command
 {
@@ -27,13 +27,25 @@ class HoneybadgerCheckinCommand extends Command
      *
      * @return mixed
      */
-    public function handle(Honeybadger $honeybadger)
+    public function handle(Reporter $honeybadger)
     {
         try {
-            $honeybadger->checkin($this->argument('id'));
-            $this->line(sprintf('Checkin %s was sent to Honeybadger', $this->argument('id')));
+            $honeybadger->checkin($this->apiKey());
+            $this->info(sprintf('Checkin %s was sent to Honeybadger', $this->argument('id')));
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
+    }
+
+    /**
+     * Get the API key from input.
+     *
+     * @return string
+     */
+    private function apiKey() : string
+    {
+        return is_array($this->argument('id'))
+            ? $this->argument('id')[0]
+            : $this->argument('id');
     }
 }

@@ -5,6 +5,7 @@ namespace Honeybadger\HoneybadgerLaravel\Commands;
 use Exception;
 use Honeybadger\Honeybadger;
 use Illuminate\Console\Command;
+use Honeybadger\Contracts\Reporter;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 
 class HoneybadgerTestCommand extends Command
@@ -28,11 +29,16 @@ class HoneybadgerTestCommand extends Command
      *
      * @return mixed
      */
-    public function handle(Honeybadger $honeybadger)
+    public function handle(Reporter $honeybadger)
     {
         try {
-            $honeybadger->notify(new TestException);
-            $this->line('A test exception was sent to Honeybadger');
+            $result = $honeybadger->notify(new TestException);
+            $this->info('A test exception was sent to Honeybadger');
+            if (is_null(array_get($result, 'id'))) {
+                throw new Exception('There was an error sending the exception to Honeybadger');
+            }
+
+            $this->line(sprintf('https://app.honeybadger.io/notice/', array_get($result, 'id')));
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }

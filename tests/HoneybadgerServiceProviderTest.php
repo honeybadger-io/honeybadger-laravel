@@ -3,25 +3,22 @@
 namespace Honeybadger\Tests;
 
 use Honeybadger\Honeybadger;
+use Honeybadger\Contracts\Reporter;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger as HoneybadgerFacade;
 
 class HoneybadgerServiceProviderTest extends TestCase
 {
     /** @test */
-    public function a_instance_will_be_resolved()
+    public function facade_will_resolve_an_instance()
     {
-        $this->app['config']->set('honeybadger.api_key', '1234');
-        $honeybadger = $this->app->make(Honeybadger::class);
-
-        $this->assertTrue($this->app->bound(Honeybadger::class));
-        $this->assertInstanceOf(Honeybadger::class, $honeybadger);
+        $this->assertEquals('honeybadger', HoneybadgerFacade::getFacadeAccessor());
     }
 
     /** @test */
-    public function facade_will_resolve_an_instance()
+    public function aliases_are_set()
     {
-        $this->assertEquals(Honeybadger::class, $this->app->getAlias('honeybadger'));
-
-        $this->assertEquals('honeybadger', HoneybadgerFacade::getFacadeAccessor());
+        $this->assertInstanceOf(Honeybadger::class, $this->app[Reporter::class]);
+        $this->assertInstanceOf(Honeybadger::class, $this->app[Honeybadger::class]);
+        $this->assertInstanceOf(Honeybadger::class, $this->app['honeybadger']);
     }
 }
