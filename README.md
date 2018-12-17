@@ -23,11 +23,7 @@ For comprehensive documentation and support, check out our [documentation site](
 ```
 
 ## Code Style
-In addition to the php-cs-fixer rules, StyleCI will apply the [Laravel preset](https://docs.styleci.io/presets#laravel).
-```bash
-> composer styles:lint
-> composer styles:fix
-```
+This project follows the [PSR-2 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md). In addition, StyleCI will apply the [Laravel preset](https://docs.styleci.io/presets#laravel).
 
 ## Changelog
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
