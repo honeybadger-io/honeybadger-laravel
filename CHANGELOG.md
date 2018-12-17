@@ -5,11 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.5.0] - 2018-12-17
 ### Added
-* PHP 7.3 to Travis
+* PHP 7.3 to Travis ([#19](https://github.com/honeybadger-io/honeybadger-laravel/pull/19))
 
 ### Removed
-* php-cs-fixer dev dependency
+* php-cs-fixer dev dependency ([#20](https://github.com/honeybadger-io/honeybadger-laravel/pull/20))
 
 ## [1.4.0] - 2018-11-02
 ### Added
