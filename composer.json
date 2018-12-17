@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "php": "^7.1|7.2",
+        "php": "^7.1",
         "honeybadger-io/honeybadger-php": "^1.2",
         "sixlive/dotenv-editor": "^1.1",
         "illuminate/console": "^5.5",
