@@ -2,6 +2,7 @@
 
 namespace Honeybadger\HoneybadgerLaravel;
 
+use Honeybadger\LogHandler;
 use Honeybadger\Honeybadger;
 use Honeybadger\Contracts\Reporter;
 use Illuminate\Support\ServiceProvider;
@@ -44,6 +45,10 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
         $this->app->alias(Reporter::class, Honeybadger::class);
         $this->app->alias(Reporter::class, 'honeybadger');
+
+        $this->app->bind(LogHandler::class, function ($app) {
+            return new LogHandler($app[Reporter::class]);
+        });
 
         $this->app->singleton('honeybadger.isLumen', function () {
             return preg_match('/lumen/i', $this->app->version());
