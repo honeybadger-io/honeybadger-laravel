@@ -2,6 +2,7 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
+use Illuminate\Support\Arr;
 use Honeybadger\Honeybadger;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
@@ -74,7 +75,7 @@ class HoneybadgerInstallCommand extends Command
 
         try {
             $this->tasks->runTasks();
-            $this->outputSuccessMessage(array_get($results ?? [], 'id', ''));
+            $this->outputSuccessMessage(Arr::get($results ?? [], 'id', ''));
         } catch (TaskFailed $e) {
             $this->line('');
             $this->error($e->getMessage());
