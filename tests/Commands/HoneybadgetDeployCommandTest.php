@@ -26,7 +26,7 @@ class HoneybadgerDeployCommandTest extends TestCase
                 $this->url = $url;
                 $this->options = $options;
 
-                return $this->response ?? new Response(200);
+                return $this->response ?? new Response(200, [], json_encode(['status' => 'OK']));
             }
         };
 
@@ -102,5 +102,29 @@ class HoneybadgerDeployCommandTest extends TestCase
                 'local_username' => 'systemuser',
             ],
         ], $this->client->options);
+    }
+
+    /** @test */
+    public function invalid_status_codes_trigger_an_exception()
+    {
+        $this->client->setResponse(new Response(500));
+
+        try {
+            $this->artisan('honeybadger:deploy');
+        } catch (\Exception $e) {
+            $this->assertRegexp('/500/', $e->getMessage());
+        }
+    }
+
+    /** @test */
+    public function invalid_response_trigger_an_exception()
+    {
+        $this->client->setResponse(new Response(200, [], json_encode(['status' => 'BAD'])));
+
+        try {
+            $this->artisan('honeybadger:deploy');
+        } catch (\Exception $e) {
+            $this->assertRegexp('/{"status":"BAD"}/', $e->getMessage());
+        }
     }
 }

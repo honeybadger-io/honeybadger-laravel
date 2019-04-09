@@ -53,8 +53,11 @@ class HoneybadgerDeployCommand extends Command
 
         $body = json_decode((string) $response->getBody(), true);
 
-        if ($response->getStatusCode() !== 200 && $body['status'] === 'OK') {
-            throw new \Exceptions("Sending the deployment to Honeybadger faild. Status Code {$response->getStatusCode()}");
+        if ($response->getStatusCode() !== 200 || $body['status'] !== 'OK') {
+            throw new \Exception(vsprintf('Sending the deployment to Honeybadger failed. Status code %s. Response %s.', [
+                $response->getStatusCode(),
+                (string) $response->getBody(),
+            ]));
         }
     }
 
