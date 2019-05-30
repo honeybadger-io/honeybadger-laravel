@@ -23,4 +23,5 @@ return [
         'proxy' => [],
     ],
     'excluded_exceptions' => [],
+    'report_data' => env('APP_ENV') !== 'testing',
 ];
