@@ -2,11 +2,13 @@
 
 namespace Honeybadger\HoneybadgerLaravel;
 
+use GuzzleHttp\Client;
 use Honeybadger\Honeybadger;
 use Honeybadger\Contracts\Reporter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Console\Scheduling\Event;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerDeployCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
@@ -48,6 +50,14 @@ class HoneybadgerServiceProvider extends ServiceProvider
         $this->app->singleton('honeybadger.isLumen', function () {
             return preg_match('/lumen/i', $this->app->version());
         });
+
+        $this->app->when(HoneybadgerDeployCommand::class)
+            ->needs(Client::class)
+            ->give(function () {
+                return new Client([
+                    'http_errors' => false,
+                ]);
+            });
     }
 
     /**
@@ -59,6 +69,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
             'command.honeybadger:test',
             'command.honeybadger:checkin',
             'command.honeybadger:install',
+            'command.honeybadger:deploy',
         ]);
     }
 
@@ -80,6 +91,11 @@ class HoneybadgerServiceProvider extends ServiceProvider
         $this->app->bind(
             'command.honeybadger:install',
             HoneybadgerInstallCommand::class
+        );
+
+        $this->app->bind(
+            'command.honeybadger:deploy',
+            HoneybadgerDeployCommand::class
         );
     }
 
