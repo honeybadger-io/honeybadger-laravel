@@ -5,7 +5,7 @@ namespace Honeybadger\Tests;
 use PHPUnit\Framework\TestCase;
 use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
 
-class RquiredInputTest extends TestCase
+class RequiredInputTest extends TestCase
 {
     /** @test */
     public function answer_is_returned_if_input_is_given()
