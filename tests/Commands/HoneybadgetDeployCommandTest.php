@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\Response;
 use Honeybadger\Tests\TestCase;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerDeployCommand;
 
-class HoneybadgerDeployCommandTest extends TestCase
+class HoneybadgetDeployCommandTest extends TestCase
 {
     public function setUp() : void
     {
