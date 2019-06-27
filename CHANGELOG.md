@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.6.0] - 2019-06-27
+### Added
+* Deploy command ([#26](https://github.com/honeybadger-io/honeybadger-laravel/pull/26))
+
 ## [1.5.0] - 2018-12-17
 ### Added
 * PHP 7.3 to Travis ([#19](https://github.com/honeybadger-io/honeybadger-laravel/pull/19))
