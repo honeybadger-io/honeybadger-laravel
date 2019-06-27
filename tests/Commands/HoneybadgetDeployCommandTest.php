@@ -26,7 +26,7 @@ class HoneybadgerDeployCommandTest extends TestCase
                 $this->url = $url;
                 $this->options = $options;
 
-                return $this->response ?? new Response(200, [], json_encode(['status' => 'OK']));
+                return $this->response ?? new Response(201, [], json_encode(['status' => 'OK']));
             }
         };
 
@@ -52,10 +52,12 @@ class HoneybadgerDeployCommandTest extends TestCase
         $this->assertEquals([
             'form_params' => [
                 'api_key' => 'secret1234',
-                'environment' => 'production',
-                'revision' => '1.1.0',
-                'repository' => trim(exec('git config --get remote.origin.url')),
-                'local_username' => get_current_user(),
+                'deploy' => [
+                    'environment' => 'production',
+                    'revision' => '1.1.0',
+                    'repository' => trim(exec('git config --get remote.origin.url')),
+                    'local_username' => get_current_user(),
+                ],
             ],
         ], $this->client->options);
     }
@@ -71,7 +73,7 @@ class HoneybadgerDeployCommandTest extends TestCase
         $this->artisan('honeybadger:deploy');
 
         $this->assertEquals(
-            $this->client->options['form_params']['revision'],
+            $this->client->options['form_params']['deploy']['revision'],
             trim(exec('git log --pretty="%h" -n1 HEAD'))
         );
     }
@@ -96,10 +98,12 @@ class HoneybadgerDeployCommandTest extends TestCase
         $this->assertEquals([
             'form_params' => [
                 'api_key' => 'supersecret',
-                'environment' => 'staging',
-                'revision' => '2.0',
-                'repository' => 'https://github.com/honeybadger-io/honeybadger-laravel',
-                'local_username' => 'systemuser',
+                'deploy' => [
+                    'environment' => 'staging',
+                    'revision' => '2.0',
+                    'repository' => 'https://github.com/honeybadger-io/honeybadger-laravel',
+                    'local_username' => 'systemuser',
+                ],
             ],
         ], $this->client->options);
     }

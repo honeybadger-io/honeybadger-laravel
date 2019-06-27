@@ -5,6 +5,7 @@ namespace Honeybadger\HoneybadgerLaravel\Commands;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
+use Symfony\Component\HttpFoundation\Response;
 
 class HoneybadgerDeployCommand extends Command
 {
@@ -44,46 +45,43 @@ class HoneybadgerDeployCommand extends Command
      */
     public function handle()
     {
+        $params = $this->resolveParams();
+
         $response = $this->client->post(
             'https://api.honeybadger.io/v1/deploys',
             [
-                'form_params' => $this->resolveParams(),
+                'form_params' => $params,
             ]
         );
 
         $body = json_decode((string) $response->getBody(), true);
 
-        if ($response->getStatusCode() !== 200 || $body['status'] !== 'OK') {
+        if ($response->getStatusCode() !== Response::HTTP_CREATED || $body['status'] !== 'OK') {
             throw new \Exception(vsprintf('Sending the deployment to Honeybadger failed. Status code %s. Response %s.', [
                 $response->getStatusCode(),
                 (string) $response->getBody(),
             ]));
         }
+
+        $this->info(sprintf('Deployment %s successfully sent', $params['deploy']['revision']));
     }
 
     private function resolveParams() : array
     {
-        return array_merge(
-            $this->resolveConfigValues(),
-            $this->resolveOptions()
-        );
-    }
-
-    private function resolveConfigValues() : array
-    {
         $config = Config::get('honeybadger');
 
         return [
-           'api_key'  => $config['api_key'],
-           'revision' => $config['version'] ?? $this->gitHash(),
-           'environment' => $config['environment_name'],
+            'api_key'  => $this->option('apiKey') ?? $config['api_key'],
+            'deploy' => array_merge([
+                'revision' => $config['version'] ?? $this->gitHash(),
+                'environment' => $config['environment_name'],
+            ], $this->resolveOptions()),
         ];
     }
 
     private function resolveOptions() : array
     {
         return array_filter([
-            'api_key' => $this->option('apiKey'),
             'environment' => $this->option('environment'),
             'revision' => $this->option('revision'),
             'repository' => $this->option('repository') ?? $this->gitRemote(),

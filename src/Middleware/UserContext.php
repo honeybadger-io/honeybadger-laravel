@@ -32,7 +32,7 @@ class UserContext
         if (app()->bound('honeybadger') && $request->user()) {
             $this->honeybadger->context(
                 'user_id',
-                 $request->user()->getAuthIdentifier()
+                $request->user()->getAuthIdentifier()
             );
         }
 
