@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 * Controller action and component to middleware ([#31](https://github.com/honeybadger-io/honeybadger-laravel/pull/31))
 
+### Changed
+* Increased the minimum version of the honeybadger-php package
+
 ## [1.6.0] - 2019-06-27
 ### Added
 * Deploy command ([#26](https://github.com/honeybadger-io/honeybadger-laravel/pull/26))
