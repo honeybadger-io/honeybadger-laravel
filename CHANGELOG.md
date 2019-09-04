@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+* Controller action and component to middleware ([#31](https://github.com/honeybadger-io/honeybadger-laravel/pull/31))
 
 ## [1.6.0] - 2019-06-27
 ### Added
