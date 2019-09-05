@@ -83,9 +83,9 @@ class UserContextMiddlewareTest extends TestCase
         $this->get('test');
     }
 
-        /** @test */
-        public function it_does_not_set_action_for_invokable_controllers()
-        {
+    /** @test */
+    public function it_does_not_set_action_for_invokable_controllers()
+    {
         $honeybadger = $this->createMock(Honeybadger::class);
 
         $honeybadger->expects($this->once())
@@ -104,5 +104,5 @@ class UserContextMiddlewareTest extends TestCase
             });
 
         $this->get('test');
-        }
+    }
 }
