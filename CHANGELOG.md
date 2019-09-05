@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Fixed
-* Request action and component
+- Error whent here is a component and not an action
+
+## [1.7.1] - 2019-09-05
+### Fixed
+* Request action and component ([#35](https://github.com/honeybadger-io/honeybadger-laravel/pull/35))
 
 ## [1.7.0] - 2019-09-04
 ### Added
