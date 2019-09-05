@@ -63,12 +63,13 @@ class UserContextMiddlewareTest extends TestCase
     }
 
     /** @test */
-    public function it_does_not_set_action_and_context()
+    public function it_does_not_set_action_for_a_closure()
     {
         $honeybadger = $this->createMock(Honeybadger::class);
 
-        $honeybadger->expects($this->never())
-            ->method('setComponent');
+        $honeybadger->expects($this->once())
+            ->method('setComponent')
+            ->with('Closure');
 
         $honeybadger->expects($this->never())
             ->method('setAction');
@@ -81,4 +82,27 @@ class UserContextMiddlewareTest extends TestCase
 
         $this->get('test');
     }
+
+        /** @test */
+        public function it_does_not_set_action_for_invokable_controllers()
+        {
+        $honeybadger = $this->createMock(Honeybadger::class);
+
+        $honeybadger->expects($this->once())
+            ->method('setComponent')
+            ->with('Honeybadger\Tests\Fixtures\TestInvokableController');
+
+        $honeybadger->expects($this->never())
+            ->method('setAction');
+
+        $this->app[Reporter::class] = $honeybadger;
+
+        Route::middleware(HoneybadgerContext::class)
+            ->namespace('Honeybadger\Tests\Fixtures')
+            ->group(function () {
+                Route::get('test', 'TestInvokableController');
+            });
+
+        $this->get('test');
+        }
 }
