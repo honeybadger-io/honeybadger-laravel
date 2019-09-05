@@ -43,8 +43,10 @@ class HoneybadgerContext
         if (Route::getCurrentRoute()) {
             $routeAction = explode('@', Route::getCurrentRoute()->getActionName());
 
-            $this->honeybadger->setComponent($routeAction[0] ?? null);
-            $this->honeybadger->setAction($routeAction[1] ?? null);
+            if ($routeAction[0] && $routeAction[1]) {
+                $this->honeybadger->setComponent($routeAction[0] ?? '');
+                $this->honeybadger->setAction($routeAction[1] ?? '');
+            }
         }
     }
 
