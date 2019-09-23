@@ -31,7 +31,7 @@
         "larapack/dd": "^1.0",
         "mockery/mockery": "^1.1",
         "sempro/phpunit-pretty-print": "^1.0",
-        "orchestra/testbench": "^3.5",
+        "orchestra/testbench": "^4.0",
         "phpunit/phpunit": "^6.0|^7.0|^8.0"
     },
     "autoload": {
