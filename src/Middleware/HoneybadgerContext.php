@@ -3,6 +3,7 @@
 namespace Honeybadger\HoneybadgerLaravel\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Honeybadger\Contracts\Reporter;
 use Illuminate\Support\Facades\Route;
 
@@ -32,10 +33,30 @@ class HoneybadgerContext
     {
         if (app()->bound('honeybadger')) {
             $this->setUserContext($request);
-            $this->setRouteActionContext();
+
+            if (app('honeybadger.isLumen')) {
+                $this->setLumenRouteActionContext($request);
+            } else {
+                $this->setRouteActionContext();
+            }
         }
 
         return $next($request);
+    }
+
+    private function setLumenRouteActionContext($request)
+    {
+            $routeDetails = app()->router->getRoutes()[$request->method() . $request->getPathInfo()]['action']['uses'];
+
+            $routeAction = explode('@', $routeDetails);
+
+            if (! empty($routeAction[0])) {
+                $this->honeybadger->setComponent($routeAction[0] ?? '');
+            }
+
+            if (! empty($routeAction[1])) {
+                $this->honeybadger->setAction($routeAction[1] ?? '');
+            }
     }
 
     private function setRouteActionContext()
