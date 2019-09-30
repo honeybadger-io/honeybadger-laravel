@@ -46,17 +46,17 @@ class HoneybadgerContext
 
     private function setLumenRouteActionContext($request)
     {
-            $routeDetails = app()->router->getRoutes()[$request->method() . $request->getPathInfo()]['action']['uses'];
+        $routeDetails = app()->router->getRoutes()[$request->method() . $request->getPathInfo()]['action']['uses'];
 
-            $routeAction = explode('@', $routeDetails);
+        $routeAction = explode('@', $routeDetails);
 
-            if (! empty($routeAction[0])) {
-                $this->honeybadger->setComponent($routeAction[0] ?? '');
-            }
+        if (! empty($routeAction[0])) {
+            $this->honeybadger->setComponent($routeAction[0] ?? '');
+        }
 
-            if (! empty($routeAction[1])) {
-                $this->honeybadger->setAction($routeAction[1] ?? '');
-            }
+        if (! empty($routeAction[1])) {
+            $this->honeybadger->setAction($routeAction[1] ?? '');
+        }
     }
 
     private function setRouteActionContext()
