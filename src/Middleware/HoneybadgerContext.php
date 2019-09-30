@@ -46,7 +46,7 @@ class HoneybadgerContext
 
     private function setLumenRouteActionContext($request)
     {
-        $routeDetails = app()->router->getRoutes()[$request->method() . $request->getPathInfo()]['action']['uses'];
+        $routeDetails = app()->router->getRoutes()[$request->method().$request->getPathInfo()]['action']['uses'];
 
         $routeAction = explode('@', $routeDetails);
 
