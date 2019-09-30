@@ -48,8 +48,9 @@ class HoneybadgerContext
     {
         $routeDetails = app()->router->getRoutes()[$request->method().$request->getPathInfo()]['action'];
 
-        if (! isset($routeDetails['uses']) && ! empty($routeAction[0])) {
+        if (! isset($routeDetails['uses']) && ! empty($routeDetails[0])) {
             $this->honeybadger->setComponent(get_class($routeDetails[0]));
+
             return;
         }
 
