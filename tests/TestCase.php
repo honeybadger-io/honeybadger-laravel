@@ -4,16 +4,12 @@ namespace Honeybadger\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 
 class TestCase extends BaseTestCase
 {
     protected function getPackageProviders($app)
     {
-        return [
-            HoneybadgerServiceProvider::class,
-            AuthServiceProvider::class,
-        ];
+        return [HoneybadgerServiceProvider::class];
     }
 
     protected function getEnvironmentSetUp($app)

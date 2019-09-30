@@ -3,7 +3,6 @@
 namespace Honeybadger\HoneybadgerLaravel\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Honeybadger\Contracts\Reporter;
 use Illuminate\Support\Facades\Route;
 
@@ -90,7 +89,7 @@ class HoneybadgerContext
                 );
             }
         } catch (\InvalidArgumentException $e) {
-            // Swallow
+            // swallow
         }
     }
 }
