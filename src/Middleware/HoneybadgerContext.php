@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Honeybadger\Contracts\Reporter;
 use Illuminate\Support\Facades\Route;
+use App\Providers\AuthServiceProvider;
 
 class HoneybadgerContext
 {
@@ -46,9 +47,14 @@ class HoneybadgerContext
 
     private function setLumenRouteActionContext($request)
     {
-        $routeDetails = app()->router->getRoutes()[$request->method().$request->getPathInfo()]['action']['uses'];
+        $routeDetails = app()->router->getRoutes()[$request->method().$request->getPathInfo()]['action'];
 
-        $routeAction = explode('@', $routeDetails);
+        if (!isset($routeDetails['uses']) && !empty($routeAction[0])) {
+            $this->honeybadger->setComponent(get_class($routeDetails[0]));
+            return;
+        }
+
+        $routeAction = explode('@', $routeDetails['uses']);
 
         if (! empty($routeAction[0])) {
             $this->honeybadger->setComponent($routeAction[0] ?? '');
@@ -76,7 +82,7 @@ class HoneybadgerContext
 
     private function setUserContext($request)
     {
-        if ($request->user()) {
+        if (app()->bound(AuthServiceProvider::class) && $request->user()) {
             $this->honeybadger->context(
                 'user_id',
                 $request->user()->getAuthIdentifier()
