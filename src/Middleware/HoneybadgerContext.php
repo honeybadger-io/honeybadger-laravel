@@ -32,10 +32,36 @@ class HoneybadgerContext
     {
         if (app()->bound('honeybadger')) {
             $this->setUserContext($request);
-            $this->setRouteActionContext();
+
+            if (app('honeybadger.isLumen')) {
+                $this->setLumenRouteActionContext($request);
+            } else {
+                $this->setRouteActionContext();
+            }
         }
 
         return $next($request);
+    }
+
+    private function setLumenRouteActionContext($request)
+    {
+        $routeDetails = app()->router->getRoutes()[$request->method().$request->getPathInfo()]['action'];
+
+        if (! isset($routeDetails['uses']) && ! empty($routeDetails[0])) {
+            $this->honeybadger->setComponent(get_class($routeDetails[0]));
+
+            return;
+        }
+
+        $routeAction = explode('@', $routeDetails['uses']);
+
+        if (! empty($routeAction[0])) {
+            $this->honeybadger->setComponent($routeAction[0] ?? '');
+        }
+
+        if (! empty($routeAction[1])) {
+            $this->honeybadger->setAction($routeAction[1] ?? '');
+        }
     }
 
     private function setRouteActionContext()
@@ -55,11 +81,15 @@ class HoneybadgerContext
 
     private function setUserContext($request)
     {
-        if ($request->user()) {
-            $this->honeybadger->context(
-                'user_id',
-                $request->user()->getAuthIdentifier()
-            );
+        try {
+            if ($request->user()) {
+                $this->honeybadger->context(
+                    'user_id',
+                    $request->user()->getAuthIdentifier()
+                );
+            }
+        } catch (\InvalidArgumentException $e) {
+            // swallow
         }
     }
 }
