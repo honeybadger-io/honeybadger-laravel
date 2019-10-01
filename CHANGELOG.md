@@ -5,8 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.0.1] - 2019-10-01
 ### Fixed
-- Route action and component for Lumen
+- Route action and component for Lumen ([#42](https://github.com/honeybadger-io/honeybadger-laravel/pull/42))
 
 ## [2.0.0] - 2019-09-23
 ### Changed
