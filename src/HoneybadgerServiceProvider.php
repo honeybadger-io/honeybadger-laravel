@@ -109,5 +109,11 @@ class HoneybadgerServiceProvider extends ServiceProvider
                 app(Reporter::class)->checkin($id);
             });
         });
+
+        Event::macro('pingHoneybadgerOnSuccess', function ($id) {
+            return $this->onSuccess(function () use ($id) {
+                app(Reporter::class)->checkin($id);
+            });
+        });
     }
 }
