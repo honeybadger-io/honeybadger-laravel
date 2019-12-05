@@ -2,12 +2,12 @@
 
 namespace Honeybadger\Tests;
 
-use Honeybadger\Honeybadger;
-use Illuminate\Http\Request;
 use Honeybadger\Contracts\Reporter;
-use Illuminate\Support\Facades\Route;
-use Honeybadger\HoneybadgerLaravel\Middleware\UserContext;
+use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\Middleware\HoneybadgerContext;
+use Honeybadger\HoneybadgerLaravel\Middleware\UserContext;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class UserContextMiddlewareTest extends TestCase
 {

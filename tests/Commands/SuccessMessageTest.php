@@ -2,8 +2,8 @@
 
 namespace Honeybadger\Tests\Commands;
 
-use PHPUnit\Framework\TestCase;
 use Honeybadger\HoneybadgerLaravel\Commands\SuccessMessage;
+use PHPUnit\Framework\TestCase;
 
 class SuccessMessageTest extends TestCase
 {

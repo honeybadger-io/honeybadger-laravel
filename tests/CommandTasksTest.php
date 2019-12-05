@@ -2,9 +2,9 @@
 
 namespace Honeybadger\Tests;
 
-use Illuminate\Console\OutputStyle;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TaskFailed;
+use Illuminate\Console\OutputStyle;
 
 class CommandTasksTest extends TestCase
 {

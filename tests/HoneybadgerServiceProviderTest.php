@@ -2,8 +2,8 @@
 
 namespace Honeybadger\Tests;
 
-use Honeybadger\Honeybadger;
 use Honeybadger\Contracts\Reporter;
+use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger as HoneybadgerFacade;
 
 class HoneybadgerServiceProviderTest extends TestCase

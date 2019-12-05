@@ -4,8 +4,8 @@ namespace Honeybadger\Tests\Commands;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
-use Honeybadger\Tests\TestCase;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerDeployCommand;
+use Honeybadger\Tests\TestCase;
 
 class HoneybadgetDeployCommandTest extends TestCase
 {

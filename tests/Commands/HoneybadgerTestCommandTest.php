@@ -3,11 +3,11 @@
 namespace Honeybadger\Tests\Commands;
 
 use Exception;
-use Honeybadger\Tests\TestCase;
 use Honeybadger\Contracts\Reporter;
-use Illuminate\Contracts\Console\Kernel;
-use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
+use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
+use Honeybadger\Tests\TestCase;
+use Illuminate\Contracts\Console\Kernel;
 
 class HoneybadgerTestCommandTest extends TestCase
 {

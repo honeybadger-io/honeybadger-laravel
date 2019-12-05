@@ -2,8 +2,8 @@
 
 namespace Honeybadger\HoneybadgerLaravel;
 
-use Honeybadger\Honeybadger;
 use Honeybadger\Contracts\Reporter;
+use Honeybadger\Honeybadger;
 
 class HoneybadgerLaravel
 {

@@ -3,8 +3,8 @@
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
 use Exception;
-use Illuminate\Console\Command;
 use Honeybadger\Contracts\Reporter;
+use Illuminate\Console\Command;
 
 class HoneybadgerCheckinCommand extends Command
 {
