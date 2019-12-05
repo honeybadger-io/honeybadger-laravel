@@ -2,14 +2,13 @@
 
 namespace Honeybadger\Tests\Commands;
 
-use Honeybadger\Honeybadger;
-use Honeybadger\Tests\TestCase;
 use Honeybadger\Contracts\Reporter;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Artisan;
-use Honeybadger\HoneybadgerLaravel\Installer;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
+use Honeybadger\HoneybadgerLaravel\Installer;
+use Honeybadger\Tests\TestCase;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
 
 class InstallerTest extends TestCase
 {

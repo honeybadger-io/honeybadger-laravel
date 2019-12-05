@@ -2,8 +2,8 @@
 
 namespace Honeybadger\Tests;
 
-use Orchestra\Testbench\TestCase as BaseTestCase;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
 {

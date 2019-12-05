@@ -2,8 +2,8 @@
 
 namespace Honeybadger\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
+use PHPUnit\Framework\TestCase;
 
 class RequiredInputTest extends TestCase
 {

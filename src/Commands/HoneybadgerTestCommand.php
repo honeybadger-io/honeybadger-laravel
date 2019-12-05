@@ -3,11 +3,10 @@
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
 use Exception;
-use Illuminate\Support\Arr;
-use Honeybadger\Honeybadger;
-use Illuminate\Console\Command;
 use Honeybadger\Contracts\Reporter;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
+use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 
 class HoneybadgerTestCommand extends Command
 {

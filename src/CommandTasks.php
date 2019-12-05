@@ -2,9 +2,9 @@
 
 namespace Honeybadger\HoneybadgerLaravel;
 
-use Illuminate\Support\Collection;
-use Illuminate\Console\OutputStyle;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TaskFailed;
+use Illuminate\Console\OutputStyle;
+use Illuminate\Support\Collection;
 
 class CommandTasks
 {

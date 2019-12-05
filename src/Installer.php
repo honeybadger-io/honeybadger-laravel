@@ -2,14 +2,14 @@
 
 namespace Honeybadger\HoneybadgerLaravel;
 
-use InvalidArgumentException;
 use Honeybadger\Contracts\Reporter;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
-use sixlive\DotenvEditor\DotenvEditor;
-use Illuminate\Support\Facades\Artisan;
-use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
+use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
+use InvalidArgumentException;
+use sixlive\DotenvEditor\DotenvEditor;
 
 class Installer implements InstallerContract
 {

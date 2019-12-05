@@ -2,15 +2,15 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
-use Illuminate\Support\Arr;
-use Honeybadger\Honeybadger;
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Config;
 use Honeybadger\Exceptions\ServiceException;
+use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
+use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TaskFailed;
-use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
+use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
 
 class HoneybadgerInstallCommand extends Command
 {

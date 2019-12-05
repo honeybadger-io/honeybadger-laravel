@@ -2,14 +2,13 @@
 
 namespace Honeybadger\Tests\Commands;
 
-use Honeybadger\Honeybadger;
-use Honeybadger\Tests\TestCase;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Contracts\Console\Kernel;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
+use Honeybadger\HoneybadgerLaravel\Commands\SuccessMessage;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
-use Honeybadger\HoneybadgerLaravel\Commands\SuccessMessage;
-use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
+use Honeybadger\Tests\TestCase;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\Config;
 
 class HoneybadgerInstallCommandTest extends TestCase
 {
