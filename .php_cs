@@ -9,7 +9,7 @@ $rules = [
     'not_operator_with_successor_space' => true,
     'no_useless_else' => true,
     'ordered_imports' => [
-        'sortAlgorithm' => 'length',
+        'sortAlgorithm' => 'alpha',
     ],
     'single_quote' => true,
     'ternary_operator_spaces' => true,

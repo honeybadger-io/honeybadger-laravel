@@ -3,15 +3,15 @@
 namespace Honeybadger\HoneybadgerLaravel;
 
 use GuzzleHttp\Client;
-use Honeybadger\Honeybadger;
 use Honeybadger\Contracts\Reporter;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Console\Scheduling\Event;
-use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
-use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerDeployCommand;
+use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerDeployCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
+use Illuminate\Console\Scheduling\Event;
+use Illuminate\Support\ServiceProvider;
 
 class HoneybadgerServiceProvider extends ServiceProvider
 {
@@ -106,6 +106,12 @@ class HoneybadgerServiceProvider extends ServiceProvider
     {
         Event::macro('thenPingHoneybadger', function ($id) {
             return $this->then(function () use ($id) {
+                app(Reporter::class)->checkin($id);
+            });
+        });
+
+        Event::macro('pingHoneybadgerOnSuccess', function ($id) {
+            return $this->onSuccess(function () use ($id) {
                 app(Reporter::class)->checkin($id);
             });
         });
