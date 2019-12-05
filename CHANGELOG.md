@@ -5,8 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.1.0] - 2019-12-05
 ### Added
-- Added `pingHoneybadgerOnSuccess` method to scheduled tasks
+- Added `pingHoneybadgerOnSuccess` method to scheduled tasks ([#49](https://github.com/honeybadger-io/honeybadger-laravel/pull/49))
 
 ## [2.0.1] - 2019-10-01
 ### Fixed
