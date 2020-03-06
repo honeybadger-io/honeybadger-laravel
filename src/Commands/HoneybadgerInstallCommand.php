@@ -87,7 +87,7 @@ class HoneybadgerInstallCommand extends Command
      *
      * @return array
      */
-    private function gatherConfig() : array
+    private function gatherConfig(): array
     {
         return [
             'api_key' => $this->argument('apiKey') ?? $this->promptForApiKey(),
@@ -99,7 +99,7 @@ class HoneybadgerInstallCommand extends Command
      *
      * @return string
      */
-    private function promptForApiKey() : string
+    private function promptForApiKey(): string
     {
         return $this->requiredSecret('Your API key', 'The API key is required');
     }
@@ -109,7 +109,7 @@ class HoneybadgerInstallCommand extends Command
      *
      * @return array
      */
-    private function sendTest() : array
+    private function sendTest(): array
     {
         Config::set('honeybadger.api_key', $this->config['api_key']);
 
@@ -134,7 +134,7 @@ class HoneybadgerInstallCommand extends Command
      *
      * @return void
      */
-    private function writeEnv() : void
+    private function writeEnv(): void
     {
         $this->tasks->addTask(
             'Write HONEYBADGER_API_KEY to .env',
@@ -162,7 +162,7 @@ class HoneybadgerInstallCommand extends Command
      *
      * @return bool
      */
-    public function publishConfig() : bool
+    public function publishConfig(): bool
     {
         if (app('honeybadger.isLumen')) {
             return $this->installer->publishLumenConfig();
@@ -177,7 +177,7 @@ class HoneybadgerInstallCommand extends Command
      * @param  string  $noticeId
      * @return void
      */
-    private function outputSuccessMessage(string $noticeId) : void
+    private function outputSuccessMessage(string $noticeId): void
     {
         $this->line(SuccessMessage::make($noticeId));
     }

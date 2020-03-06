@@ -16,7 +16,7 @@ class Installer implements InstallerContract
     /**
      * {@inheritdoc}
      */
-    public function writeConfig(array $config, string $filePath) : bool
+    public function writeConfig(array $config, string $filePath): bool
     {
         try {
             $env = new DotenvEditor;
@@ -35,7 +35,7 @@ class Installer implements InstallerContract
     /**
      * {@inheritdoc}
      */
-    public function sendTestException() : array
+    public function sendTestException(): array
     {
         return App::makeWith(
             Reporter::class,
@@ -46,7 +46,7 @@ class Installer implements InstallerContract
     /**
      * {@inheritdoc}
      */
-    public function publishLaravelConfig() : bool
+    public function publishLaravelConfig(): bool
     {
         return Artisan::call('vendor:publish', [
             '--provider' => HoneybadgerServiceProvider::class,

@@ -42,7 +42,7 @@ class HoneybadgerCheckinCommand extends Command
      *
      * @return string
      */
-    private function apiKey() : string
+    private function apiKey(): string
     {
         return is_array($this->argument('id'))
             ? $this->argument('id')[0]

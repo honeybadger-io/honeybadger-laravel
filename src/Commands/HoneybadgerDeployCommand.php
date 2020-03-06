@@ -66,7 +66,7 @@ class HoneybadgerDeployCommand extends Command
         $this->info(sprintf('Deployment %s successfully sent', $params['deploy']['revision']));
     }
 
-    private function resolveParams() : array
+    private function resolveParams(): array
     {
         $config = Config::get('honeybadger');
 
@@ -79,7 +79,7 @@ class HoneybadgerDeployCommand extends Command
         ];
     }
 
-    private function resolveOptions() : array
+    private function resolveOptions(): array
     {
         return array_filter([
             'environment' => $this->option('environment'),
@@ -89,12 +89,12 @@ class HoneybadgerDeployCommand extends Command
         ]);
     }
 
-    private function gitHash() : string
+    private function gitHash(): string
     {
         return trim(exec('git log --pretty="%h" -n1 HEAD'));
     }
 
-    private function gitRemote() : string
+    private function gitRemote(): string
     {
         return trim(exec('git config --get remote.origin.url'));
     }

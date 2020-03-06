@@ -15,7 +15,7 @@ class HoneybadgerLaravel
      * @param  array  $config
      * @return \Honeybadger\Contracts\Reporter
      */
-    public function make($config) : Reporter
+    public function make($config): Reporter
     {
         return Honeybadger::new(array_merge([
             'notifier' => [
