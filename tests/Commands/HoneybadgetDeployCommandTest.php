@@ -9,7 +9,7 @@ use Honeybadger\Tests\TestCase;
 
 class HoneybadgetDeployCommandTest extends TestCase
 {
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -34,7 +34,7 @@ class CommandTasks
      * @param  \Illuminate\Console\OutputStyle  $output
      * @return self
      */
-    public function setOutput(OutputStyle $output) : self
+    public function setOutput(OutputStyle $output): self
     {
         $this->output = $output;
 
@@ -48,7 +48,7 @@ class CommandTasks
      * @param  callable  $task
      * @return self
      */
-    public function addTask(string $name, callable $task) : self
+    public function addTask(string $name, callable $task): self
     {
         $this->tasks[$name] = $task;
 
@@ -62,7 +62,7 @@ class CommandTasks
      *
      * @throws \Honeybadger\HoneybadgerLaravel\TaskFailed
      */
-    public function runTasks() : void
+    public function runTasks(): void
     {
         Collection::make($this->tasks)->each(function ($task, $description) {
             $result = $task();
@@ -87,7 +87,7 @@ class CommandTasks
      *
      * @return array
      */
-    public function getResults() : array
+    public function getResults(): array
     {
         return $this->results;
     }
@@ -95,7 +95,7 @@ class CommandTasks
     /**
      * @return bool
      */
-    public function hasFailedTasks() : bool
+    public function hasFailedTasks(): bool
     {
         return in_array(false, $this->results);
     }
@@ -103,7 +103,7 @@ class CommandTasks
     /**
      * @return self
      */
-    public function doNotThrowOnError() : self
+    public function doNotThrowOnError(): self
     {
         $this->throwOnError = false;
 
