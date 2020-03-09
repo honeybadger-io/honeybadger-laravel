@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.0.0] - 2019-12-05
+### Breaking Changes
+- Dropped support for Laravel 6 and added support for Laravel 7 ([#54](https://github.com/honeybadger-io/honeybadger-laravel/pull/54))
+
+
 ## [2.1.0] - 2019-12-05
 ### Added
 - Added `pingHoneybadgerOnSuccess` method to scheduled tasks ([#49](https://github.com/honeybadger-io/honeybadger-laravel/pull/49))
