@@ -5,8 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [3.1.0] - 2020-03-23
+### Changed
+- Bumped [`honeybadger-io/honeybadger-php`](https://github.com/honeybadger-io/honeybadger-php) to `^2.1` from `^2.0`
 
-## [3.0.0] - 2019-12-05
+## [3.0.0] - 2020-03-09
 ### Breaking Changes
 - Dropped support for Laravel 6 and added support for Laravel 7 ([#54](https://github.com/honeybadger-io/honeybadger-laravel/pull/54))
 
