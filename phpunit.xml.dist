@@ -8,8 +8,7 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false"
-         printerClass="Sempro\PHPUnitPrettyPrinter\PrettyPrinter">
+         stopOnFailure="false">
     <testsuites>
         <testsuite name="Honeybadger Test Suite">
             <directory>tests</directory>
