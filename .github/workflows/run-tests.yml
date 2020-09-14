@@ -22,8 +22,10 @@ jobs:
         include:
           - laravel: 8.*
             testbench: 6.*
+            allow-failure: true
           - laravel: 7.*
             testbench: 5.*
+            allow-failure: false
     name: >-
       P${{ matrix.php }} - L${{ matrix.laravel }} - ${{
       matrix.dependency-version }}
@@ -52,3 +54,4 @@ jobs:
           --no-interaction --no-suggest
       - name: Execute tests
         run: vendor/bin/phpunit
+        continue-on-error: ${{ matrix.allow-failure }}
