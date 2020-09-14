@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.2.0] - 2020-09-14
+### Added
+- Support for Laravel 8 ([#59](https://github.com/honeybadger-io/honeybadger-laravel/pull/59))
+
 ## [3.1.0] - 2020-03-23
 ### Changed
 - Bumped [`honeybadger-io/honeybadger-php`](https://github.com/honeybadger-io/honeybadger-php) to `^2.1` from `^2.0`
