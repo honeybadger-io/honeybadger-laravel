@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerDeployCommand;
 use Honeybadger\Tests\TestCase;
+use Psr\Http\Message\ResponseInterface;
 
 class HoneybadgetDeployCommandTest extends TestCase
 {
@@ -21,7 +22,7 @@ class HoneybadgetDeployCommandTest extends TestCase
                 $this->response = $response;
             }
 
-            public function post($url, $options = [])
+            public function post($url, $options = []): ResponseInterface
             {
                 $this->url = $url;
                 $this->options = $options;
