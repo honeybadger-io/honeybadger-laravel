@@ -14,11 +14,14 @@ jobs:
           - 7.4
           - 7.3
         laravel:
+          - 8.*
           - 7.*
         dependency-version:
           - prefer-lowest
           - prefer-stable
         include:
+          - laravel: 8.*
+            testbench: 6.*
           - laravel: 7.*
             testbench: 5.*
     name: >-
