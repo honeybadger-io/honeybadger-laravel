@@ -1,7 +1,7 @@
 name: run-tests
 'on':
-  push: null
-  pull_request: null
+  push: true
+  pull_request: true
   schedule:
     - cron: 0 0 * * *
 jobs:
