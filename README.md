@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/honeybadger-io/honeybadger-laravel.svg?style=flat-square)](https://packagist.org/packages/honeybadger-io/honeybadger-laravel)
 [![Total Downloads](https://img.shields.io/packagist/dt/honeybadger-io/honeybadger-laravel.svg?style=flat-square)](https://packagist.org/packages/honeybadger-io/honeybadger-laravel)
-![.github/workflows/run-tests.yml](https://github.com/honeybadger-io/honeybadger-laravel/workflows/.github/workflows/run-tests.yml/badge.svg?branch=master)
+![Run Tests](https://github.com/honeybadger-io/honeybadger-laravel/workflows/Run%20Tests/badge.svg?branch=master)
 [![StyleCI](https://styleci.io/repos/138627377/shield)](https://github.styleci.io/repos/138627377)
 
 This is the Laravel library for integrating apps with the :zap: [Honeybadger Exception Notifier for Laravel](https://www.honeybadger.io/for/laravel/?utm_source=github&utm_medium=readme&utm_campaign=laravel&utm_content=Honeybadger+Exception+Notifier+for+Laravel).
