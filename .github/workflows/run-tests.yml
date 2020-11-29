@@ -1,7 +1,7 @@
-name: run-tests
-'on':
-  push: null
-  pull_request: null
+name: Run Tests
+on:
+  push:
+  pull_request:
   schedule:
     - cron: 0 0 * * *
 jobs:
@@ -13,6 +13,7 @@ jobs:
         php:
           - 7.4
           - 7.3
+          - 8.0
         laravel:
           - 8.*
           - 7.*
