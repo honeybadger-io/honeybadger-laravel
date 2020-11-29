@@ -13,12 +13,12 @@ class RequiredInputTest extends TestCase
         $command = new class {
             use RequiredInput;
 
-            public function error($text)
+            public function error($text, $verbosity = null)
             {
                 //
             }
 
-            public function secret($text)
+            public function secret($text, $fallback = true)
             {
                 return 'secret answer';
             }
@@ -42,7 +42,7 @@ class RequiredInputTest extends TestCase
                 'secret answer',
             ];
 
-            public function secret($question)
+            public function secret($question, $fallback = true)
             {
                 $answer = $this->answers[$this->calls];
                 $this->calls++;
@@ -50,7 +50,7 @@ class RequiredInputTest extends TestCase
                 return $answer;
             }
 
-            public function error($message)
+            public function error($message, $verbosity = null)
             {
                 $this->errorMessage = $message;
             }
