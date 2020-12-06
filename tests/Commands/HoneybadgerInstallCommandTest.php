@@ -256,7 +256,7 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command->expects($this->once())
             ->method('error')
-            ->with('Write HONEYBADGER_API_KEY to .env failed, please review output and try again.');
+            ->with('Send test exception to Honeybadger failed, please review output and try again.');
 
         $this->app[Kernel::class]->registerCommand($command);
 
