@@ -123,7 +123,8 @@ class HoneybadgerInstallCommand extends Command
             'Send test exception to Honeybadger',
             function () use ($result) {
                 return ! empty($result);
-            }
+            },
+            true
         );
 
         return $result;

@@ -48,9 +48,12 @@ class CommandTasks
      * @param  callable  $task
      * @return self
      */
-    public function addTask(string $name, callable $task): self
+    public function addTask(string $name, callable $task, bool $throwOnFail = false): self
     {
-        $this->tasks[$name] = $task;
+        $this->tasks[$name] = [
+            'task' => $task,
+            'throw_on_fail' => $throwOnFail,
+        ];
 
         return $this;
     }
@@ -65,7 +68,7 @@ class CommandTasks
     public function runTasks(): void
     {
         Collection::make($this->tasks)->each(function ($task, $description) {
-            $result = $task();
+            $result = $task['task']();
 
             if ($this->output) {
                 $this->output->writeLn(vsprintf('%s: %s', [
@@ -76,7 +79,7 @@ class CommandTasks
 
             $this->results[$description] = $result;
 
-            if (! $result && $this->throwOnError) {
+            if (! $result && $task['throw_on_fail'] && $this->throwOnError) {
                 throw new TaskFailed(sprintf('%s failed, please review output and try again.', $description));
             }
         });
