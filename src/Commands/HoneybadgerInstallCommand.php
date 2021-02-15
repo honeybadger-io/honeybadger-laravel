@@ -156,6 +156,16 @@ class HoneybadgerInstallCommand extends Command
                 );
             }
         );
+
+        $this->tasks->addTask(
+            'Write HONEYBADGER_VERIFY_SSL placeholder to .env.example',
+            function () {
+                return $this->installer->writeConfig(
+                    ['HONEYBADGER_VERIFY_SSL' => ''],
+                    base_path('.env.example')
+                );
+            }
+        );
     }
 
     /**

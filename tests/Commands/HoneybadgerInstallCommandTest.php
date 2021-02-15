@@ -53,6 +53,7 @@ class HoneybadgerInstallCommandTest extends TestCase
             'Write HONEYBADGER_API_KEY placeholder to .env.example' => true,
             'Publish the config file' => true,
             'Send test exception to Honeybadger' => true,
+            'Write HONEYBADGER_VERIFY_SSL placeholder to .env.example' => true,
         ], $commandTasks->getResults());
     }
 

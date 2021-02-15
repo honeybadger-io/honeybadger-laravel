@@ -21,6 +21,7 @@ return [
     'client' => [
         'timeout' => 0,
         'proxy' => [],
+        'verify' => env('HONEYBADGER_VERIFY_SSL', true),
     ],
     'excluded_exceptions' => [],
 ];
