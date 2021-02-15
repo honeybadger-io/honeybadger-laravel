@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.5.0] - 2021-02-15
+### Added
+- Verify SSL config ([#68](https://github.com/honeybadger-io/honeybadger-laravel/pull/68))
+
 ## [3.4.0] - 2020-12-17
 ### Changed
 - Allowed some install failures ([#66])(https://github.com/honeybadger-io/honeybadger-laravel/pull/66)
