@@ -117,7 +117,7 @@ class HoneybadgetDeployCommandTest extends TestCase
         try {
             $this->artisan('honeybadger:deploy');
         } catch (\Exception $e) {
-            $this->assertRegexp('/500/', $e->getMessage());
+            $this->assertMatchesRegularExpression('/500/', $e->getMessage());
         }
     }
 
@@ -129,7 +129,7 @@ class HoneybadgetDeployCommandTest extends TestCase
         try {
             $this->artisan('honeybadger:deploy');
         } catch (\Exception $e) {
-            $this->assertRegexp('/{"status":"BAD"}/', $e->getMessage());
+            $this->assertMatchesRegularExpression('/{"status":"BAD"}/', $e->getMessage());
         }
     }
 }
