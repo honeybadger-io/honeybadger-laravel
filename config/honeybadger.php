@@ -71,19 +71,8 @@ return [
      * See https://docs.guzzlephp.org/en/stable/request-options.html for a description of each item,.
      */
     'client' => [
-        /**
-         * Specify the timeout after which requests should fail.
-         */
         'timeout' => 0,
-
-        /**
-         * Specify the proxies to be used.
-         */
         'proxy' => [],
-
-        /**
-         * Configure the SSL certificate verification behavior of the client.
-         */
         'verify' => env('HONEYBADGER_VERIFY_SSL', true),
     ],
 
