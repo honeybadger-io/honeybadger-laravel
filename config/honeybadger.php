@@ -2,28 +2,33 @@
 
 return [
     /**
-     * Your project's Honeybadger API key. Get this by visiting the project settings from your dashboard at https://app.honeybadger.io.
+     * Your project's Honeybadger API key. Get this from the project settings on your Honeybadger dashboard.
      */
     'api_key' => env('HONEYBADGER_API_KEY'),
 
     /**
-     * When reporting an exception, we'll automatically include relevant environment variables. Use this section to configure this.
+     * When reporting an exception, we'll automatically include relevant environment variables.
+     * See the Environment Whitelist (https://docs.honeybadger.io/lib/php/reference/configuration.html#environment-whitelist) for details.
+     * Use this section to filter or exclude env variables.
      */
     'environment' => [
         /**
          * List of environment variables that should be filtered out when sending a report to Honeybadger.
-         * By default, we filter out any passwords or access keys.
          */
-        'filter' => [],
+        'filter' => [
+            // "QUERY_STRING",
+        ],
 
         /**
          * List of environment variables that should be included when sending a report to Honeybadger.
          */
-        'include' => [],
+        'include' => [
+            // "APP_DEBUG"
+        ],
     ],
 
     /**
-     * We'll include request details when reporting an exception. Use this section to configure this.
+     * We include details of the request when reporting an exception. Use this section to configure this.
      */
     'request' => [
         /**
@@ -36,19 +41,19 @@ return [
     ],
 
     /**
-     * The current version of your application. Use this to easily tie errors to specific releases and commits.
+     * The current version of your application. Use this to easily tie errors to specific releases or commits.
      * If you'd like to automatically use the Git commit hash as the version, set this to:
      * `trim(exec('git log --pretty="%h" -n1 HEAD'))`
      */
     'version' => env('APP_VERSION'),
 
     /**
-     * The current hostname the app is running on.
+     * The hostname of the machine the app is running on.
      */
     'hostname' => gethostname(),
 
     /**
-     * The root directory of the project.
+     * The root directory of your project.
      */
     'project_root' => base_path(),
 
