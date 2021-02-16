@@ -43,7 +43,7 @@ return [
     /**
      * The current version of your application. Use this to easily tie errors to specific releases or commits.
      * If you'd like to automatically use the Git commit hash as the version, set this to:
-     * `trim(exec('git log --pretty="%h" -n1 HEAD'))`
+     *   'version' => trim(exec('git log --pretty="%h" -n1 HEAD')),
      */
     'version' => env('APP_VERSION'),
 
