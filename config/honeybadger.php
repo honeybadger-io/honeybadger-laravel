@@ -9,7 +9,7 @@ return [
     /**
      * When reporting an exception, we'll automatically include relevant environment variables.
      * See the Environment Whitelist (https://docs.honeybadger.io/lib/php/reference/configuration.html#environment-whitelist) for details.
-     * Use this section to filter or exclude env variables.
+     * Use this section to filter or include env variables.
      */
     'environment' => [
         /**
