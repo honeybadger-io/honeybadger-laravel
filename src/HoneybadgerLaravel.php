@@ -2,10 +2,10 @@
 
 namespace Honeybadger\HoneybadgerLaravel;
 
-use Honeybadger\Honeybadger;
 use Honeybadger\Contracts\Reporter;
-use Illuminate\Support\Facades\Log;
 use Honeybadger\Exceptions\ServiceException;
+use Honeybadger\Honeybadger;
+use Illuminate\Support\Facades\Log;
 
 class HoneybadgerLaravel
 {
