@@ -2,8 +2,6 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
-use Honeybadger\Exceptions\ServiceException;
-use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
@@ -116,6 +114,7 @@ class HoneybadgerInstallCommand extends Command
             'Send test exception to Honeybadger',
             function () {
                 $result = $this->installer->sendTestException();
+
                 return empty($result) ? false : $result;
             },
             true
