@@ -3,9 +3,7 @@
 namespace Honeybadger\Tests\Commands;
 
 use Honeybadger\Contracts\Reporter;
-use Honeybadger\Exceptions\ServiceException;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
-use Honeybadger\HoneybadgerLaravel\HoneybadgerLaravel;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
 use Honeybadger\HoneybadgerLaravel\Installer;
 use Honeybadger\Tests\TestCase;

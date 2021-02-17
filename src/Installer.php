@@ -2,12 +2,9 @@
 
 namespace Honeybadger\HoneybadgerLaravel;
 
-use Honeybadger\Contracts\Reporter;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Config;
 use InvalidArgumentException;
 use sixlive\DotenvEditor\DotenvEditor;
 

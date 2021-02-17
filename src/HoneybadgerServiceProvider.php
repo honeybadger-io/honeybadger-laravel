@@ -56,6 +56,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
             $config['service_exception_handler'] = function (ServiceException $e) {
                 throw $e;
             };
+
             return (new HoneybadgerLaravel)->make($config);
         });
 
