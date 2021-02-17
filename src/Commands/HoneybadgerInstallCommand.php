@@ -71,11 +71,13 @@ class HoneybadgerInstallCommand extends Command
             );
         }
 
-        $results = $this->sendTest();
+        $this->addTestExceptionTask();
 
         try {
             $this->tasks->runTasks();
-            $this->outputSuccessMessage(Arr::get($results ?? [], 'id', ''));
+            $results = $this->tasks->getResults();
+            $testExceptionResult = end($results);
+            $this->outputSuccessMessage(Arr::get($testExceptionResult, 'id', ''));
         } catch (TaskFailed $e) {
             $this->line('');
             $this->error($e->getMessage());
@@ -106,28 +108,19 @@ class HoneybadgerInstallCommand extends Command
 
     /**
      * Send test exception to Honeybadger.
-     *
-     * @return array
      */
-    private function sendTest(): array
+    private function addTestExceptionTask(): void
     {
         Config::set('honeybadger.api_key', $this->config['api_key']);
 
-        try {
-            $result = $this->installer->sendTestException();
-        } catch (ServiceException $e) {
-            $result = [];
-        }
-
         $this->tasks->addTask(
             'Send test exception to Honeybadger',
-            function () use ($result) {
-                return ! empty($result);
+            function () {
+                $result = $this->installer->sendTestException();
+                return empty($result) ? false : $result;
             },
             true
         );
-
-        return $result;
     }
 
     /**

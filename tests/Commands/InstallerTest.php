@@ -3,7 +3,9 @@
 namespace Honeybadger\Tests\Commands;
 
 use Honeybadger\Contracts\Reporter;
+use Honeybadger\Exceptions\ServiceException;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
+use Honeybadger\HoneybadgerLaravel\HoneybadgerLaravel;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
 use Honeybadger\HoneybadgerLaravel\Installer;
 use Honeybadger\Tests\TestCase;
@@ -59,7 +61,7 @@ class InstallerTest extends TestCase
             ->method('notify')
             ->with($this->isInstanceOf(TestException::class));
 
-        $this->app[Reporter::class] = $honeybadger;
+        $this->app['honeybadger.loud'] = $honeybadger;
 
         $installer = new Installer;
 
@@ -71,11 +73,11 @@ class InstallerTest extends TestCase
     {
         $honeybadger = $this->createMock(Reporter::class);
 
-        $this->app[Reporter::class] = $honeybadger;
+        $this->app['honeybadger.loud'] = $honeybadger;
 
         $installer = new Installer;
 
-        $this->app->resolving(Reporter::class, function ($api, $app) {
+        $this->app->resolving('honeybadger.loud', function ($api, $app) {
             $this->assertEquals('asdf123', $app['config']['honeybadger']['api_key']);
         });
 

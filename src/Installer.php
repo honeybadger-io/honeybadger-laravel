@@ -37,10 +37,7 @@ class Installer implements InstallerContract
      */
     public function sendTestException(): array
     {
-        return App::makeWith(
-            Reporter::class,
-            ['config' => Config::get('honeybadger')]
-        )->notify(new TestException);
+        return app('honeybadger.loud')->notify(new TestException);
     }
 
     /**

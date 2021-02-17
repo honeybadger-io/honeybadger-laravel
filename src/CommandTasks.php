@@ -44,9 +44,6 @@ class CommandTasks
     /**
      * Add task with result to the stack.
      *
-     * @param  string  $name
-     * @param  callable  $task
-     * @return self
      */
     public function addTask(string $name, callable $task, bool $throwOnFail = false): self
     {
