@@ -75,8 +75,7 @@ class HoneybadgerInstallCommand extends Command
 
         try {
             $this->tasks->runTasks();
-            $results = $this->tasks->getResults();
-            $testExceptionResult = end($results);
+            $testExceptionResult = $this->tasks->getResults()['Send test exception to Honeybadger'];
             $this->outputSuccessMessage(Arr::get($testExceptionResult, 'id', ''));
         } catch (TaskFailed $e) {
             $this->line('');

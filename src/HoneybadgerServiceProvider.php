@@ -27,7 +27,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
             $this->app->bind(InstallerContract::class, Installer::class);
 
             $this->publishes([
-                __DIR__ . '/../config/honeybadger.php' => base_path('config/honeybadger.php'),
+                __DIR__.'/../config/honeybadger.php' => base_path('config/honeybadger.php'),
             ], 'config');
         }
 
@@ -39,7 +39,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/honeybadger.php', 'honeybadger');
+        $this->mergeConfigFrom(__DIR__.'/../config/honeybadger.php', 'honeybadger');
 
         $this->app->singleton(Reporter::class, function ($app) {
             return (new HoneybadgerLaravel)->make($app['config']['honeybadger']);
