@@ -24,13 +24,11 @@ class HoneybadgerTestCommand extends Command
      */
     protected $description = 'Tests notifications to Honeybadger';
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle(Reporter $honeybadger)
+    public function handle()
     {
+        /** @var Reporter $honeybadger */
+        $honeybadger = app('honeybadger.loud');
+
         try {
             $result = $honeybadger->notify(new TestException);
             $this->info('A test exception was sent to Honeybadger');

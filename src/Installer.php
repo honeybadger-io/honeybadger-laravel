@@ -2,12 +2,9 @@
 
 namespace Honeybadger\HoneybadgerLaravel;
 
-use Honeybadger\Contracts\Reporter;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Config;
 use InvalidArgumentException;
 use sixlive\DotenvEditor\DotenvEditor;
 
@@ -37,10 +34,7 @@ class Installer implements InstallerContract
      */
     public function sendTestException(): array
     {
-        return App::makeWith(
-            Reporter::class,
-            ['config' => Config::get('honeybadger')]
-        )->notify(new TestException);
+        return app('honeybadger.loud')->notify(new TestException);
     }
 
     /**

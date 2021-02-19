@@ -4,6 +4,7 @@ namespace Honeybadger\HoneybadgerLaravel;
 
 use GuzzleHttp\Client;
 use Honeybadger\Contracts\Reporter;
+use Honeybadger\Exceptions\ServiceException;
 use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerDeployCommand;
@@ -46,6 +47,18 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
         $this->app->alias(Reporter::class, Honeybadger::class);
         $this->app->alias(Reporter::class, 'honeybadger');
+
+        // In some cases (like the test command), we definitely want to throw any errors
+        // Laravel's contextual binding doesn't support method injection,
+        // so the handle() method will have to request this client specifically.
+        $this->app->singleton('honeybadger.loud', function ($app) {
+            $config = $app['config']['honeybadger'];
+            $config['service_exception_handler'] = function (ServiceException $e) {
+                throw $e;
+            };
+
+            return (new HoneybadgerLaravel)->make($config);
+        });
 
         $this->app->singleton('honeybadger.isLumen', function () {
             return preg_match('/lumen/i', $this->app->version());
