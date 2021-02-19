@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class HoneybadgerLaravel
 {
-    const VERSION = '3.5.0';
+    const VERSION = '3.6.0';
 
     /**
      * Honeybadger factory.

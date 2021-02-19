@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.6.0] - 2021-02-19
+### Added
+- Log ServiceExceptions rather than crash ([#70](https://github.com/honeybadger-io/honeybadger-laravel/pull/70))
+
 ## [3.5.0] - 2021-02-15
 ### Added
 - Verify SSL config ([#68](https://github.com/honeybadger-io/honeybadger-laravel/pull/68))
