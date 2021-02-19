@@ -5,10 +5,10 @@ namespace Honeybadger\HoneybadgerLaravel\Commands;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
-use Honeybadger\HoneybadgerLaravel\Exceptions\TaskFailed;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
+use Throwable;
 
 class HoneybadgerInstallCommand extends Command
 {
@@ -75,7 +75,7 @@ class HoneybadgerInstallCommand extends Command
             $this->tasks->runTasks();
             $testExceptionResult = $this->tasks->getResults()['Send test exception to Honeybadger'];
             $this->outputSuccessMessage(Arr::get($testExceptionResult, 'id', ''));
-        } catch (TaskFailed $e) {
+        } catch (Throwable $e) {
             $this->line('');
             $this->error($e->getMessage());
         }
