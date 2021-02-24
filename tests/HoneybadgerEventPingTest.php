@@ -20,7 +20,7 @@ class HoneybadgerEventPingTest extends TestCase
         $this->app->instance(Reporter::class, $honeybadger);
 
         $schedule->call(function () {
-            return true;
+            return 0;
         })->thenPingHoneybadger('1234');
 
         $this->artisan('schedule:run');
@@ -39,11 +39,11 @@ class HoneybadgerEventPingTest extends TestCase
         $this->app->instance(Reporter::class, $honeybadger);
 
         $schedule->call(function () {
-            return true;
+            return 0;
         })->thenPingHoneybadger('1234', 'testing');
 
         $schedule->call(function () {
-            return true;
+            return 0;
         })->thenPingHoneybadger('1234', ['testing', 'production']);
 
         $this->artisan('schedule:run');
@@ -61,11 +61,11 @@ class HoneybadgerEventPingTest extends TestCase
         $this->app->instance(Reporter::class, $honeybadger);
 
         $schedule->call(function () {
-            return true;
+            return 0;
         })->thenPingHoneybadger('1234', 'development');
 
         $schedule->call(function () {
-            return true;
+            return 0;
         })->thenPingHoneybadger('1234', ['development', 'production']);
 
         $this->artisan('schedule:run');
@@ -84,11 +84,11 @@ class HoneybadgerEventPingTest extends TestCase
         $this->app->instance(Reporter::class, $honeybadger);
 
         $schedule->call(function () {
-            return true;
+            return 0;
         })->pingHoneybadgerOnSuccess('1234', 'testing');
 
         $schedule->call(function () {
-            return true;
+            return 0;
         })->pingHoneybadgerOnSuccess('1234', ['testing', 'production']);
 
         $this->artisan('schedule:run');
@@ -106,11 +106,11 @@ class HoneybadgerEventPingTest extends TestCase
         $this->app->instance(Reporter::class, $honeybadger);
 
         $schedule->call(function () {
-            return true;
+            return 0;
         })->pingHoneybadgerOnSuccess('1234', 'development');
 
         $schedule->call(function () {
-            return true;
+            return 0;
         })->pingHoneybadgerOnSuccess('1234', ['development', 'production']);
 
         $this->artisan('schedule:run');
