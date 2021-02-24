@@ -118,7 +118,7 @@ class HoneybadgetDeployCommandTest extends TestCase
             $this->artisan('honeybadger:deploy');
         } catch (\Exception $e) {
             if (method_exists($this, 'assertMatchesRegularExpression')) {
-                // PHPUnit 9 +
+                // PHPUnit 9+
                 $this->assertMatchesRegularExpression('/500/', $e->getMessage());
             } else {
                 // < PHPUnit 9
@@ -136,7 +136,7 @@ class HoneybadgetDeployCommandTest extends TestCase
             $this->artisan('honeybadger:deploy');
         } catch (\Exception $e) {
             if (method_exists($this, 'assertMatchesRegularExpression')) {
-                // PHPUnit 9 +
+                // PHPUnit 9+
                 $this->assertMatchesRegularExpression('/{"status":"BAD"}/', $e->getMessage());
             } else {
                 // < PHPUnit 9
