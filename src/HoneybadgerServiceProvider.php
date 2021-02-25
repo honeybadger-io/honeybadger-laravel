@@ -117,15 +117,21 @@ class HoneybadgerServiceProvider extends ServiceProvider
      */
     private function registerMacros()
     {
-        Event::macro('thenPingHoneybadger', function ($id) {
-            return $this->then(function () use ($id) {
-                app(Reporter::class)->checkin($id);
+        /** @param  string|array|null  $environments */
+        Event::macro('thenPingHoneybadger', function (string $id, $environments = null) {
+            return $this->then(function () use ($id, $environments) {
+                if ($environments === null || app()->environment($environments)) {
+                    app(Reporter::class)->checkin($id);
+                }
             });
         });
 
-        Event::macro('pingHoneybadgerOnSuccess', function ($id) {
-            return $this->onSuccess(function () use ($id) {
-                app(Reporter::class)->checkin($id);
+        /** @param  string|array|null  $environments */
+        Event::macro('pingHoneybadgerOnSuccess', function (string $id, $environments = null) {
+            return $this->onSuccess(function () use ($id, $environments) {
+                if ($environments === null || app()->environment($environments)) {
+                    app(Reporter::class)->checkin($id);
+                }
             });
         });
     }
