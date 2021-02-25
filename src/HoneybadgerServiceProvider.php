@@ -120,11 +120,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         /** @param  string|array|null  $environments */
         Event::macro('thenPingHoneybadger', function (string $id, $environments = null) {
             return $this->then(function () use ($id, $environments) {
-                $shouldCheckin = $environments !== null
-                    ? app()->environment($environments)
-                    : true;
-
-                if ($shouldCheckin) {
+                if ($environments === null || app()->environment($environments)) {
                     app(Reporter::class)->checkin($id);
                 }
             });
@@ -133,11 +129,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         /** @param  string|array|null  $environments */
         Event::macro('pingHoneybadgerOnSuccess', function (string $id, $environments = null) {
             return $this->onSuccess(function () use ($id, $environments) {
-                $shouldCheckin = $environments !== null
-                    ? app()->environment($environments)
-                    : true;
-
-                if ($shouldCheckin) {
+                if ($environments === null || app()->environment($environments)) {
                     app(Reporter::class)->checkin($id);
                 }
             });
