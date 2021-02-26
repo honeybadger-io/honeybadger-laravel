@@ -24,7 +24,7 @@ class HoneybadgerLaravel
             'notifier' => [
                 'name' => 'Honeybadger Laravel',
                 'url' => 'https://github.com/honeybadger-io/honeybadger-laravel',
-                'version' => self::VERSION,
+                'version' => self::VERSION.'/'.Honeybadger::VERSION,
             ],
             'service_exception_handler' => function (ServiceException $e) {
                 Log::error($e);
