@@ -33,7 +33,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         }
 
         $this->registerMacros();
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'honeybadger');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'honeybadger');
         $this->registerBladeDirectives();
     }
 
