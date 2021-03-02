@@ -33,7 +33,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         }
 
         $this->registerMacros();
-        $this->loadViewsFrom(__DIR__.'/../views', 'honeybadger');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'honeybadger');
         $this->registerBladeDirectives();
     }
 
@@ -141,12 +141,14 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
     private function registerBladeDirectives()
     {
-        Blade::directive('honeybadgerInformer', function ($classes) {
-            if ($classes === '') {
-                $classes = "'text-gray-500'";
+        Blade::directive('honeybadgerInformer', function ($options) {
+            if ($options === '') {
+                $options = '[]';
             }
 
-            return "<?php echo \$__env->make('honeybadger::informer', ['classes' => $classes])->render(); ?>";
+            $defaults = "['class' => 'text-gray-500', 'text' => 'Error ID:']";
+
+            return "<?php echo \$__env->make('honeybadger::informer', $options, $defaults)->render(); ?>";
         });
     }
 }

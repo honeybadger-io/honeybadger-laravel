@@ -85,12 +85,4 @@ return [
      * Exception classes that should not be reported to Honeybadger.
      */
     'excluded_exceptions' => [],
-
-    /**
-     * Display the Honeybadger error ID on the 500 error page.
-     */
-    'user_informer' => [
-        'enabled' => true,
-        'message' => 'Error ID:',
-    ],
 ];
