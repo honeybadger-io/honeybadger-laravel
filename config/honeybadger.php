@@ -86,7 +86,6 @@ return [
      */
     'excluded_exceptions' => [],
 
-
     /**
      * Display the Honeybadger error ID on the 500 error page.
      */
