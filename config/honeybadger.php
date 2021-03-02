@@ -88,10 +88,10 @@ return [
 
 
     /**
-     * Display the Honeybadger error ID on the 500 error page
+     * Display the Honeybadger error ID on the 500 error page.
      */
     'user_informer' => [
-        'enabled' => env('APP_ENV') === 'production',
+        'enabled' => true,
         'message' => 'Error ID:',
     ],
 ];

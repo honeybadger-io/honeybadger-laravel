@@ -141,7 +141,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
     private function registerBladeDirectives()
     {
-        Blade::directive('honeybadgerInformer', function ($classes = "'text-gray-500'") {
+        Blade::directive('honeybadgerInformer', function ($classes) {
             if ($classes === '') {
                 $classes = "'text-gray-500'";
             }
