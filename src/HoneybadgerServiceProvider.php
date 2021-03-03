@@ -32,7 +32,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
             ], 'config');
         }
 
-        $this->registerMacros();
+        $this->registerEventHooks();
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'honeybadger');
         $this->registerBladeDirectives();
     }
@@ -118,7 +118,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
     /**
      * @return void
      */
-    private function registerMacros()
+    private function registerEventHooks()
     {
         /** @param string|array|null $environments */
         Event::macro('thenPingHoneybadger', function (string $id, $environments = null) {
@@ -141,7 +141,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
     private function registerBladeDirectives()
     {
-        Blade::directive('honeybadgerInformer', function ($options) {
+        Blade::directive('honeybadgerError', function ($options) {
             if ($options === '') {
                 $options = '[]';
             }
