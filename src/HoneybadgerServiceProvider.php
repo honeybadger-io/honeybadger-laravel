@@ -160,7 +160,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
                 return "<?php echo \$__env->make('honeybadger::informer', $options, $defaults)->render(); ?>";
             });
 
-            Blade::directive('honeybadgerFeedbackForm', function () {
+            Blade::directive('honeybadgerFeedback', function () {
                 $action = rtrim(Honeybadger::API_URL, '/').'/feedback';
 
                 return "<?php echo \$__env->make('honeybadger::feedback', ['action' => '$action'])->render(); ?>";
