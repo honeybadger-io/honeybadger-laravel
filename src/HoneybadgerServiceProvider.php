@@ -155,7 +155,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
                     $options = '[]';
                 }
 
-                $defaults = "['class' => 'text-gray-500', 'text' => 'Error ID:']";
+                $defaults = "['class' => 'text-gray-500 text-sm', 'text' => 'Error ID:']";
 
                 return "<?php echo \$__env->make('honeybadger::informer', $options, $defaults)->render(); ?>";
             });
