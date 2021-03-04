@@ -43,7 +43,7 @@ class Installer implements InstallerContract
     public function publishLaravelConfig(): bool
     {
         return Artisan::call('vendor:publish', [
-            '--provider' => HoneybadgerServiceProvider::class,
+            '--tag' => 'honeybadger-config',
         ]) === 0;
     }
 

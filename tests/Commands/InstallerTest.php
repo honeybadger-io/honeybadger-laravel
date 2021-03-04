@@ -93,9 +93,7 @@ class InstallerTest extends TestCase
 
         Artisan::shouldReceive('call')
             ->once()
-            ->with('vendor:publish', [
-                '--provider' => HoneybadgerServiceProvider::class,
-            ])->andReturn(0);
+            ->with('vendor:publish', ['--tag' => 'honeybadger-config'])->andReturn(0);
 
         $installer = new Installer($honeybadger);
 
@@ -103,7 +101,7 @@ class InstallerTest extends TestCase
     }
 
     /** @test */
-    public function publish_should_be_configed()
+    public function config_should_be_published()
     {
         $honeybadger = $this->createMock(Reporter::class);
 

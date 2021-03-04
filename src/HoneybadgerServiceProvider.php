@@ -29,11 +29,18 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
             $this->publishes([
                 __DIR__.'/../config/honeybadger.php' => base_path('config/honeybadger.php'),
-            ], 'config');
+            ], 'honeybadger-config');
+            $this->publishes([
+                __DIR__.'/../resources/views' => resource_path('views/vendor/honeybadger'),
+            ], 'honeybadger-views');
+            $this->publishes([
+                __DIR__.'/../resources/lang' => resource_path('lang/vendor/honeybadger'),
+            ], 'honeybadger-translations');
         }
 
         $this->registerEventHooks();
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'honeybadger');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'honeybadger');
         $this->registerBladeDirectives();
     }
 
@@ -141,14 +148,23 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
     private function registerBladeDirectives()
     {
-        Blade::directive('honeybadgerError', function ($options) {
-            if ($options === '') {
-                $options = '[]';
-            }
+        // Views are not enabled on Lumen by default
+        if (app()->bound('blade.compiler')) {
+            Blade::directive('honeybadgerError', function ($options) {
+                if ($options === '') {
+                    $options = '[]';
+                }
 
-            $defaults = "['class' => 'text-gray-500', 'text' => 'Error ID:']";
+                $defaults = "['class' => 'text-gray-500', 'text' => 'Error ID:']";
 
-            return "<?php echo \$__env->make('honeybadger::informer', $options, $defaults)->render(); ?>";
-        });
+                return "<?php echo \$__env->make('honeybadger::informer', $options, $defaults)->render(); ?>";
+            });
+
+            Blade::directive('honeybadgerFeedbackForm', function () {
+                $action = rtrim(Honeybadger::API_URL, '/').'/feedback';
+
+                return "<?php echo \$__env->make('honeybadger::feedback', ['action' => '$action'])->render(); ?>";
+            });
+        }
     }
 }
