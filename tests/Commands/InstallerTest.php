@@ -4,7 +4,6 @@ namespace Honeybadger\Tests\Commands;
 
 use Honeybadger\Contracts\Reporter;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
-use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
 use Honeybadger\HoneybadgerLaravel\Installer;
 use Honeybadger\Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
