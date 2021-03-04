@@ -1,12 +1,10 @@
 @if(auth()->user() && session('honeybadger_last_error'))
     <style>
         #honeybadger_feedback { padding-left: 2em; padding-right: 2em; min-width: 80%;  color: #9CA3AF; }
-        #honeybadger_feedback_form *, #honeybadger_feedback_form *:before, #honeybadger_feedback_form *:after { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
-        #honeybadger_feedback_form h2 { font-size: 110%; line-height: 1.5em; }
-        #honeybadger_feedback_form label { font-weight: bold; }
+        #honeybadger_feedback_form h2 { line-height: 1.5em; }
         #honeybadger_feedback_name, #honeybadger_feedback_email, #honeybadger_feedback_comment { width: 100%; padding: 0.5em; }
         #honeybadger_feedback_comment { height: 10em; }
-        #honeybadger_feedback_submit { color: initial; }
+        #honeybadger_feedback_submit { color: initial; padding: 0.5em 1em; }
         #honeybadger_feedback_form .honeybadger-feedback-phone { display: none; }
         #honeybadger_feedback_link { text-decoration: underline; }
     </style>
