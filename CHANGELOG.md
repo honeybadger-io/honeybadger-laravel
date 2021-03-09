@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.7.0] - 2021-03-09
+### Added
+- Added ability to enable job pings on specific environments ([#73](https://github.com/honeybadger-io/honeybadger-laravel/pull/73))
+- Include the PHP SDK version in error reports ([#75](https://github.com/honeybadger-io/honeybadger-laravel/pull/75))
+- Added the `@honeybadgerError` and `@honeybadgerFeedback` Blade directives ([#76](https://github.com/honeybadger-io/honeybadger-laravel/pull/76))
+
 ## [3.6.0] - 2021-02-19
 ### Added
 - Log ServiceExceptions rather than crash ([#70](https://github.com/honeybadger-io/honeybadger-laravel/pull/70))

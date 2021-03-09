@@ -11,7 +11,7 @@ use Throwable;
 
 class HoneybadgerLaravel extends Honeybadger
 {
-    const VERSION = '3.6.0';
+    const VERSION = '3.7.0';
 
     public static function make(array $config): Reporter
     {
