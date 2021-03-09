@@ -6,21 +6,16 @@ use Honeybadger\Contracts\Reporter;
 use Honeybadger\Exceptions\ServiceException;
 use Honeybadger\Honeybadger;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Request;
+use Throwable;
 
-class HoneybadgerLaravel
+class HoneybadgerLaravel extends Honeybadger
 {
     const VERSION = '3.6.0';
 
-    /**
-     * Honeybadger factory.
-     *
-     * @param array $config
-     *
-     * @return \Honeybadger\Contracts\Reporter
-     */
-    public function make(array $config): Reporter
+    public static function make(array $config): Reporter
     {
-        return Honeybadger::new(array_merge([
+        return static::new(array_merge([
             'notifier' => [
                 'name' => 'Honeybadger Laravel',
                 'url' => 'https://github.com/honeybadger-io/honeybadger-laravel',
@@ -30,5 +25,18 @@ class HoneybadgerLaravel
                 Log::error($e);
             },
         ], $config));
+    }
+
+    public function notify(Throwable $throwable, Request $request = null, array $additionalParams = []): array
+    {
+        $result = parent::notify($throwable, $request, $additionalParams);
+
+        // Persist the most recent error for the rest of the request, so we can display on error page.
+        if (app()->bound('session')) {
+            // Lumen doesn't come with sessions.
+            session()->now('honeybadger_last_error', $result['id'] ?? null);
+        }
+
+        return $result;
     }
 }

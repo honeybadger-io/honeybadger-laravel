@@ -12,6 +12,7 @@ use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
 use Illuminate\Console\Scheduling\Event;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class HoneybadgerServiceProvider extends ServiceProvider
@@ -28,10 +29,19 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
             $this->publishes([
                 __DIR__.'/../config/honeybadger.php' => base_path('config/honeybadger.php'),
-            ], 'config');
+            ], 'honeybadger-config');
+            $this->publishes([
+                __DIR__.'/../resources/views' => resource_path('views/vendor/honeybadger'),
+            ], 'honeybadger-views');
+            $this->publishes([
+                __DIR__.'/../resources/lang' => resource_path('lang/vendor/honeybadger'),
+            ], 'honeybadger-translations');
         }
 
-        $this->registerMacros();
+        $this->registerEventHooks();
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'honeybadger');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'honeybadger');
+        $this->registerBladeDirectives();
     }
 
     /**
@@ -42,7 +52,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/honeybadger.php', 'honeybadger');
 
         $this->app->singleton(Reporter::class, function ($app) {
-            return (new HoneybadgerLaravel)->make($app['config']['honeybadger']);
+            return HoneybadgerLaravel::make($app['config']['honeybadger']);
         });
 
         $this->app->alias(Reporter::class, Honeybadger::class);
@@ -57,7 +67,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
                 throw $e;
             };
 
-            return (new HoneybadgerLaravel)->make($config);
+            return HoneybadgerLaravel::make($config);
         });
 
         $this->app->singleton('honeybadger.isLumen', function () {
@@ -115,9 +125,9 @@ class HoneybadgerServiceProvider extends ServiceProvider
     /**
      * @return void
      */
-    private function registerMacros()
+    private function registerEventHooks()
     {
-        /** @param  string|array|null  $environments */
+        /** @param string|array|null $environments */
         Event::macro('thenPingHoneybadger', function (string $id, $environments = null) {
             return $this->then(function () use ($id, $environments) {
                 if ($environments === null || app()->environment($environments)) {
@@ -126,7 +136,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
             });
         });
 
-        /** @param  string|array|null  $environments */
+        /** @param string|array|null $environments */
         Event::macro('pingHoneybadgerOnSuccess', function (string $id, $environments = null) {
             return $this->onSuccess(function () use ($id, $environments) {
                 if ($environments === null || app()->environment($environments)) {
@@ -134,5 +144,27 @@ class HoneybadgerServiceProvider extends ServiceProvider
                 }
             });
         });
+    }
+
+    private function registerBladeDirectives()
+    {
+        // Views are not enabled on Lumen by default
+        if (app()->bound('blade.compiler')) {
+            Blade::directive('honeybadgerError', function ($options) {
+                if ($options === '') {
+                    $options = '[]';
+                }
+
+                $defaults = "['class' => 'text-gray-500 text-sm', 'text' => 'Error ID:']";
+
+                return "<?php echo \$__env->make('honeybadger::informer', $options, $defaults)->render(); ?>";
+            });
+
+            Blade::directive('honeybadgerFeedback', function () {
+                $action = rtrim(Honeybadger::API_URL, '/').'/feedback';
+
+                return "<?php echo \$__env->make('honeybadger::feedback', ['action' => '$action'])->render(); ?>";
+            });
+        }
     }
 }
