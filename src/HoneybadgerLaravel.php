@@ -11,13 +11,13 @@ use Throwable;
 
 class HoneybadgerLaravel extends Honeybadger
 {
-    const VERSION = '3.7.0';
+    const VERSION = '3.8.0';
 
     public static function make(array $config): Reporter
     {
         return static::new(array_merge([
             'notifier' => [
-                'name' => 'Honeybadger Laravel',
+                'name' => 'honeybadger-laravel',
                 'url' => 'https://github.com/honeybadger-io/honeybadger-laravel',
                 'version' => self::VERSION.'/'.Honeybadger::VERSION,
             ],
