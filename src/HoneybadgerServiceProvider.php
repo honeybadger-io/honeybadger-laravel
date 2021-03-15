@@ -181,7 +181,6 @@ class HoneybadgerServiceProvider extends ServiceProvider
         }
 
         $defaults = [
-            Breadcrumbs\MessageLogged::class,
             Breadcrumbs\DatabaseQueryExecuted::class,
             Breadcrumbs\JobQueued::class,
             Breadcrumbs\MailSent::class,

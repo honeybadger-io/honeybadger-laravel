@@ -92,7 +92,6 @@ return [
         'keep' => 40,
 
         'automatic' => [
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\MessageLogged::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseQueryExecuted::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\JobQueued::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\MailSent::class,
