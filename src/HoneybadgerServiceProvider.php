@@ -180,6 +180,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
             return;
         }
 
+        // Don't forget to sync changes to this with the config file defaults
         $defaults = [
             Breadcrumbs\DatabaseQueryExecuted::class,
             Breadcrumbs\JobQueued::class,
@@ -188,6 +189,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
             Breadcrumbs\NotificationSent::class,
             Breadcrumbs\RedisCommandExecuted::class,
             Breadcrumbs\RouteMatched::class,
+            Breadcrumbs\ViewRendered::class,
         ];
         $breadcrumbs = config('honeybadger.breadcrumbs.automatic', $defaults);
         foreach ($breadcrumbs as $breadcrumb) {

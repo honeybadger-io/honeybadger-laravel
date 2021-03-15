@@ -99,6 +99,7 @@ return [
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationSent::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\RedisCommandExecuted::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\RouteMatched::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\ViewRendered::class,
         ],
     ],
 ];
