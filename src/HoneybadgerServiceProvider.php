@@ -164,13 +164,13 @@ class HoneybadgerServiceProvider extends ServiceProvider
     protected function registerPublishableAssets(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/honeybadger.php' => base_path('config/honeybadger.php'),
+            __DIR__.'/../config/honeybadger.php' => base_path('config/honeybadger.php'),
         ], 'honeybadger-config');
         $this->publishes([
-            __DIR__ . '/../resources/views' => resource_path('views/vendor/honeybadger'),
+            __DIR__.'/../resources/views' => resource_path('views/vendor/honeybadger'),
         ], 'honeybadger-views');
         $this->publishes([
-            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/honeybadger'),
+            __DIR__.'/../resources/lang' => resource_path('lang/vendor/honeybadger'),
         ], 'honeybadger-translations');
     }
 

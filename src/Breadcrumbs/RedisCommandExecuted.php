@@ -24,7 +24,7 @@ class RedisCommandExecuted
             'duration' => number_format($event->time, 2, '.', ''),
         ];
 
-        Honeybadger::addBreadcrumb("Redis command executed", $metadata, 'query');
+        Honeybadger::addBreadcrumb('Redis command executed', $metadata, 'query');
     }
 
     private function formatCommand(string $command, array $parameters)

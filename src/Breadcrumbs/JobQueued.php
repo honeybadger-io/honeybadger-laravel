@@ -21,6 +21,6 @@ class JobQueued
             'job' => get_class($event->job)
         ];
 
-        Honeybadger::addBreadcrumb("Job queued", $metadata, 'job');
+        Honeybadger::addBreadcrumb('Job queued', $metadata, 'job');
     }
 }

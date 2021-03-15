@@ -23,6 +23,6 @@ class RouteMatched
             'name' => $route->action['as'] ?? null,
         ];
 
-        Honeybadger::addBreadcrumb("Route matched", $metadata, 'request');
+        Honeybadger::addBreadcrumb('Route matched', $metadata, 'request');
     }
 }

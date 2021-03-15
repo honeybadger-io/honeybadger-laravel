@@ -22,6 +22,6 @@ class NotificationSent
             'notifiable' => get_class($event->notifiable),
         ];
 
-        Honeybadger::addBreadcrumb("Notification sent", $metadata, 'notification');
+        Honeybadger::addBreadcrumb('Notification sent', $metadata, 'notification');
     }
 }

@@ -24,6 +24,6 @@ class MailSent
             'subject' => $event->message->getSubject(),
         ];
 
-        Honeybadger::addBreadcrumb("Mail sent", $metadata, 'mail');
+        Honeybadger::addBreadcrumb('Mail sent', $metadata, 'mail');
     }
 }

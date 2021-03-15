@@ -21,6 +21,6 @@ class DatabaseQueryExecuted
             'duration' => number_format($event->time, 2, '.', ''),
         ];
 
-        Honeybadger::addBreadcrumb("Database query executed", $metadata, 'query');
+        Honeybadger::addBreadcrumb('Database query executed', $metadata, 'query');
     }
 }

@@ -101,5 +101,5 @@ return [
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\RedisCommandExecuted::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\RouteMatched::class,
         ],
-    ]
+    ],
 ];
