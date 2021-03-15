@@ -85,4 +85,21 @@ return [
      * Exception classes that should not be reported to Honeybadger.
      */
     'excluded_exceptions' => [],
+
+    'breadcrumbs' => [
+        'enabled' => true,
+
+        'keep' => 40,
+
+        'automatic' => [
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\MessageLogged::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseQueryExecuted::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\JobQueued::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\MailSent::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\MessageLogged::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationSent::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\RedisCommandExecuted::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\RouteMatched::class,
+        ],
+    ]
 ];
