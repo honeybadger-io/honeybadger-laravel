@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
 use Honeybadger\HoneybadgerLaravel\Concerns\HandlesEvents;
@@ -18,7 +17,7 @@ class JobQueued
         $metadata = [
             'connectionName' => $event->connectionName,
             'queue' => $event->job->queue,
-            'job' => get_class($event->job)
+            'job' => get_class($event->job),
         ];
 
         Honeybadger::addBreadcrumb('Job queued', $metadata, 'job');

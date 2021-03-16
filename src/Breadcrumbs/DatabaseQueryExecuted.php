@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
 use Honeybadger\HoneybadgerLaravel\Concerns\HandlesEvents;

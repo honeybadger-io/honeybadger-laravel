@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Honeybadger\HoneybadgerLaravel\Concerns;
 
 use Illuminate\Events\Dispatcher;
