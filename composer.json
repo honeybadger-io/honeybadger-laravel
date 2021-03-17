@@ -10,6 +10,12 @@
         "honeybadger-io",
         "honeybadger-php"
     ],
+    "repositories": [
+    {
+        "type": "path",
+        "url": "../../Honeybadger/honeybadger-php"
+    }
+],
     "homepage": "https://github.com/honeybadger-io/honeybadger-laravel",
     "license": "MIT",
     "authors": [
@@ -22,7 +28,7 @@
     ],
     "require": {
         "php": "^7.2|^8.0",
-        "honeybadger-io/honeybadger-php": "^2.8.0",
+        "honeybadger-io/honeybadger-php": "@dev",
         "sixlive/dotenv-editor": "^1.1",
         "illuminate/console": "^7.0|^8.0",
         "illuminate/support": "^7.0|^8.0",

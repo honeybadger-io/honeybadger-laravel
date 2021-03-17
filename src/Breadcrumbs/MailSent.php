@@ -2,14 +2,11 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
-use Honeybadger\HoneybadgerLaravel\Concerns\HandlesEvents;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Illuminate\Mail\Events\MessageSent;
 
-class MailSent
+class MailSent extends Breadcrumb
 {
-    use HandlesEvents;
-
     public $handles = MessageSent::class;
 
     public function handleEvent(MessageSent $event)

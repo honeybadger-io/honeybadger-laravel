@@ -2,14 +2,11 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
-use Honeybadger\HoneybadgerLaravel\Concerns\HandlesEvents;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Illuminate\Routing\Events\RouteMatched as LaravelRouteMatched;
 
-class RouteMatched
+class RouteMatched extends Breadcrumb
 {
-    use HandlesEvents;
-
     public $handles = LaravelRouteMatched::class;
 
     public function handleEvent(LaravelRouteMatched $event)

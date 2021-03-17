@@ -2,14 +2,11 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
-use Honeybadger\HoneybadgerLaravel\Concerns\HandlesEvents;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Illuminate\Log\Events\MessageLogged as LaravelMessageLogged;
 
-class MessageLogged
+class MessageLogged extends Breadcrumb
 {
-    use HandlesEvents;
-
     public $handles = LaravelMessageLogged::class;
 
     public function handleEvent(LaravelMessageLogged $event)

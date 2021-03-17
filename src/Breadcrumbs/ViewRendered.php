@@ -2,23 +2,30 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
-use Honeybadger\HoneybadgerLaravel\Concerns\HandlesEvents;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
+use Illuminate\Support\Facades\View;
 
-class ViewRendered
+class ViewRendered extends Breadcrumb
 {
-    use HandlesEvents;
-
     public $handles = 'composing:*';
 
-    public function handleEvent(string $eventName, array $data)
+    public function handleEvent(string $eventName, array $data = [])
     {
-        /** @var \Illuminate\View\View $view */
-        $view = $data[0];
-        $metadata = [
-            'name' => $view->getName(),
-            'path' => $view->getPath(),
-        ];
+        if (!empty($data)) {
+            /** @var \Illuminate\View\View $view */
+            $view = $data[0];
+            $metadata = [
+                'name' => $view->getName(),
+                'path' => $view->getPath(),
+            ];
+        } else {
+            // $eventName is sometimes "composing: errors::500" with no $data
+            $name = explode(': ', $eventName)[1];
+            $metadata = [
+                'name' => $name,
+                'path' => View::getFinder()->find($name),
+            ];
+        }
 
         Honeybadger::addBreadcrumb('View rendered', $metadata, 'render');
     }

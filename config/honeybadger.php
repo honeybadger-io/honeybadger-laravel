@@ -87,10 +87,16 @@ return [
     'excluded_exceptions' => [],
 
     'breadcrumbs' => [
+        /**
+         * Enable recording of breadcrumbs (application events).
+         * Setting this to false will disable automatic breadcrumbs and the addBreadcrumb() function.
+         */
         'enabled' => true,
 
-        'keep' => 40,
-
+        /**
+         * Events which should automatically be recorded by the Honeybadger client.
+         * Note that to track redis events, you need to call `Redis::enableEvents()` in your app.
+         */
         'automatic' => [
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseQueryExecuted::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\JobQueued::class,

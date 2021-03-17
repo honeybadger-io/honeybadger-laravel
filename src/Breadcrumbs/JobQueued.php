@@ -2,14 +2,11 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
-use Honeybadger\HoneybadgerLaravel\Concerns\HandlesEvents;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Illuminate\Queue\Events\JobQueued as LaravelJobQueued;
 
-class JobQueued
+class JobQueued extends Breadcrumb
 {
-    use HandlesEvents;
-
     public $handles = LaravelJobQueued::class;
 
     public function handleEvent(LaravelJobQueued $event)

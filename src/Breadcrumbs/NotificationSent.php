@@ -2,14 +2,11 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
-use Honeybadger\HoneybadgerLaravel\Concerns\HandlesEvents;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Illuminate\Notifications\Events\NotificationSent as LaravelNotificationSent;
 
-class NotificationSent
+class NotificationSent extends Breadcrumb
 {
-    use HandlesEvents;
-
     public $handles = LaravelNotificationSent::class;
 
     public function handleEvent(LaravelNotificationSent $event)

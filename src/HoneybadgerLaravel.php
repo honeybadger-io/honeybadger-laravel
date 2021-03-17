@@ -13,6 +13,18 @@ class HoneybadgerLaravel extends Honeybadger
 {
     const VERSION = '3.7.0';
 
+    // Don't forget to sync changes to this with the config file defaults
+    const DEFAULT_BREADCRUMBS = [
+        Breadcrumbs\DatabaseQueryExecuted::class,
+        Breadcrumbs\JobQueued::class,
+        Breadcrumbs\MailSent::class,
+        Breadcrumbs\MessageLogged::class,
+        Breadcrumbs\NotificationSent::class,
+        Breadcrumbs\RedisCommandExecuted::class,
+        Breadcrumbs\RouteMatched::class,
+        Breadcrumbs\ViewRendered::class,
+    ];
+
     public static function make(array $config): Reporter
     {
         return static::new(array_merge([

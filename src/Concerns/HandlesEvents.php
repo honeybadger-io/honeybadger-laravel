@@ -10,6 +10,6 @@ trait HandlesEvents
     {
         /** @var Dispatcher $dispatcher */
         $dispatcher = app('events');
-        $dispatcher->listen($this->handles, [$this, 'handleEvent']);
+        $dispatcher->listen($this->handles, [$this, 'handle']);
     }
 }
