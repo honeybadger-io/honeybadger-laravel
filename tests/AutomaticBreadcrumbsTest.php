@@ -181,6 +181,12 @@ class AutomaticBreadcrumbsTest extends TestCase
     /** @test */
     public function adds_breadcrumbs_for_jobs()
     {
+        if (version_compare($this->app->version(), '8.24.0', '<')) {
+            $this->markTestSkipped('The JobQueued event was introduced in Laravel 8.24.0.');
+
+            return;
+        }
+
         Config::set('honeybadger.breadcrumbs.automatic', [JobQueued::class]);
         Config::set('queue.default', 'database');
         $this->loadMigrationsFrom(__DIR__.'/Fixtures/migrations');
