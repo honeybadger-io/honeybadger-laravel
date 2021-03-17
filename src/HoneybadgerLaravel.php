@@ -16,10 +16,18 @@ class HoneybadgerLaravel extends Honeybadger
     // Don't forget to sync changes to this with the config file defaults
     const DEFAULT_BREADCRUMBS = [
         Breadcrumbs\DatabaseQueryExecuted::class,
+        Breadcrumbs\DatabaseTransactionStarted::class,
+        Breadcrumbs\DatabaseTransactionCommitted::class,
+        Breadcrumbs\DatabaseTransactionRolledBack::class,
+        Breadcrumbs\CacheHit::class,
+        Breadcrumbs\CacheMiss::class,
         Breadcrumbs\JobQueued::class,
+        Breadcrumbs\MailSending::class,
         Breadcrumbs\MailSent::class,
         Breadcrumbs\MessageLogged::class,
+        Breadcrumbs\NotificationSending::class,
         Breadcrumbs\NotificationSent::class,
+        Breadcrumbs\NotificationFailed::class,
         Breadcrumbs\RedisCommandExecuted::class,
         Breadcrumbs\RouteMatched::class,
         Breadcrumbs\ViewRendered::class,

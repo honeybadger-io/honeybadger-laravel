@@ -3,13 +3,13 @@
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
-use Illuminate\Mail\Events\MessageSent;
+use Illuminate\Mail\Events\MessageSending;
 
-class MailSent extends Breadcrumb
+class MailSending extends Breadcrumb
 {
-    public $handles = MessageSent::class;
+    public $handles = MessageSending::class;
 
-    public function handleEvent(MessageSent $event)
+    public function handleEvent(MessageSending $event)
     {
         $metadata = [
             'queue' => $event->data['queue'] ?? null,
@@ -20,6 +20,6 @@ class MailSent extends Breadcrumb
             'subject' => $event->message->getSubject(),
         ];
 
-        Honeybadger::addBreadcrumb('Mail sent', $metadata, 'mail');
+        Honeybadger::addBreadcrumb('Sending mail', $metadata, 'mail');
     }
 }

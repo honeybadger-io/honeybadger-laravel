@@ -3,10 +3,17 @@
 namespace Honeybadger\Tests;
 
 use Honeybadger\Contracts\Reporter;
+use Honeybadger\HoneybadgerLaravel\Breadcrumbs\CacheHit;
+use Honeybadger\HoneybadgerLaravel\Breadcrumbs\CacheMiss;
 use Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseQueryExecuted;
+use Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionCommitted;
+use Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionRolledBack;
+use Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionStarted;
 use Honeybadger\HoneybadgerLaravel\Breadcrumbs\JobQueued;
+use Honeybadger\HoneybadgerLaravel\Breadcrumbs\MailSending;
 use Honeybadger\HoneybadgerLaravel\Breadcrumbs\MailSent;
 use Honeybadger\HoneybadgerLaravel\Breadcrumbs\MessageLogged;
+use Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationSending;
 use Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationSent;
 use Honeybadger\HoneybadgerLaravel\Breadcrumbs\RouteMatched;
 use Honeybadger\HoneybadgerLaravel\Breadcrumbs\ViewRendered;
@@ -15,6 +22,7 @@ use Honeybadger\Tests\Fixtures\TestJob;
 use Honeybadger\Tests\Fixtures\TestMailable;
 use Honeybadger\Tests\Fixtures\TestNotification;
 use Honeybadger\Tests\Fixtures\TestUser;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -117,38 +125,83 @@ class AutomaticBreadcrumbsTest extends TestCase
     /** @test */
     public function adds_breadcrumbs_for_database_queries()
     {
-        Config::set('honeybadger.breadcrumbs.automatic', [DatabaseQueryExecuted::class]);
+        Config::set('honeybadger.breadcrumbs.automatic', [
+            DatabaseTransactionStarted::class,
+            DatabaseTransactionCommitted::class,
+            DatabaseTransactionRolledBack::class,
+            DatabaseQueryExecuted::class,
+        ]);
         $this->loadLaravelMigrations();
 
         Honeybadger::clearResolvedInstances();
         $honeybadger = $this->createMock(Reporter::class);
-        $honeybadger->expects($this->once())
+        $honeybadger->expects($this->exactly(4))
             ->method('addBreadcrumb')
-            ->with('Database query executed', $this->callback(function ($metadata) {
-                return $metadata['sql'] === 'select * from "users"'
-                    && $metadata['connectionName'] === 'test'
-                    && preg_match('/\d\.\d\dms/', $metadata['duration']);
-            }), 'query');
+            ->withConsecutive(
+                [
+                    'Database transaction started',
+                    ['connectionName' => 'test'],
+                    'query',
+                ],
+                [
+                    'Database query executed',
+                    $this->callback(function ($metadata) {
+                        return $metadata['sql'] === 'select * from "users"'
+                            && $metadata['connectionName'] === 'test'
+                            && preg_match('/\d\.\d\dms/', $metadata['duration']);
+                    }),
+                    'query',
+                ],
+                [
+                    'Database transaction rolled back',
+                    ['connectionName' => 'test'],
+                    'query',
+                ],
+                [
+                    'Database transaction committed',
+                    ['connectionName' => 'test'],
+                    'query',
+                ]
+            );
         $this->app->instance(Reporter::class, $honeybadger);
 
+        DB::beginTransaction();
         DB::table('users')->select('*')->get();
+        DB::rollBack();
+        DB::commit();
     }
 
     /** @test */
     public function adds_breadcrumbs_for_notifications()
     {
-        Config::set('honeybadger.breadcrumbs.automatic', [NotificationSent::class]);
+        Config::set('honeybadger.breadcrumbs.automatic', [NotificationSending::class, NotificationSent::class]);
         Config::set('mail.default', 'log');
 
         $honeybadger = $this->createMock(Reporter::class);
-        $honeybadger->expects($this->once())
+        $honeybadger->expects($this->exactly(2))
             ->method('addBreadcrumb')
-            ->with('Notification sent', [
-                'notification' => TestNotification::class,
-                'channel' => 'mail',
-                'queue' => null,
-                'notifiable' => TestUser::class,
-            ], 'notification');
+            ->withConsecutive(
+                [
+                    'Sending notification',
+                    [
+                        'notification' => TestNotification::class,
+                        'channel' => 'mail',
+                        'queue' => null,
+                        'notifiable' => TestUser::class,
+                    ],
+                    'notification',
+                ],
+                [
+                    'Notification sent',
+                    [
+                        'notification' => TestNotification::class,
+                        'channel' => 'mail',
+                        'queue' => null,
+                        'notifiable' => TestUser::class,
+                    ],
+                    'notification',
+                ]
+            );
         $this->app->instance(Reporter::class, $honeybadger);
 
         $user = new TestUser;
@@ -158,21 +211,39 @@ class AutomaticBreadcrumbsTest extends TestCase
     /** @test */
     public function adds_breadcrumbs_for_mail()
     {
-        Config::set('honeybadger.breadcrumbs.automatic', [MailSent::class]);
+        Config::set('honeybadger.breadcrumbs.automatic', [MailSending::class, MailSent::class]);
         Config::set('view.paths', [realpath(__DIR__.'/Fixtures/views')]);
         Config::set('mail.default', 'log');
 
         $honeybadger = $this->createMock(Reporter::class);
-        $honeybadger->expects($this->once())
+        $honeybadger->expects($this->exactly(2))
             ->method('addBreadcrumb')
-            ->with('Mail sent', [
-                'queue' => null,
-                'replyTo' => null,
-                'to' => 'chunkylover53@aol.com',
-                'cc' => '',
-                'bcc' => '',
-                'subject' => 'HAhaHA',
-            ], 'mail');
+            ->withConsecutive(
+                [
+                    'Sending mail',
+                    [
+                        'queue' => null,
+                        'replyTo' => null,
+                        'to' => 'chunkylover53@aol.com',
+                        'cc' => null,
+                        'bcc' => null,
+                        'subject' => 'HAhaHA',
+                    ],
+                    'mail',
+                ],
+                [
+                    'Mail sent',
+                    [
+                        'queue' => null,
+                        'replyTo' => null,
+                        'to' => 'chunkylover53@aol.com',
+                        'cc' => null,
+                        'bcc' => null,
+                        'subject' => 'HAhaHA',
+                    ],
+                    'mail',
+                ]
+            );
         $this->app->instance(Reporter::class, $honeybadger);
 
         Mail::to('chunkylover53@aol.com')->send(new TestMailable);
@@ -220,5 +291,42 @@ class AutomaticBreadcrumbsTest extends TestCase
             // nothing doin'
         });
         dispatch(new TestJob);
+    }
+
+    /** @test */
+    public function adds_breadcrumbs_for_cache()
+    {
+        if (version_compare($this->app->version(), '8.24.0', '<')) {
+            $this->markTestSkipped('The JobQueued event was introduced in Laravel 8.24.0.');
+
+            return;
+        }
+
+        Config::set('honeybadger.breadcrumbs.automatic', [CacheHit::class, CacheMiss::class]);
+
+        $honeybadger = $this->createMock(Reporter::class);
+        $honeybadger->expects($this->exactly(2))
+            ->method('addBreadcrumb')
+            ->withConsecutive(
+                [
+                    'Cache miss',
+                    [
+                        'key' => 'user:profile',
+                    ],
+                    'query',
+                ],
+                [
+                    'Cache hit',
+                    [
+                        'key' => 'user:profile',
+                    ],
+                    'query',
+                ]
+            );
+        $this->app->instance(Reporter::class, $honeybadger);
+
+        Cache::get('user:profile');
+        Cache::put('user:profile', 5);
+        Cache::get('user:profile');
     }
 }

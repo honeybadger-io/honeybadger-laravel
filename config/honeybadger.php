@@ -99,10 +99,18 @@ return [
          */
         'automatic' => [
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseQueryExecuted::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionStarted::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionCommitted::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionRolledBack::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\CacheHit::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\CacheMiss::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\JobQueued::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\MailSending::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\MailSent::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\MessageLogged::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationSending::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationSent::class,
+            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationFailed::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\RedisCommandExecuted::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\RouteMatched::class,
             \Honeybadger\HoneybadgerLaravel\Breadcrumbs\ViewRendered::class,
