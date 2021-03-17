@@ -146,7 +146,7 @@ class AutomaticBreadcrumbsTest extends TestCase
                 [
                     'Database query executed',
                     $this->callback(function ($metadata) {
-                        return $metadata['sql'] === 'select * from "users"'
+                        return $metadata['sql'] === 'select * from ?'
                             && $metadata['connectionName'] === 'test'
                             && preg_match('/\d\.\d\dms/', $metadata['duration']);
                     }),
