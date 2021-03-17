@@ -215,5 +215,4 @@ class AutomaticBreadcrumbsTest extends TestCase
         });
         dispatch(new TestJob);
     }
-
 }
