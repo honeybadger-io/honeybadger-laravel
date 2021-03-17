@@ -11,7 +11,7 @@ class ViewRendered extends Breadcrumb
 
     public function handleEvent(string $eventName, array $data = [])
     {
-        if (!empty($data)) {
+        if (! empty($data)) {
             /** @var \Illuminate\View\View $view */
             $view = $data[0];
             $metadata = [

@@ -96,7 +96,7 @@ class AutomaticBreadcrumbsTest extends TestCase
     public function adds_breadcrumbs_for_views()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [ViewRendered::class]);
-        Config::set('view.paths', [realpath(__DIR__ . '/Fixtures/views')]);
+        Config::set('view.paths', [realpath(__DIR__.'/Fixtures/views')]);
         Route::get('test', function () {
             return view('test');
         });
@@ -106,7 +106,7 @@ class AutomaticBreadcrumbsTest extends TestCase
             ->method('addBreadcrumb')
             ->with('View rendered', [
                 'name' => 'test',
-                'path' => realpath(__DIR__ . '/Fixtures/views') . '/test.blade.php',
+                'path' => realpath(__DIR__.'/Fixtures/views').'/test.blade.php',
             ], 'render');
 
         $this->app->instance(Reporter::class, $honeybadger);
@@ -159,7 +159,7 @@ class AutomaticBreadcrumbsTest extends TestCase
     public function adds_breadcrumbs_for_mail()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [MailSent::class]);
-        Config::set('view.paths', [realpath(__DIR__ . '/Fixtures/views')]);
+        Config::set('view.paths', [realpath(__DIR__.'/Fixtures/views')]);
         Config::set('mail.default', 'log');
 
         $honeybadger = $this->createMock(Reporter::class);
@@ -183,7 +183,7 @@ class AutomaticBreadcrumbsTest extends TestCase
     {
         Config::set('honeybadger.breadcrumbs.automatic', [JobQueued::class]);
         Config::set('queue.default', 'database');
-        $this->loadMigrationsFrom(__DIR__ . '/Fixtures/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/Fixtures/migrations');
 
         $honeybadger = $this->createMock(Reporter::class);
         $honeybadger->expects($this->exactly(2))

@@ -19,7 +19,7 @@ class Breadcrumb
         // Doing this check again in case config was changed at runtime (also useful for tests)
         if (
             config('honeybadger.breadcrumbs.enabled', true) === false
-            || !in_array(static::class, config('honeybadger.breadcrumbs.automatic', HoneybadgerLaravel::DEFAULT_BREADCRUMBS))
+            || ! in_array(static::class, config('honeybadger.breadcrumbs.automatic', HoneybadgerLaravel::DEFAULT_BREADCRUMBS))
         ) {
             return;
         }
