@@ -1,5 +1,7 @@
 <?php
 
+use \Honeybadger\HoneybadgerLaravel\Breadcrumbs;
+
 return [
     /**
      * Your project's Honeybadger API key. Get this from the project settings on your Honeybadger dashboard.
@@ -98,22 +100,22 @@ return [
          * Note that to track redis events, you need to call `Redis::enableEvents()` in your app.
          */
         'automatic' => [
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseQueryExecuted::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionStarted::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionCommitted::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionRolledBack::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\CacheHit::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\CacheMiss::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\JobQueued::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\MailSending::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\MailSent::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\MessageLogged::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationSending::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationSent::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationFailed::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\RedisCommandExecuted::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\RouteMatched::class,
-            \Honeybadger\HoneybadgerLaravel\Breadcrumbs\ViewRendered::class,
+            Breadcrumbs\DatabaseQueryExecuted::class,
+            Breadcrumbs\DatabaseTransactionStarted::class,
+            Breadcrumbs\DatabaseTransactionCommitted::class,
+            Breadcrumbs\DatabaseTransactionRolledBack::class,
+            Breadcrumbs\CacheHit::class,
+            Breadcrumbs\CacheMiss::class,
+            Breadcrumbs\JobQueued::class,
+            Breadcrumbs\MailSending::class,
+            Breadcrumbs\MailSent::class,
+            Breadcrumbs\MessageLogged::class,
+            Breadcrumbs\NotificationSending::class,
+            Breadcrumbs\NotificationSent::class,
+            Breadcrumbs\NotificationFailed::class,
+            Breadcrumbs\RedisCommandExecuted::class,
+            Breadcrumbs\RouteMatched::class,
+            Breadcrumbs\ViewRendered::class,
         ],
     ],
 ];
