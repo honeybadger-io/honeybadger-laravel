@@ -1,6 +1,6 @@
 <?php
 
-use \Honeybadger\HoneybadgerLaravel\Breadcrumbs;
+use Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
 return [
     /**
