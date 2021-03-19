@@ -14,7 +14,7 @@ class DatabaseQueryExecuted extends Breadcrumb
     {
         $metadata = [
             'connectionName' => $event->connectionName,
-            'sql' => $this->sanitise($event->sql, $event->connection),
+            'sql' => $this->sanitize($event->sql, $event->connection),
             'duration' => number_format($event->time, 2, '.', '').'ms',
         ];
 
@@ -22,9 +22,9 @@ class DatabaseQueryExecuted extends Breadcrumb
     }
 
     /**
-     * Even though Laravel gives us the sanitised query, let's err on the side of caution by removing any quoted data.
+     * Even though Laravel gives us the sanitized query, let's err on the side of caution by removing any quoted data.
      */
-    public function sanitise(string $sql, Connection $connection): string
+    public function sanitize(string $sql, Connection $connection): string
     {
         $escapedQuotes = '#/(\\"|\\\')/#';
         $numericData = '#\b\d+\b#';
