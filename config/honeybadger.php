@@ -1,5 +1,7 @@
 <?php
 
+use Honeybadger\HoneybadgerLaravel\Breadcrumbs;
+
 return [
     /**
      * Your project's Honeybadger API key. Get this from the project settings on your Honeybadger dashboard.
@@ -85,4 +87,35 @@ return [
      * Exception classes that should not be reported to Honeybadger.
      */
     'excluded_exceptions' => [],
+
+    'breadcrumbs' => [
+        /**
+         * Enable recording of breadcrumbs (application events).
+         * Setting this to false will disable automatic breadcrumbs and the addBreadcrumb() function.
+         */
+        'enabled' => true,
+
+        /**
+         * Events which should automatically be recorded by the Honeybadger client.
+         * Note that to track redis events, you need to call `Redis::enableEvents()` in your app.
+         */
+        'automatic' => [
+            Breadcrumbs\DatabaseQueryExecuted::class,
+            Breadcrumbs\DatabaseTransactionStarted::class,
+            Breadcrumbs\DatabaseTransactionCommitted::class,
+            Breadcrumbs\DatabaseTransactionRolledBack::class,
+            Breadcrumbs\CacheHit::class,
+            Breadcrumbs\CacheMiss::class,
+            Breadcrumbs\JobQueued::class,
+            Breadcrumbs\MailSending::class,
+            Breadcrumbs\MailSent::class,
+            Breadcrumbs\MessageLogged::class,
+            Breadcrumbs\NotificationSending::class,
+            Breadcrumbs\NotificationSent::class,
+            Breadcrumbs\NotificationFailed::class,
+            Breadcrumbs\RedisCommandExecuted::class,
+            Breadcrumbs\RouteMatched::class,
+            Breadcrumbs\ViewRendered::class,
+        ],
+    ],
 ];

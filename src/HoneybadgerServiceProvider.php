@@ -27,21 +27,14 @@ class HoneybadgerServiceProvider extends ServiceProvider
             $this->registerCommands();
             $this->app->bind(InstallerContract::class, Installer::class);
 
-            $this->publishes([
-                __DIR__.'/../config/honeybadger.php' => base_path('config/honeybadger.php'),
-            ], 'honeybadger-config');
-            $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/honeybadger'),
-            ], 'honeybadger-views');
-            $this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/honeybadger'),
-            ], 'honeybadger-translations');
+            $this->registerPublishableAssets();
         }
 
         $this->registerEventHooks();
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'honeybadger');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'honeybadger');
         $this->registerBladeDirectives();
+        $this->setUpAutomaticBreadcrumbs();
     }
 
     /**
@@ -165,6 +158,31 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
                 return "<?php echo \$__env->make('honeybadger::feedback', ['action' => '$action'])->render(); ?>";
             });
+        }
+    }
+
+    protected function registerPublishableAssets(): void
+    {
+        $this->publishes([
+            __DIR__.'/../config/honeybadger.php' => base_path('config/honeybadger.php'),
+        ], 'honeybadger-config');
+        $this->publishes([
+            __DIR__.'/../resources/views' => resource_path('views/vendor/honeybadger'),
+        ], 'honeybadger-views');
+        $this->publishes([
+            __DIR__.'/../resources/lang' => resource_path('lang/vendor/honeybadger'),
+        ], 'honeybadger-translations');
+    }
+
+    protected function setUpAutomaticBreadcrumbs()
+    {
+        if (config('honeybadger.breadcrumbs.enabled', true) === false) {
+            return;
+        }
+
+        $breadcrumbs = config('honeybadger.breadcrumbs.automatic', HoneybadgerLaravel::DEFAULT_BREADCRUMBS);
+        foreach ($breadcrumbs as $breadcrumb) {
+            (new $breadcrumb)->register();
         }
     }
 }
