@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.8.0] - 2021-03-23
+### Added
+- Automatic breadcrumbs ([#79](https://github.com/honeybadger-io/honeybadger-laravel/pull/79))
+
 ## [3.7.0] - 2021-03-09
 ### Added
 - Added ability to enable job pings on specific environments ([#73](https://github.com/honeybadger-io/honeybadger-laravel/pull/73))
