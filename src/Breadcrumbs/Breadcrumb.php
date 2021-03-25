@@ -24,6 +24,10 @@ class Breadcrumb
             return;
         }
 
-        $this->handleEvent($event);
+        try {
+            $this->handleEvent($event);
+        } catch (\Throwable $e) {
+            // Do nothing; we shouldn't crash the user's app for this.
+        }
     }
 }
