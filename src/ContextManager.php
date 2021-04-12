@@ -1,15 +1,12 @@
 <?php
 
-namespace Honeybadger\HoneybadgerLaravel\Middleware;
+namespace Honeybadger\HoneybadgerLaravel;
 
-use Closure;
 use Honeybadger\Contracts\Reporter;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @deprecated Honeybadger adds the context automatically
- */
-class HoneybadgerContext
+class ContextManager
 {
     /**
      * @var \Honeybadger\Honeybadger;
@@ -24,29 +21,16 @@ class HoneybadgerContext
         $this->honeybadger = $honeybadger;
     }
 
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
-    public function handle($request, Closure $next)
+    public function setRouteAction(Request $request)
     {
-        if (app()->bound('honeybadger')) {
-            $this->setUserContext($request);
-
-            if (app('honeybadger.isLumen')) {
-                $this->setLumenRouteActionContext($request);
-            } else {
-                $this->setRouteActionContext();
-            }
+        if (app('honeybadger.isLumen')) {
+            $this->setLumenRouteActionContext($request);
+        } else {
+            $this->setLaravelRouteActionContext();
         }
-
-        return $next($request);
     }
 
-    private function setLumenRouteActionContext($request)
+    private function setLumenRouteActionContext(Request $request)
     {
         $routeDetails = app()->router->getRoutes()[$request->method().$request->getPathInfo()]['action'];
 
@@ -67,7 +51,7 @@ class HoneybadgerContext
         }
     }
 
-    private function setRouteActionContext()
+    private function setLaravelRouteActionContext()
     {
         if (Route::getCurrentRoute()) {
             $routeAction = explode('@', Route::getCurrentRoute()->getActionName());
@@ -82,7 +66,7 @@ class HoneybadgerContext
         }
     }
 
-    private function setUserContext($request)
+    public function setUserContext($request)
     {
         try {
             if ($request->user()) {

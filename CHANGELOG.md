@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.9.0] - 2021-04-12
+### Added
+- Honeybadger can now set route action and user context automatically—no middleware needed ([#82](https://github.com/honeybadger-io/honeybadger-laravel/pull/82/))
+
 ## [3.8.1] - 2021-03-25
 ### Fixed
 - Silence any thrown errors in breadcrumbs collection ([#81](https://github.com/honeybadger-io/honeybadger-laravel/pull/81))
