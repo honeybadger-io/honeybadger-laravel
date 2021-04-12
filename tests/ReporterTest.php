@@ -86,5 +86,4 @@ class ReporterTest extends TestCase
 
         $this->get('/recordException');
     }
-
 }
