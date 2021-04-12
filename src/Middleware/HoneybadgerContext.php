@@ -33,12 +33,14 @@ class HoneybadgerContext
      */
     public function handle($request, Closure $next)
     {
-        $this->setUserContext($request);
+        if (app()->bound('honeybadger')) {
+            $this->setUserContext($request);
 
-        if (app('honeybadger.isLumen')) {
-            $this->setLumenRouteActionContext($request);
-        } else {
-            $this->setRouteActionContext();
+            if (app('honeybadger.isLumen')) {
+                $this->setLumenRouteActionContext($request);
+            } else {
+                $this->setRouteActionContext();
+            }
         }
 
         return $next($request);
