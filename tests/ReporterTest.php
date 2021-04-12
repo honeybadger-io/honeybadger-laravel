@@ -2,7 +2,6 @@
 
 namespace Honeybadger\Tests;
 
-use GuzzleHttp\Psr7\Response;
 use Honeybadger\Contracts\Reporter;
 use Honeybadger\HoneybadgerClient;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerLaravel;

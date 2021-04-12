@@ -12,6 +12,7 @@ class TestController
     public function recordException()
     {
         app('honeybadger')->notify(new \Exception('Test exception'));
+
         return response()->json([]);
     }
 }
