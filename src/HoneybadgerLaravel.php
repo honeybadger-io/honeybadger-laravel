@@ -11,7 +11,7 @@ use Throwable;
 
 class HoneybadgerLaravel extends Honeybadger
 {
-    const VERSION = '3.8.1';
+    const VERSION = '3.9.1';
 
     // Don't forget to sync changes to this with the config file defaults
     const DEFAULT_BREADCRUMBS = [
@@ -49,6 +49,8 @@ class HoneybadgerLaravel extends Honeybadger
 
     public function notify(Throwable $throwable, Request $request = null, array $additionalParams = []): array
     {
+        $this->setRouteActionAndUserContext($request ?: request());
+
         $result = parent::notify($throwable, $request, $additionalParams);
 
         // Persist the most recent error for the rest of the request, so we can display on error page.
@@ -58,5 +60,17 @@ class HoneybadgerLaravel extends Honeybadger
         }
 
         return $result;
+    }
+
+    protected function setRouteActionAndUserContext(Request $request): void
+    {
+        // For backwards compatibility, check if context has already been set by the middleware
+        if ($this->context->get('user_id') === null
+            && $this->context->get('honeybadger_component') === null
+            && $this->context->get('honeybadger_action') === null) {
+            $contextManager = new ContextManager($this);
+            $contextManager->setRouteAction($request);
+            $contextManager->setUserContext($request);
+        }
     }
 }

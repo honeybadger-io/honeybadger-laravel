@@ -8,4 +8,10 @@ class TestController
     {
         return response()->json([]);
     }
+
+    public function recordException()
+    {
+        app('honeybadger')->notify(new \Exception('Test exception'));
+        return response()->json([]);
+    }
 }
