@@ -5,6 +5,7 @@ namespace Honeybadger\HoneybadgerLaravel;
 use Honeybadger\Contracts\Reporter;
 use Honeybadger\Exceptions\ServiceException;
 use Honeybadger\Honeybadger;
+use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Request;
 use Throwable;
@@ -60,6 +61,18 @@ class HoneybadgerLaravel extends Honeybadger
         }
 
         return $result;
+    }
+
+    protected function shouldReport(Throwable $throwable): bool
+    {
+        // Always report if the user is running a test.
+        if ($throwable instanceof TestException) {
+            return true;
+        }
+
+        return ! $this->excludedException($throwable)
+            && ! empty($this->config['api_key'])
+            && $this->config['report_data'];
     }
 
     protected function setRouteActionAndUserContext(Request $request): void
