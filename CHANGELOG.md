@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.10.0] - 2021-05-09
+### Added
+- Added `report_data` to default config ([#85](https://github.com/honeybadger-io/honeybadger-laravel/pull/85))
+
 ## [3.9.0] - 2021-04-12
 ### Added
 - Honeybadger can now set route action and user context automatically—no middleware needed ([#82](https://github.com/honeybadger-io/honeybadger-laravel/pull/82/))

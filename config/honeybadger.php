@@ -9,6 +9,16 @@ return [
     'api_key' => env('HONEYBADGER_API_KEY'),
 
     /**
+     * The application environment.
+     */
+    'environment_name' => env('APP_ENV'),
+
+    /**
+     * To disable exception reporting, set this to false.
+     */
+    'report_data' => ! in_array(env('APP_ENV'), ['local', 'testing']),
+
+    /**
      * When reporting an exception, we'll automatically include relevant environment variables.
      * See the Environment Whitelist (https://docs.honeybadger.io/lib/php/reference/configuration.html#environment-whitelist) for details.
      * Use this section to filter or include env variables.
@@ -58,11 +68,6 @@ return [
      * The root directory of your project.
      */
     'project_root' => base_path(),
-
-    /**
-     * The application environment.
-     */
-    'environment_name' => env('APP_ENV'),
 
     /**
      * Older PHP functions use the Error class, while modern PHP mostly uses Exception.
