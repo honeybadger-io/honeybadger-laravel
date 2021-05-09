@@ -29,7 +29,7 @@ class HoneybadgerTestCommandTest extends TestCase
     {
         $mock = $this->createMock(Reporter::class);
         $mock->method('notify')
-            ->willReturn([]);
+            ->willReturn(['id' => 8633]);
 
         $this->app->instance('honeybadger.loud', $mock);
 
@@ -40,7 +40,7 @@ class HoneybadgerTestCommandTest extends TestCase
 
         $command->expects($this->once())
             ->method('info')
-            ->with('A test exception was sent to Honeybadger');
+            ->with("Successfully sent a test exception to Honeybadger: https://app.honeybadger.io/notice/8633");
 
         $this->app[Kernel::class]->registerCommand($command);
 
