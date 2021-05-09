@@ -6,7 +6,6 @@ use Exception;
 use Honeybadger\Contracts\Reporter;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 
 class HoneybadgerTestCommand extends Command
 {
@@ -30,7 +29,7 @@ class HoneybadgerTestCommand extends Command
         $honeybadger = app('honeybadger.loud');
 
         try {
-            if (!config('honeybadger.report_data')) {
+            if (! config('honeybadger.report_data')) {
                 $this->info("You have `report_data` set to false in your config. Errors won't be reported in this environment.");
                 $this->info("We've switched it to true for this test, but you should check that it's enabled for your production environments.");
             }

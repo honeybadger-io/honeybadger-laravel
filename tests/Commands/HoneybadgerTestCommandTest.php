@@ -40,7 +40,7 @@ class HoneybadgerTestCommandTest extends TestCase
 
         $command->expects($this->once())
             ->method('info')
-            ->with("Successfully sent a test exception to Honeybadger: https://app.honeybadger.io/notice/8633");
+            ->with('Successfully sent a test exception to Honeybadger: https://app.honeybadger.io/notice/8633');
 
         $this->app[Kernel::class]->registerCommand($command);
 
