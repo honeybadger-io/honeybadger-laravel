@@ -83,7 +83,7 @@ return [
      * See https://docs.guzzlephp.org/en/stable/request-options.html for a description of each item,.
      */
     'client' => [
-        'timeout' => 0,
+        'timeout' => 15,
         'proxy' => [],
         'verify' => env('HONEYBADGER_VERIFY_SSL', true),
     ],
