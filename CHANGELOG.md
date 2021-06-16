@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.11.0] - 2021-06-16
+### Added
+- Set default client timeout ([#87](https://github.com/honeybadger-io/honeybadger-laravel/pull/87))
+
 ## [3.10.0] - 2021-05-09
 ### Added
 - Added `report_data` to default config ([#85](https://github.com/honeybadger-io/honeybadger-laravel/pull/85))
