@@ -2,14 +2,7 @@
 
 namespace Honeybadger\Tests;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Log;
-use Honeybadger\Contracts\Reporter;
-use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerLogDriver;
 use Honeybadger\LogHandler;
 

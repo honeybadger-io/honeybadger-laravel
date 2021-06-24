@@ -26,7 +26,7 @@
         "sixlive/dotenv-editor": "^1.1",
         "illuminate/console": "^7.0|^8.0",
         "illuminate/support": "^7.0|^8.0",
-        "monolog/monolog": "^1.23",
+        "monolog/monolog": "^2.0",
         "ext-json": "*"
     },
     "require-dev": {
