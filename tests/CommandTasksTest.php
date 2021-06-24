@@ -2,9 +2,9 @@
 
 namespace Honeybadger\Tests;
 
-use Illuminate\Console\OutputStyle;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TaskFailed;
+use Illuminate\Console\OutputStyle;
 
 class CommandTasksTest extends TestCase
 {
@@ -44,7 +44,7 @@ class CommandTasksTest extends TestCase
         $commandTasks->setOutput($output);
         $commandTasks->addTask('Example Task', function () {
             return false;
-        });
+        }, true);
 
         $commandTasks->runTasks();
 
@@ -73,7 +73,7 @@ class CommandTasksTest extends TestCase
         });
         $commandTasks->addTask('Example failed task', function () {
             return false;
-        });
+        }, true);
 
         $commandTasks->runTasks();
 
@@ -94,7 +94,7 @@ class CommandTasksTest extends TestCase
         });
         $commandTasks->addTask('Example failed task', function () {
             return false;
-        });
+        }, true);
 
         $commandTasks->runTasks();
 

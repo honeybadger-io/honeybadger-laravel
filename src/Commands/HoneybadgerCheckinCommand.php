@@ -3,8 +3,8 @@
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
 use Exception;
-use Illuminate\Console\Command;
 use Honeybadger\Contracts\Reporter;
+use Illuminate\Console\Command;
 
 class HoneybadgerCheckinCommand extends Command
 {
@@ -42,7 +42,7 @@ class HoneybadgerCheckinCommand extends Command
      *
      * @return string
      */
-    private function apiKey() : string
+    private function apiKey(): string
     {
         return is_array($this->argument('id'))
             ? $this->argument('id')[0]

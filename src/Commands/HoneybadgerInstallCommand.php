@@ -2,14 +2,13 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
-use Honeybadger\Honeybadger;
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Config;
-use Honeybadger\Exceptions\ServiceException;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
-use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
-use Honeybadger\HoneybadgerLaravel\Exceptions\TaskFailed;
 use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
+use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
+use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
+use Throwable;
 
 class HoneybadgerInstallCommand extends Command
 {
@@ -70,12 +69,13 @@ class HoneybadgerInstallCommand extends Command
             );
         }
 
-        $results = $this->sendTest();
+        $this->addTestExceptionTask();
 
         try {
             $this->tasks->runTasks();
-            $this->outputSuccessMessage(array_get($results ?? [], 'id', ''));
-        } catch (TaskFailed $e) {
+            $testExceptionResult = $this->tasks->getResults()['Send test exception to Honeybadger'];
+            $this->outputSuccessMessage(Arr::get($testExceptionResult, 'id', ''));
+        } catch (Throwable $e) {
             $this->line('');
             $this->error($e->getMessage());
         }
@@ -86,7 +86,7 @@ class HoneybadgerInstallCommand extends Command
      *
      * @return array
      */
-    private function gatherConfig() : array
+    private function gatherConfig(): array
     {
         return [
             'api_key' => $this->argument('apiKey') ?? $this->promptForApiKey(),
@@ -98,34 +98,31 @@ class HoneybadgerInstallCommand extends Command
      *
      * @return string
      */
-    private function promptForApiKey() : string
+    private function promptForApiKey(): string
     {
         return $this->requiredSecret('Your API key', 'The API key is required');
     }
 
     /**
      * Send test exception to Honeybadger.
-     *
-     * @return array
      */
-    private function sendTest() : array
+    private function addTestExceptionTask(): void
     {
         Config::set('honeybadger.api_key', $this->config['api_key']);
 
-        try {
-            $result = $this->installer->sendTestException();
-        } catch (ServiceException $e) {
-            $result = [];
-        }
-
         $this->tasks->addTask(
             'Send test exception to Honeybadger',
-            function () use ($result) {
-                return ! empty($result);
-            }
-        );
+            function () {
+                if (! config('honeybadger.report_data')) {
+                    $this->info("You have `report_data` set to false in your config. Errors won't be reported in this environment.");
+                    $this->info("We've switched it to true for this test, but you should check that it's enabled for your production environments.");
+                }
+                $result = $this->installer->sendTestException();
 
-        return $result;
+                return empty($result) ? false : $result;
+            },
+            true
+        );
     }
 
     /**
@@ -133,7 +130,7 @@ class HoneybadgerInstallCommand extends Command
      *
      * @return void
      */
-    private function writeEnv() : void
+    private function writeEnv(): void
     {
         $this->tasks->addTask(
             'Write HONEYBADGER_API_KEY to .env',
@@ -154,6 +151,16 @@ class HoneybadgerInstallCommand extends Command
                 );
             }
         );
+
+        $this->tasks->addTask(
+            'Write HONEYBADGER_VERIFY_SSL placeholder to .env.example',
+            function () {
+                return $this->installer->writeConfig(
+                    ['HONEYBADGER_VERIFY_SSL' => ''],
+                    base_path('.env.example')
+                );
+            }
+        );
     }
 
     /**
@@ -161,7 +168,7 @@ class HoneybadgerInstallCommand extends Command
      *
      * @return bool
      */
-    public function publishConfig() : bool
+    public function publishConfig(): bool
     {
         if (app('honeybadger.isLumen')) {
             return $this->installer->publishLumenConfig();
@@ -176,7 +183,7 @@ class HoneybadgerInstallCommand extends Command
      * @param  string  $noticeId
      * @return void
      */
-    private function outputSuccessMessage(string $noticeId) : void
+    private function outputSuccessMessage(string $noticeId): void
     {
         $this->line(SuccessMessage::make($noticeId));
     }

@@ -2,21 +2,18 @@
 
 namespace Honeybadger\HoneybadgerLaravel;
 
-use InvalidArgumentException;
-use Honeybadger\Contracts\Reporter;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
-use sixlive\DotenvEditor\DotenvEditor;
-use Illuminate\Support\Facades\Artisan;
-use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
+use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
+use Illuminate\Support\Facades\Artisan;
+use InvalidArgumentException;
+use sixlive\DotenvEditor\DotenvEditor;
 
 class Installer implements InstallerContract
 {
     /**
      * {@inheritdoc}
      */
-    public function writeConfig(array $config, string $filePath) : bool
+    public function writeConfig(array $config, string $filePath): bool
     {
         try {
             $env = new DotenvEditor;
@@ -35,21 +32,18 @@ class Installer implements InstallerContract
     /**
      * {@inheritdoc}
      */
-    public function sendTestException() : array
+    public function sendTestException(): array
     {
-        return App::makeWith(
-            Reporter::class,
-            ['config' => Config::get('honeybadger')]
-        )->notify(new TestException);
+        return app('honeybadger.loud')->notify(new TestException);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function publishLaravelConfig() : bool
+    public function publishLaravelConfig(): bool
     {
         return Artisan::call('vendor:publish', [
-            '--provider' => HoneybadgerServiceProvider::class,
+            '--tag' => 'honeybadger-config',
         ]) === 0;
     }
 

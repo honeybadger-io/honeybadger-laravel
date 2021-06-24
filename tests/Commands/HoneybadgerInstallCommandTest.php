@@ -2,14 +2,13 @@
 
 namespace Honeybadger\Tests\Commands;
 
-use Honeybadger\Honeybadger;
-use Honeybadger\Tests\TestCase;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Contracts\Console\Kernel;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
+use Honeybadger\HoneybadgerLaravel\Commands\SuccessMessage;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
-use Honeybadger\HoneybadgerLaravel\Commands\SuccessMessage;
-use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
+use Honeybadger\Tests\TestCase;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\Config;
 
 class HoneybadgerInstallCommandTest extends TestCase
 {
@@ -52,8 +51,11 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->assertEquals([
             'Write HONEYBADGER_API_KEY to .env' => true,
             'Write HONEYBADGER_API_KEY placeholder to .env.example' => true,
+            'Write HONEYBADGER_VERIFY_SSL placeholder to .env.example' => true,
             'Publish the config file' => true,
-            'Send test exception to Honeybadger' => true,
+            'Send test exception to Honeybadger' => [
+                'id' => '1234',
+            ],
         ], $commandTasks->getResults());
     }
 
@@ -149,8 +151,8 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $this->artisan('honeybadger:install');
 
-        $this->assertTrue($commandTasks->getResults()['Send test exception to Honeybadger']);
-        $this->assertEquals(Config::get('honeybadger.api_key'), 'asdf123');
+        $this->assertEquals(['id' => '1234'], $commandTasks->getResults()['Send test exception to Honeybadger']);
+        $this->assertEquals('asdf123', Config::get('honeybadger.api_key'));
     }
 
     /** @test */
@@ -206,17 +208,18 @@ class HoneybadgerInstallCommandTest extends TestCase
     {
         $installer = $this->createMock(Installer::class);
 
+        $installer->method('shouldPublishConfig')
+            ->willReturn(false);
+        $installer->method('writeConfig')
+            ->willReturn(true);
         $installer->method('sendTestException')
             ->willReturn(['id' => '1234']);
 
         $this->app[Installer::class] = $installer;
 
-        $commandTasks = $this->createMock(CommandTasks::class);
-        $this->app[CommandTasks::class] = $commandTasks;
-
         $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
             ->disableOriginalClone()
-            ->setMethods([
+            ->onlyMethods([
                 'requiredSecret',
                 'confirm',
                 'line',
@@ -257,7 +260,7 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command->expects($this->once())
             ->method('error')
-            ->with('Write HONEYBADGER_API_KEY to .env failed, please review output and try again.');
+            ->with('Send test exception to Honeybadger failed, please review output and try again.');
 
         $this->app[Kernel::class]->registerCommand($command);
 

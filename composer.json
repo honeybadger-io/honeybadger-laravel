@@ -21,19 +21,19 @@
         }
     ],
     "require": {
-        "php": "^7.1",
-        "honeybadger-io/honeybadger-php": "^1.2",
+        "php": "^7.2|^8.0",
+        "honeybadger-io/honeybadger-php": "^2.8.2",
         "sixlive/dotenv-editor": "^1.1",
-        "illuminate/console": "^5.5",
-        "illuminate/support": "^5.5",
-        "monolog/monolog": "^1.23"
+        "illuminate/console": "^7.0|^8.0",
+        "illuminate/support": "^7.0|^8.0",
+        "monolog/monolog": "^1.23",
+        "ext-json": "*"
     },
     "require-dev": {
         "larapack/dd": "^1.0",
-        "mockery/mockery": "^1.1",
-        "sempro/phpunit-pretty-print": "^1.0",
-        "orchestra/testbench": "^3.5",
-        "phpunit/phpunit": "^6.0|^7.0"
+        "mockery/mockery": "^1.4",
+        "orchestra/testbench": "^5.0|^6.0",
+        "phpunit/phpunit": "^8.4|^9.3"
     },
     "autoload": {
         "psr-4": {

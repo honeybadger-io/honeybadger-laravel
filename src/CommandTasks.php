@@ -2,9 +2,9 @@
 
 namespace Honeybadger\HoneybadgerLaravel;
 
-use Illuminate\Support\Collection;
-use Illuminate\Console\OutputStyle;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TaskFailed;
+use Illuminate\Console\OutputStyle;
+use Illuminate\Support\Collection;
 
 class CommandTasks
 {
@@ -34,7 +34,7 @@ class CommandTasks
      * @param  \Illuminate\Console\OutputStyle  $output
      * @return self
      */
-    public function setOutput(OutputStyle $output) : self
+    public function setOutput(OutputStyle $output): self
     {
         $this->output = $output;
 
@@ -43,14 +43,13 @@ class CommandTasks
 
     /**
      * Add task with result to the stack.
-     *
-     * @param  string  $name
-     * @param  callable  $task
-     * @return self
      */
-    public function addTask(string $name, callable $task) : self
+    public function addTask(string $name, callable $task, bool $throwOnFail = false): self
     {
-        $this->tasks[$name] = $task;
+        $this->tasks[$name] = [
+            'task' => $task,
+            'throw_on_fail' => $throwOnFail,
+        ];
 
         return $this;
     }
@@ -62,10 +61,10 @@ class CommandTasks
      *
      * @throws \Honeybadger\HoneybadgerLaravel\TaskFailed
      */
-    public function runTasks() : void
+    public function runTasks(): void
     {
         Collection::make($this->tasks)->each(function ($task, $description) {
-            $result = $task();
+            $result = $task['task']();
 
             if ($this->output) {
                 $this->output->writeLn(vsprintf('%s: %s', [
@@ -76,7 +75,7 @@ class CommandTasks
 
             $this->results[$description] = $result;
 
-            if (! $result && $this->throwOnError) {
+            if (! $result && $task['throw_on_fail'] && $this->throwOnError) {
                 throw new TaskFailed(sprintf('%s failed, please review output and try again.', $description));
             }
         });
@@ -87,7 +86,7 @@ class CommandTasks
      *
      * @return array
      */
-    public function getResults() : array
+    public function getResults(): array
     {
         return $this->results;
     }
@@ -95,7 +94,7 @@ class CommandTasks
     /**
      * @return bool
      */
-    public function hasFailedTasks() : bool
+    public function hasFailedTasks(): bool
     {
         return in_array(false, $this->results);
     }
@@ -103,7 +102,7 @@ class CommandTasks
     /**
      * @return self
      */
-    public function doNotThrowOnError() : self
+    public function doNotThrowOnError(): self
     {
         $this->throwOnError = false;
 

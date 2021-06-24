@@ -3,11 +3,11 @@
 namespace Honeybadger\Tests\Commands;
 
 use Exception;
-use Honeybadger\Tests\TestCase;
 use Honeybadger\Contracts\Reporter;
-use Illuminate\Contracts\Console\Kernel;
-use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
+use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
+use Honeybadger\Tests\TestCase;
+use Illuminate\Contracts\Console\Kernel;
 
 class HoneybadgerTestCommandTest extends TestCase
 {
@@ -19,7 +19,7 @@ class HoneybadgerTestCommandTest extends TestCase
             ->method('notify')
             ->with($this->isInstanceOf(TestException::class));
 
-        $this->app->instance(Reporter::class, $mock);
+        $this->app->instance('honeybadger.loud', $mock);
 
         $this->artisan('honeybadger:test');
     }
@@ -29,9 +29,9 @@ class HoneybadgerTestCommandTest extends TestCase
     {
         $mock = $this->createMock(Reporter::class);
         $mock->method('notify')
-            ->willReturn([]);
+            ->willReturn(['id' => 8633]);
 
-        $this->app->instance(Reporter::class, $mock);
+        $this->app->instance('honeybadger.loud', $mock);
 
         $command = $this->getMockBuilder(HoneybadgerTestCommand::class)
             ->disableOriginalClone()
@@ -40,7 +40,7 @@ class HoneybadgerTestCommandTest extends TestCase
 
         $command->expects($this->once())
             ->method('info')
-            ->with('A test exception was sent to Honeybadger');
+            ->with('Successfully sent a test exception to Honeybadger: https://app.honeybadger.io/notice/8633');
 
         $this->app[Kernel::class]->registerCommand($command);
 
@@ -52,9 +52,9 @@ class HoneybadgerTestCommandTest extends TestCase
     {
         $mock = $this->createMock(Reporter::class);
         $mock->method('notify')
-            ->will($this->throwException(new Exception('An error occured')));
+            ->will($this->throwException(new Exception('An error occurred')));
 
-        $this->app->instance(Reporter::class, $mock);
+        $this->app->instance('honeybadger.loud', $mock);
 
         $command = $this->getMockBuilder(HoneybadgerTestCommand::class)
             ->disableOriginalClone()
@@ -63,11 +63,11 @@ class HoneybadgerTestCommandTest extends TestCase
 
         $command->expects($this->once())
             ->method('error')
-            ->with('An error occured');
+            ->with('An error occurred');
 
         $this->app[Kernel::class]->registerCommand($command);
 
-        $this->app->instance(Honeybadger::class, $mock);
+        $this->app->instance('honeybadger.loud', $mock);
 
         $this->artisan('honeybadger:test');
     }
@@ -79,7 +79,7 @@ class HoneybadgerTestCommandTest extends TestCase
         $mock->method('notify')
             ->willReturn([]);
 
-        $this->app->instance(Reporter::class, $mock);
+        $this->app->instance('honeybadger.loud', $mock);
 
         $command = $this->getMockBuilder(HoneybadgerTestCommand::class)
             ->disableOriginalClone()
@@ -92,7 +92,7 @@ class HoneybadgerTestCommandTest extends TestCase
 
         $this->app[Kernel::class]->registerCommand($command);
 
-        $this->app->instance(Honeybadger::class, $mock);
+        $this->app->instance('honeybadger.loud', $mock);
 
         $this->artisan('honeybadger:test');
     }

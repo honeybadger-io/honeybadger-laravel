@@ -10,7 +10,7 @@ class SuccessMessage
      * @param  string  $noticeId
      * @return string
      */
-    public static function make(string $noticeId) : string
+    public static function make(string $noticeId): string
     {
         $message = <<<'EX'
 

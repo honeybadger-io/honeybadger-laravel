@@ -2,14 +2,12 @@
 
 namespace Honeybadger\Tests\Commands;
 
-use Honeybadger\Honeybadger;
-use Honeybadger\Tests\TestCase;
 use Honeybadger\Contracts\Reporter;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Artisan;
-use Honeybadger\HoneybadgerLaravel\Installer;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
-use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
+use Honeybadger\HoneybadgerLaravel\Installer;
+use Honeybadger\Tests\TestCase;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
 
 class InstallerTest extends TestCase
 {
@@ -60,7 +58,7 @@ class InstallerTest extends TestCase
             ->method('notify')
             ->with($this->isInstanceOf(TestException::class));
 
-        $this->app[Reporter::class] = $honeybadger;
+        $this->app['honeybadger.loud'] = $honeybadger;
 
         $installer = new Installer;
 
@@ -72,11 +70,11 @@ class InstallerTest extends TestCase
     {
         $honeybadger = $this->createMock(Reporter::class);
 
-        $this->app[Reporter::class] = $honeybadger;
+        $this->app['honeybadger.loud'] = $honeybadger;
 
         $installer = new Installer;
 
-        $this->app->resolving(Reporter::class, function ($api, $app) {
+        $this->app->resolving('honeybadger.loud', function ($api, $app) {
             $this->assertEquals('asdf123', $app['config']['honeybadger']['api_key']);
         });
 
@@ -94,9 +92,7 @@ class InstallerTest extends TestCase
 
         Artisan::shouldReceive('call')
             ->once()
-            ->with('vendor:publish', [
-                '--provider' => HoneybadgerServiceProvider::class,
-            ])->andReturn(0);
+            ->with('vendor:publish', ['--tag' => 'honeybadger-config'])->andReturn(0);
 
         $installer = new Installer($honeybadger);
 
@@ -104,7 +100,7 @@ class InstallerTest extends TestCase
     }
 
     /** @test */
-    public function publish_should_be_configed()
+    public function config_should_be_published()
     {
         $honeybadger = $this->createMock(Reporter::class);
 
