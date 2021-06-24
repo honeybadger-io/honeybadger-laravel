@@ -45,24 +45,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/honeybadger.php', 'honeybadger');
 
-        $this->app->singleton(Reporter::class, function ($app) {
-            return HoneybadgerLaravel::make($app['config']['honeybadger']);
-        });
-
-        $this->app->alias(Reporter::class, Honeybadger::class);
-        $this->app->alias(Reporter::class, 'honeybadger');
-
-        // In some cases (like the test command), we definitely want to throw any errors
-        // Laravel's contextual binding doesn't support method injection,
-        // so the handle() method will have to request this client specifically.
-        $this->app->singleton('honeybadger.loud', function ($app) {
-            $config = $app['config']['honeybadger'];
-            $config['service_exception_handler'] = function (ServiceException $e) {
-                throw $e;
-            };
-
-            return HoneybadgerLaravel::make($config);
-        });
+        $this->registerReporters();
 
         $this->app->bind(LogHandler::class, function ($app) {
             return new LogHandler($app[Reporter::class]);
@@ -189,5 +172,27 @@ class HoneybadgerServiceProvider extends ServiceProvider
         foreach ($breadcrumbs as $breadcrumb) {
             (new $breadcrumb)->register();
         }
+    }
+
+    protected function registerReporters(): void
+    {
+        $this->app->singleton(Reporter::class, function ($app) {
+            return HoneybadgerLaravel::make($app['config']['honeybadger']);
+        });
+
+        $this->app->alias(Reporter::class, Honeybadger::class);
+        $this->app->alias(Reporter::class, 'honeybadger');
+
+        // In some cases (like the test command), we definitely want to throw any errors
+        // Laravel's contextual binding doesn't support method injection,
+        // so the handle() method will have to request this client specifically.
+        $this->app->singleton('honeybadger.loud', function ($app) {
+            $config = $app['config']['honeybadger'];
+            $config['service_exception_handler'] = function (ServiceException $e) {
+                throw $e;
+            };
+
+            return HoneybadgerLaravel::make($config);
+        });
     }
 }
