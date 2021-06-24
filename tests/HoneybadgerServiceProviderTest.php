@@ -27,5 +27,5 @@ class HoneybadgerServiceProviderTest extends TestCase
     public function it_registers_the_log_handler()
     {
         $this->assertInstanceOf(LogHandler::class, $this->app[LogHandler::class]);
-    }    
+    }
 }
