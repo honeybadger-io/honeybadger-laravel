@@ -14,7 +14,7 @@ class LogDriverTest extends TestCase
         $this->app['config']->set('logging.channels.honeybadger', [
             'driver'  => 'custom',
             'via' => HoneybadgerLogDriver::class,
-            'name' => 'asdf' // optional point of customization
+            'name' => 'asdf', // optional point of customization
         ]);
 
         $logHandler = $this->getMockBuilder(LogHandler::class)

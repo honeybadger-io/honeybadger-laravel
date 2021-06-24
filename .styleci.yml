@@ -3,3 +3,4 @@ preset: laravel
 disabled:
   - laravel_braces
   - single_class_element_per_statement
+  - alpha_ordered_imports
