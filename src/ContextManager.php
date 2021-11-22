@@ -32,7 +32,14 @@ class ContextManager
 
     private function setLumenRouteActionContext(Request $request)
     {
-        $routeDetails = app()->router->getRoutes()[$request->method().$request->getPathInfo()]['action'];
+        $routes = app()->router->getRoutes();
+        $routeIdentifier = $request->method().$request->getPathInfo();
+
+        if (! array_key_exists($routeIdentifier, $routes)) {
+            return;
+        }
+
+        $routeDetails = $routes[$routeIdentifier]['action'];
 
         if (! isset($routeDetails['uses']) && ! empty($routeDetails[0])) {
             $this->honeybadger->setComponent(get_class($routeDetails[0]));
