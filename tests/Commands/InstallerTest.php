@@ -5,12 +5,18 @@ namespace Honeybadger\Tests\Commands;
 use Honeybadger\Contracts\Reporter;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 use Honeybadger\HoneybadgerLaravel\Installer;
+use Honeybadger\Tests\ConsoleKernel;
 use Honeybadger\Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 
 class InstallerTest extends TestCase
 {
+    protected function resolveApplicationConsoleKernel($app)
+    {
+        $app->singleton(\Illuminate\Contracts\Console\Kernel::class, ConsoleKernel::class);
+    }
+
     /** @test */
     public function gracefully_handles_env_file_not_existing()
     {
@@ -27,7 +33,7 @@ class InstallerTest extends TestCase
     }
 
     /** @test */
-    public function environment_configuration_can_be_wrtten()
+    public function environment_configuration_can_be_written()
     {
         $honeybadger = $this->createMock(Reporter::class);
 
