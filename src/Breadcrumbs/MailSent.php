@@ -30,7 +30,7 @@ class MailSent extends Breadcrumb
         }
 
         $keys = array_keys($addresses);
-        if (($keys[0] ?? null) == 0) {
+        if (($keys[0] ?? null) === 0) {
             // Symfony < v6 (SwiftMailer) uses an array keyed by email,
             // but v6 (Symfony Mailer) uses a list of Address objects
             $addresses = collect($addresses)->map->getAddress()->toArray();
