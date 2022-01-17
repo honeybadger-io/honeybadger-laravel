@@ -2,8 +2,9 @@
 
 namespace Honeybadger\Tests;
 
-use Orchestra\Testbench\Foundation\Console\Kernel;
+use Illuminate\Foundation\Console\Kernel;
 
 class ConsoleKernel extends Kernel
 {
+    protected $bootstrappers = [];
 }

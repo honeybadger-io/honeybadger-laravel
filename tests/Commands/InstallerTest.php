@@ -122,7 +122,7 @@ class InstallerTest extends TestCase
     }
 
     /** @test */
-    public function publish_should_not_be_configed()
+    public function publish_should_not_overwrite_existing_config()
     {
         $honeybadger = $this->createMock(Reporter::class);
 
