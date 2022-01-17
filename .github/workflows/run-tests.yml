@@ -11,24 +11,20 @@ jobs:
       fail-fast: false
       matrix:
         php:
+          - '8.1'
+          - '8.0'
           - '7.4'
           - '7.3'
-          - '8.0'
-          - '8.1'
         laravel:
+          - '9.*'
           - '8.*'
           - '7.*'
-        dependency-version:
-          - prefer-lowest
-          - prefer-stable
-        testbench:
-          - 6.*
-          - 5.*
+        deps:
+          - lowest
+          - any
         exclude:
-          - {laravel: '8.*', testbench: '5.*'}
-          - {laravel: '7.*', testbench: '6.*'}
-          - {php: '8.1', dependency-version: 'prefer-lowest'}
-          - {php: '8.1', laravel: '7.*'}
+          - {php: '8.1', deps: 'lowest'}
+          - {php: '8.0', deps: 'lowest'}
     name: >-
       P${{ matrix.php }} - L${{ matrix.laravel }} - ${{
       matrix.dependency-version }}
@@ -47,13 +43,17 @@ jobs:
         with:
           php-version: '${{ matrix.php }}'
           coverage: none
-      - name: Install dependencies
-        run: >
-          composer require "laravel/framework:${{ matrix.laravel }}"
-          "orchestra/testbench:${{ matrix.testbench }}" --no-interaction
-          --no-update
 
-          composer update --${{ matrix.dependency-version }} --prefer-dist
-          --no-interaction --no-suggest
+      - name: Install Laravel ${{ matrix.laravel }}
+        run: composer require "laravel/framework:${{ matrix.laravel }}" -W --no-interaction
+
+      - name: Install dependencies (lowest)
+        if: ${{ matrix.deps == 'lowest' }}
+        run: composer update --prefer-lowest --prefer-dist --no-interaction --no-suggest
+
+      - name: Install dependencies (lowest)
+        if: ${{ matrix.deps != 'lowest' }}
+        run: composer update --prefer-dist --no-interaction --no-suggest
+
       - name: Execute tests
         run: vendor/bin/phpunit
