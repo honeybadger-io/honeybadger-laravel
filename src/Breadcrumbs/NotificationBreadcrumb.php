@@ -9,8 +9,7 @@ use Illuminate\Notifications\Events\NotificationSent;
 abstract class NotificationBreadcrumb extends Breadcrumb
 {
     /**
-     * @param NotificationSending|NotificationFailed|NotificationSent $event
-     *
+     * @param  NotificationSending|NotificationFailed|NotificationSent  $event
      * @return array
      */
     protected function getMetadata($event): array

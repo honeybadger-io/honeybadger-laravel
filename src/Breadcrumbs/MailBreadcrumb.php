@@ -3,13 +3,12 @@
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
 use Illuminate\Mail\Events\MessageSending;
-use \Illuminate\Mail\Events\MessageSent;
+use Illuminate\Mail\Events\MessageSent;
 
 abstract class MailBreadcrumb extends Breadcrumb
 {
     /**
-     * @param MessageSending|MessageSent $event
-     *
+     * @param  MessageSending|MessageSent  $event
      * @return array
      */
     protected function getMetadata($event): array
