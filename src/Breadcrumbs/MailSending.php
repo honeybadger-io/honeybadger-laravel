@@ -38,6 +38,7 @@ class MailSending extends Breadcrumb
         } else {
             $addresses = $keys;
         }
+
         return implode(',', $addresses) ?: null;
     }
 }

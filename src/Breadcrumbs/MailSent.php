@@ -37,6 +37,7 @@ class MailSent extends Breadcrumb
         } else {
             $addresses = $keys;
         }
+
         return implode(',', $addresses) ?: null;
     }
 }
