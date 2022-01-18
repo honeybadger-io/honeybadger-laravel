@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Support for Laravel 9 ([#93](https://github.com/honeybadger-io/honeybadger-php/pull/93))
 
 ## [3.12.1] - 2021-11-22
 ### Fixed
