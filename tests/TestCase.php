@@ -16,4 +16,9 @@ class TestCase extends BaseTestCase
     {
         $app['config']->set('honeybadger.api_key', 'asdf');
     }
+
+    protected function resolveApplicationConsoleKernel($app)
+    {
+        $app->singleton(\Illuminate\Contracts\Console\Kernel::class, ConsoleKernel::class);
+    }
 }

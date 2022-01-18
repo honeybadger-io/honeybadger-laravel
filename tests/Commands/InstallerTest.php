@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Config;
 
 class InstallerTest extends TestCase
 {
-    protected function resolveApplicationConsoleKernel($app)
-    {
-        $app->singleton(\Illuminate\Contracts\Console\Kernel::class, ConsoleKernel::class);
-    }
-
     /** @test */
     public function gracefully_handles_env_file_not_existing()
     {
