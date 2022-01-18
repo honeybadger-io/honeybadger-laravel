@@ -138,7 +138,7 @@ class HoneybadgerInstallCommand extends Command
                 return $this->installer->writeConfig(
                     [
                         'HONEYBADGER_API_KEY' => $this->config['api_key'],
-                        'HONEYBADGER_VERIFY_SSL' => 'true'
+                        'HONEYBADGER_VERIFY_SSL' => 'true',
                     ],
                     base_path('.env')
                 );
@@ -151,7 +151,7 @@ class HoneybadgerInstallCommand extends Command
                 return $this->installer->writeConfig(
                     [
                         'HONEYBADGER_API_KEY' => '',
-                        'HONEYBADGER_VERIFY_SSL' => 'true'
+                        'HONEYBADGER_VERIFY_SSL' => 'true',
                     ],
                     base_path('.env.example')
                 );
