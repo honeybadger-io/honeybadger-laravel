@@ -136,7 +136,10 @@ class HoneybadgerInstallCommand extends Command
             'Write HONEYBADGER_API_KEY to .env',
             function () {
                 return $this->installer->writeConfig(
-                    ['HONEYBADGER_API_KEY' => $this->config['api_key']],
+                    [
+                        'HONEYBADGER_API_KEY' => $this->config['api_key'],
+                        'HONEYBADGER_VERIFY_SSL' => 'true'
+                    ],
                     base_path('.env')
                 );
             }
@@ -146,7 +149,10 @@ class HoneybadgerInstallCommand extends Command
             'Write HONEYBADGER_API_KEY placeholder to .env.example',
             function () {
                 return $this->installer->writeConfig(
-                    ['HONEYBADGER_API_KEY' => ''],
+                    [
+                        'HONEYBADGER_API_KEY' => '',
+                        'HONEYBADGER_VERIFY_SSL' => 'true'
+                    ],
                     base_path('.env.example')
                 );
             }
