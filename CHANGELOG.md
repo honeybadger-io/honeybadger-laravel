@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [3.12.1] - 2021-11-22
 ### Fixed
+- Install command: don't error when there's no base route ([#90](https://github.com/honeybadger-io/honeybadger-php/pull/90))
 
 ## [3.12.0] - 2021-07-02
 ### Added
