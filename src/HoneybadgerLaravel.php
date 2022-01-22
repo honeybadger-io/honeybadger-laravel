@@ -12,7 +12,7 @@ use Throwable;
 
 class HoneybadgerLaravel extends Honeybadger
 {
-    const VERSION = '3.12.1';
+    const VERSION = '3.13.0';
 
     // Don't forget to sync changes to this with the config file defaults
     const DEFAULT_BREADCRUMBS = [
