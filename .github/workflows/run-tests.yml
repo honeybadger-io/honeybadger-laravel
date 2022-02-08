@@ -47,10 +47,6 @@ jobs:
           php-version: '${{ matrix.php }}'
           coverage: none
 
-      - name: Allow pre-release versions (needed until Laravel 9 is released)
-        if: ${{ matrix.laravel == '9.*' }}
-        run: composer config minimum-stability dev
-
       - name: Install Laravel ${{ matrix.laravel }}
         run: composer require "laravel/framework:${{ matrix.laravel }}" --with-all-dependencies --no-interaction
 
