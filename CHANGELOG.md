@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.13.1] - 2022-02-16
+### Added
+- Support Dotenv editor v2 ([#96](https://github.com/honeybadger-io/honeybadger-php/pull/96))
+
 ## [3.13.0] - 2022-01-22
 ### Added
 - Support for Laravel 9 ([#93](https://github.com/honeybadger-io/honeybadger-php/pull/93))
