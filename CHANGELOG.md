@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Call `shouldReport()` of parent ([#97](https://github.com/honeybadger-io/honeybadger-php/pull/97))
+- Add `capture_deprecations` config flag ([#97](https://github.com/honeybadger-io/honeybadger-php/pull/97))
 
 ## [3.13.1] - 2022-02-16
 ### Added
