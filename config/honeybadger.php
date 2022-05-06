@@ -89,6 +89,11 @@ return [
     ],
 
     /**
+     * Enable reporting deprecation warnings.
+     */
+    'capture_deprecations' => false,
+
+    /**
      * Exception classes that should not be reported to Honeybadger.
      */
     'excluded_exceptions' => [],

@@ -70,9 +70,7 @@ class HoneybadgerLaravel extends Honeybadger
             return true;
         }
 
-        return ! $this->excludedException($throwable)
-            && ! empty($this->config['api_key'])
-            && $this->config['report_data'];
+        return parent::shouldReport($throwable);
     }
 
     protected function setRouteActionAndUserContext(Request $request): void
