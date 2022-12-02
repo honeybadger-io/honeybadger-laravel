@@ -142,7 +142,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
             });
 
             Blade::directive('honeybadgerFeedback', function () {
-                $action = rtrim(Honeybadger::API_URL, '/').'/feedback';
+                $action = rtrim(Honeybadger::API_URL, '/').'/v1/feedback';
 
                 return "<?php echo \$__env->make('honeybadger::feedback', ['action' => '$action'])->render(); ?>";
             });

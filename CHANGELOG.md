@@ -5,9 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [3.14.1] - 2022-12-03
+### Fixed
+- Correct feedback form URL ([#100](https://github.com/honeybadger-io/honeybadger-laravel/pull/100))
+
+## [3.14.0] - 2022-05-06
 ### Added
-- Call `shouldReport()` of parent ([#97](https://github.com/honeybadger-io/honeybadger-php/pull/97))
-- Add `capture_deprecations` config flag ([#97](https://github.com/honeybadger-io/honeybadger-php/pull/97))
+- Call `shouldReport()` of parent ([#98](https://github.com/honeybadger-io/honeybadger-laravel/pull/98))
+- Add `capture_deprecations` config flag ([#98](https://github.com/honeybadger-io/honeybadger-laravel/pull/98))
 
 ## [3.13.1] - 2022-02-16
 ### Added
