@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.15.0] - 2023-02-16
+### Added
+- Support for Laravel 10
+
 ## [3.14.1] - 2022-12-03
 ### Fixed
 - Correct feedback form URL ([#100](https://github.com/honeybadger-io/honeybadger-laravel/pull/100))
