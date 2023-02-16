@@ -57,11 +57,11 @@ jobs:
 
       - name: Install dependencies (lowest)
         if: ${{ matrix.deps == 'lowest' }}
-        run: composer update --prefer-lowest --prefer-dist --no-interaction --no-suggest
+        run: composer update --prefer-lowest --prefer-dist --no-interaction
 
       - name: Install dependencies (latest)
         if: ${{ matrix.deps != 'lowest' }}
-        run: composer update --prefer-dist --no-interaction --no-suggest
+        run: composer update --prefer-dist --no-interaction
 
       - name: Execute tests
         run: vendor/bin/phpunit
