@@ -125,6 +125,36 @@ class HoneybadgerServiceProvider extends ServiceProvider
                 }
             });
         });
+
+        /** @param string|array|null $environments */
+        Event::macro('thenPingHoneybadgerFromConfig', function (string $configKey, $environments = null) {
+            $id = config($configKey);
+
+            if (! $id) {
+                return $this;
+            }
+
+            return $this->then(function () use ($id, $environments) {
+                if ($environments === null || app()->environment($environments)) {
+                    app(Reporter::class)->checkin($id);
+                }
+            });
+        });
+
+        /** @param string|array|null $environments */
+        Event::macro('pingHoneybadgerOnSuccessFromConfig', function (string $configKey, $environments = null) {
+            $id = config($configKey);
+
+            if (! $id) {
+                return $this;
+            }
+
+            return $this->onSuccess(function () use ($id, $environments) {
+                if ($environments === null || app()->environment($environments)) {
+                    app(Reporter::class)->checkin($id);
+                }
+            });
+        });
     }
 
     private function registerBladeDirectives()
