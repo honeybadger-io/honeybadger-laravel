@@ -43,7 +43,7 @@ class HoneybadgerLaravel extends Honeybadger
                 'version' => self::VERSION.'/'.Honeybadger::VERSION,
             ],
             'service_exception_handler' => function (ServiceException $e) {
-                Log::error($e);
+                Log::warning($e);
             },
         ], $config));
     }

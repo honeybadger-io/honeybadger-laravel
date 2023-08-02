@@ -5,6 +5,7 @@ namespace Honeybadger\HoneybadgerLaravel;
 use Honeybadger\Contracts\Reporter;
 use Honeybadger\LogHandler;
 use Illuminate\Support\Facades\App;
+use Monolog\Logger;
 
 class HoneybadgerLogDriver
 {
