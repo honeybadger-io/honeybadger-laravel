@@ -8,9 +8,16 @@ use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 use Honeybadger\Tests\TestCase;
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\Config;
 
 class HoneybadgerTestCommandTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Config::set('honeybadger.report_data', true);
+    }
+
     /** @test */
     public function it_sends_a_test_exception_to_honeybadger()
     {
