@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Config;
 
 class HoneybadgerInstallCommandTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Config::set('honeybadger.report_data', true);
+    }
+
     /** @test */
     public function prompts_for_options_and_outputs_all_successful_operations()
     {
