@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.15.2] - 2023-08-06
+### Changed
+- Update honeybadger-php dependency to latest version
+
 ## [3.15.1] - 2023-08-04
 ### Fixed
 - Fix LogHandler creation by passing constructor arguments
