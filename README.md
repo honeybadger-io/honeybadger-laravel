@@ -28,6 +28,13 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 ## Contributing
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
+## Releasing
+1. Make sure `CHANGELOG.md` is updated
+2. Create a new release on the GitHub UI:
+  - Create a new tag (i.e. `v3.15.1`)
+  - Set release title as the version (i.e. `3.15.1`)
+  - Copy/paste changelog into release description
+
 ## Credits
 - [TJ Miller](https://github.com/sixlive)
 - [All Contributors](../../contributors)
