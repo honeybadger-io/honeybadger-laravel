@@ -29,6 +29,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Releasing
+We have enabled GitHub integration with [Packagist](https://packagist.org). Packagist is automatically notified when a new release is made on GitHub:
 1. Make sure `CHANGELOG.md` is updated
 2. Create a new release on the GitHub UI:
   - Create a new tag (i.e. `v3.15.1`)
