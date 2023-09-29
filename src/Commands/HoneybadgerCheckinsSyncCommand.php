@@ -42,7 +42,7 @@ class HoneybadgerCheckinsSyncCommand extends Command
                     $checkin->cronSchedule,
                     $checkin->cronTimezone,
                     $checkin->gracePeriod,
-                    $checkin->isDeleted() ? '❌Removed' : '✅Synchronized',
+                    $checkin->isDeleted() ? '❌ Removed' : '✅ Synchronized',
                 ];
             }, $result));
         } catch (Exception $e) {
