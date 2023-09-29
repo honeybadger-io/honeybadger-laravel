@@ -9,6 +9,11 @@ return [
     'api_key' => env('HONEYBADGER_API_KEY'),
 
     /**
+     * Your personal authentication token. Get this from authentication tab in your User Settings page.
+     */
+    'personal_auth_token' => env('HONEYBADGER_PERSONAL_AUTH_TOKEN'),
+
+    /**
      * The application environment.
      */
     'environment_name' => env('APP_ENV'),
@@ -128,4 +133,12 @@ return [
             Breadcrumbs\ViewRendered::class,
         ],
     ],
+
+    /**
+     * Define your checkins here and synchronize them to Honeybadger with the
+     * honeybadger:checkins-sync artisan command.
+     * The recommended approach is to run this command as part of your deploy process.
+     * Learn more about checkins at https://docs.honeybadger.io/api/reporting-check-ins/
+     */
+    'checkins' =>  [],
 ];
