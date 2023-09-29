@@ -33,15 +33,18 @@ class HoneybadgerCheckinsSyncCommand extends Command
         try {
             $localCheckins = config('honeybadger.checkins', []);
             $result = $checkinsManager->sync($localCheckins);
-            $msg = ['Checkins were synchronized with Honeybadger.'];
-            foreach ($result as $checkin) {
-                $msg[] = sprintf(
-                    'Checkin "%s" was %s',
+            $this->info('Checkins were synchronized with Honeybadger.');
+            $this->table(['Id', 'Name', 'Schedule Type', 'Cron Schedule', 'Cron Timezone', 'Grace Period', 'Status'], array_map(function ($checkin) {
+                return [
+                    $checkin->id,
                     $checkin->name,
-                    $checkin->isDeleted() ? 'removed' : 'synchronized'
-                );
-            }
-            $this->info(implode(PHP_EOL, $msg));
+                    $checkin->scheduleType,
+                    $checkin->cronSchedule,
+                    $checkin->cronTimezone,
+                    $checkin->gracePeriod,
+                    $checkin->isDeleted() ? '❌Removed' : '✅Synchronized',
+                ];
+            }, $result));
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
