@@ -36,7 +36,7 @@ class HoneybadgerCheckinsSyncCommand extends Command
             $msg = ['Checkins were synchronized with Honeybadger.'];
             foreach ($result as $checkin) {
                 $msg[] = sprintf(
-                    'Checkin %s was %s',
+                    'Checkin "%s" was %s',
                     $checkin->name,
                     $checkin->isDeleted() ? 'removed' : 'synchronized'
                 );
