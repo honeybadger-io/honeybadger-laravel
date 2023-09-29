@@ -41,7 +41,7 @@ class HoneybadgerCheckinsSyncCommand extends Command
                     $checkin->isDeleted() ? 'removed' : 'synchronized'
                 );
             }
-            $this->info(implode('\n', $msg));
+            $this->info(implode(PHP_EOL, $msg));
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
