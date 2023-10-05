@@ -2,9 +2,7 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
-use Exception;
-use Honeybadger\Contracts\CheckinsSync;
-use Honeybadger\Contracts\Reporter;
+use Honeybadger\Contracts\SyncCheckins;
 use Illuminate\Console\Command;
 
 class HoneybadgerCheckinsSyncCommand extends Command
@@ -14,7 +12,7 @@ class HoneybadgerCheckinsSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'honeybadger:checkins-sync';
+    protected $signature = 'honeybadger:checkins:sync';
 
     /**
      * The console command description.
@@ -28,25 +26,21 @@ class HoneybadgerCheckinsSyncCommand extends Command
      *
      * @return mixed
      */
-    public function handle(CheckinsSync $checkinsManager)
+    public function handle(SyncCheckins $checkinsManager)
     {
-        try {
-            $localCheckins = config('honeybadger.checkins', []);
-            $result = $checkinsManager->sync($localCheckins);
-            $this->info('Checkins were synchronized with Honeybadger.');
-            $this->table(['Id', 'Name', 'Schedule Type', 'Cron Schedule', 'Cron Timezone', 'Grace Period', 'Status'], array_map(function ($checkin) {
-                return [
-                    $checkin->id,
-                    $checkin->name,
-                    $checkin->scheduleType,
-                    $checkin->cronSchedule,
-                    $checkin->cronTimezone,
-                    $checkin->gracePeriod,
-                    $checkin->isDeleted() ? '❌ Removed' : '✅ Synchronized',
-                ];
-            }, $result));
-        } catch (Exception $e) {
-            $this->error($e->getMessage());
-        }
+        $localCheckins = config('honeybadger.checkins', []);
+        $result = $checkinsManager->sync($localCheckins);
+        $this->info('Checkins were synchronized with Honeybadger.');
+        $this->table(['Id', 'Name', 'Schedule Type', 'Cron Schedule', 'Cron Timezone', 'Grace Period', 'Status'], array_map(function ($checkin) {
+            return [
+                $checkin->id,
+                $checkin->name,
+                $checkin->scheduleType,
+                $checkin->cronSchedule,
+                $checkin->cronTimezone,
+                $checkin->gracePeriod,
+                $checkin->isDeleted() ? '❌ Removed' : '✅ Synchronized',
+            ];
+        }, $result));
     }
 }

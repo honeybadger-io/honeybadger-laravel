@@ -2,13 +2,8 @@
 
 namespace Honeybadger\Tests\Commands;
 
-use Exception;
-use Honeybadger\Contracts\CheckinsSync;
-use Honeybadger\Contracts\Reporter;
-use Honeybadger\Honeybadger;
-use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
+use Honeybadger\Contracts\SyncCheckins;
 use Honeybadger\Tests\TestCase;
-use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Config;
 
 class HoneybadgerCheckinsSyncCommandTest extends TestCase
@@ -40,13 +35,13 @@ class HoneybadgerCheckinsSyncCommandTest extends TestCase
     /** @test */
     public function it_reads_checkins_from_config()
     {
-        $mock = $this->createMock(CheckinsSync::class);
+        $mock = $this->createMock(SyncCheckins::class);
         $mock->expects($this->once())
             ->method('sync')
             ->with(self::CHECKINS);
 
-        $this->app->instance(CheckinsSync::class, $mock);
+        $this->app->instance(SyncCheckins::class, $mock);
 
-        $this->artisan('honeybadger:checkins-sync');
+        $this->artisan('honeybadger:checkins:sync');
     }
 }

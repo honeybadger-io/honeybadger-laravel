@@ -4,7 +4,7 @@ namespace Honeybadger\HoneybadgerLaravel;
 
 use GuzzleHttp\Client;
 use Honeybadger\CheckinsManager;
-use Honeybadger\Contracts\CheckinsSync;
+use Honeybadger\Contracts\SyncCheckins;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinsSyncCommand;
 use Honeybadger\LogHandler;
 use Honeybadger\Honeybadger;
@@ -187,15 +187,8 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
     protected function registerCheckinsSync(): void
     {
-        $this->app->singleton(CheckinsSync::class, function ($app) {
-            $config = $app['config']['honeybadger'];
-            $config['service_exception_handler'] = function (ServiceException $e) {
-                // Note: If you are using Honeybadger as a Logger, this exception
-                // can end up being reported to Honeybadger depending on your log level configuration.
-                Log::warning($e);
-            };
-
-            return new CheckinsManager($config);
+        $this->app->singleton(SyncCheckins::class, function ($app) {
+            return new CheckinsManager($app['config']['honeybadger']);
         });
     }
 
