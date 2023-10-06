@@ -136,7 +136,7 @@ return [
 
     /**
      * Define your checkins here and synchronize them to Honeybadger with the
-     * honeybadger:checkins-sync artisan command.
+     * honeybadger:checkins:sync artisan command.
      * The recommended approach is to run this command as part of your deploy process.
      * Learn more about checkins at https://docs.honeybadger.io/api/reporting-check-ins/
      */
