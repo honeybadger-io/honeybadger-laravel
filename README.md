@@ -31,7 +31,8 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 ## Releasing
 We have enabled GitHub integration with [Packagist](https://packagist.org). Packagist is automatically notified when a new release is made on GitHub:
 1. Update `CHANGELOG.md` with a new release and the changes
-2. Create a new release on the GitHub UI:
+2. Update `VERSION` in `src/HoneybadgerLaravel.php` with the new version
+3. Create a new release on the GitHub UI:
   - Create a new tag (i.e. `v3.15.1`)
   - Set release title as the version (i.e. `3.15.1`)
   - Copy/paste changelog into release description

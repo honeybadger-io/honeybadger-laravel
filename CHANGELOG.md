@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.16.0] - 2023-10-06
+### Added
+- Synchronize checkins `honeybadger:checkins:sync`
+
 ## [3.15.2] - 2023-08-06
 ### Changed
 - Update honeybadger-php dependency to latest version
