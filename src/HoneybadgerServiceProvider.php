@@ -77,7 +77,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         $this->commands([
             'command.honeybadger:test',
             'command.honeybadger:checkin',
-            'command.honeybadger:checkins-sync',
+            'command.honeybadger:checkins:sync',
             'command.honeybadger:install',
             'command.honeybadger:deploy',
         ]);
@@ -99,7 +99,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            'command.honeybadger:checkins-sync',
+            'command.honeybadger:checkins:sync',
             HoneybadgerCheckinsSyncCommand::class
         );
 
