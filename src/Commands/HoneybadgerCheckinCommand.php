@@ -10,10 +10,11 @@ class HoneybadgerCheckinCommand extends Command
 {
     /**
      * The name and signature of the console command.
+     * "id" can be the check-in ID or the check-in name.
      *
      * @var string
      */
-    protected $signature = 'honeybadger:checkin {idOrName}';
+    protected $signature = 'honeybadger:checkin {id}';
 
     /**
      * The console command description.
@@ -30,8 +31,9 @@ class HoneybadgerCheckinCommand extends Command
     public function handle(Reporter $honeybadger)
     {
         try {
-            $honeybadger->checkin($this->checkinIdOrName());
-            $this->info(sprintf('Checkin %s was sent to Honeybadger', $this->argument('id')));
+            $idOrName = $this->checkinIdOrName();
+            $honeybadger->checkin($idOrName);
+            $this->info(sprintf('Checkin %s was sent to Honeybadger', $idOrName));
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
@@ -44,8 +46,8 @@ class HoneybadgerCheckinCommand extends Command
      */
     private function checkinIdOrName(): string
     {
-        return is_array($this->argument('idOrName'))
-            ? $this->argument('idOrName')[0]
-            : $this->argument('idOrName');
+        return is_array($this->argument('id'))
+            ? $this->argument('id')[0]
+            : $this->argument('id');
     }
 }
