@@ -5,12 +5,12 @@ namespace Honeybadger\Tests\Commands;
 use Exception;
 use Honeybadger\Contracts\Reporter;
 use Honeybadger\Honeybadger;
-use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckInCommand;
 use Honeybadger\Tests\TestCase;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Config;
 
-class HoneybadgerCheckinCommandTest extends TestCase
+class HoneybadgerCheckInCommandTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -37,14 +37,14 @@ class HoneybadgerCheckinCommandTest extends TestCase
         $mock = $this->createMock(Reporter::class);
         $this->app->instance(Honeybadger::class, $mock);
 
-        $command = $this->getMockBuilder(HoneybadgerCheckinCommand::class)
+        $command = $this->getMockBuilder(HoneybadgerCheckInCommand::class)
             ->disableOriginalClone()
             ->setMethods(['info'])
             ->getMock();
 
         $command->expects($this->once())
             ->method('info')
-            ->with('Checkin 1234 was sent to Honeybadger');
+            ->with('Check-in 1234 was sent to Honeybadger');
 
         $this->app[Kernel::class]->registerCommand($command);
 
@@ -60,7 +60,7 @@ class HoneybadgerCheckinCommandTest extends TestCase
 
         $this->app->instance(Reporter::class, $mock);
 
-        $command = $this->getMockBuilder(HoneybadgerCheckinCommand::class)
+        $command = $this->getMockBuilder(HoneybadgerCheckInCommand::class)
             ->disableOriginalClone()
             ->setMethods(['error'])
             ->getMock();
