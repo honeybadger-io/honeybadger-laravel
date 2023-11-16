@@ -3,21 +3,20 @@
 namespace Honeybadger\HoneybadgerLaravel;
 
 use GuzzleHttp\Client;
-use Honeybadger\CheckinsManager;
-use Honeybadger\Contracts\SyncCheckins;
-use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinsSyncCommand;
+use Honeybadger\CheckInsManager;
+use Honeybadger\Contracts\SyncCheckIns;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckInsSyncCommand;
 use Honeybadger\LogHandler;
 use Honeybadger\Honeybadger;
 use Honeybadger\Contracts\Reporter;
 use Honeybadger\Exceptions\ServiceException;
-use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckinCommand;
+use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckInCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerDeployCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
 use Illuminate\Console\Scheduling\Event;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class HoneybadgerServiceProvider extends ServiceProvider
@@ -50,7 +49,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/honeybadger.php', 'honeybadger');
 
         $this->registerReporters();
-        $this->registerCheckinsSync();
+        $this->registerCheckInsSync();
 
         $this->app->bind(LogHandler::class, function ($app) {
             return new LogHandler($app[Reporter::class]);
@@ -95,12 +94,12 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
         $this->app->bind(
             'command.honeybadger:checkin',
-            HoneybadgerCheckinCommand::class
+            HoneybadgerCheckInCommand::class
         );
 
         $this->app->bind(
             'command.honeybadger:checkins:sync',
-            HoneybadgerCheckinsSyncCommand::class
+            HoneybadgerCheckInsSyncCommand::class
         );
 
         $this->app->bind(
@@ -185,10 +184,10 @@ class HoneybadgerServiceProvider extends ServiceProvider
         }
     }
 
-    protected function registerCheckinsSync(): void
+    protected function registerCheckInsSync(): void
     {
-        $this->app->singleton(SyncCheckins::class, function ($app) {
-            return new CheckinsManager($app['config']['honeybadger']);
+        $this->app->singleton(SyncCheckIns::class, function ($app) {
+            return new CheckInsManager($app['config']['honeybadger']);
         });
     }
 

@@ -2,11 +2,11 @@
 
 namespace Honeybadger\Tests\Commands;
 
-use Honeybadger\Contracts\SyncCheckins;
+use Honeybadger\Contracts\SyncCheckIns;
 use Honeybadger\Tests\TestCase;
 use Illuminate\Support\Facades\Config;
 
-class HoneybadgerCheckinsSyncCommandTest extends TestCase
+class HoneybadgerCheckInsSyncCommandTest extends TestCase
 {
     const CHECKINS = [
         [
@@ -33,14 +33,14 @@ class HoneybadgerCheckinsSyncCommandTest extends TestCase
     }
 
     /** @test */
-    public function it_reads_checkins_from_config()
+    public function it_reads_check_ins_from_config()
     {
-        $mock = $this->createMock(SyncCheckins::class);
+        $mock = $this->createMock(SyncCheckIns::class);
         $mock->expects($this->once())
             ->method('sync')
             ->with(self::CHECKINS);
 
-        $this->app->instance(SyncCheckins::class, $mock);
+        $this->app->instance(SyncCheckIns::class, $mock);
 
         $this->artisan('honeybadger:checkins:sync');
     }

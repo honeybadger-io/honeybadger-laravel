@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.18.1] - 2023-11-16
+### Refactored
+- Check-Ins: checkins to check-ins
+
 ## [3.18.0] - 2023-10-27
 ### Added
 - Check-Ins: Add support for slug url

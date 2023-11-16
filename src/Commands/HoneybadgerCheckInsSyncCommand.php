@@ -2,10 +2,10 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
-use Honeybadger\Contracts\SyncCheckins;
+use Honeybadger\Contracts\SyncCheckIns;
 use Illuminate\Console\Command;
 
-class HoneybadgerCheckinsSyncCommand extends Command
+class HoneybadgerCheckInsSyncCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -19,18 +19,18 @@ class HoneybadgerCheckinsSyncCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Synchronize checkins to Honeybadger';
+    protected $description = 'Synchronize check-ins to Honeybadger';
 
     /**
      * Execute the console command.
      *
      * @return mixed
      */
-    public function handle(SyncCheckins $checkinsManager)
+    public function handle(SyncCheckIns $checkinsManager)
     {
-        $localCheckins = config('honeybadger.checkins', []);
-        $result = $checkinsManager->sync($localCheckins);
-        $this->info('Checkins were synchronized with Honeybadger.');
+        $localCheckIns = config('honeybadger.checkins', []);
+        $result = $checkinsManager->sync($localCheckIns);
+        $this->info('Check-ins were synchronized with Honeybadger.');
         $this->table(['Id', 'Name', 'Slug', 'Schedule Type', 'Report Period', 'Cron Schedule', 'Cron Timezone', 'Grace Period', 'Status'], array_map(function ($checkin) {
             return [
                 $checkin->id,

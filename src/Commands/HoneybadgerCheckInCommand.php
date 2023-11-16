@@ -6,7 +6,7 @@ use Exception;
 use Honeybadger\Contracts\Reporter;
 use Illuminate\Console\Command;
 
-class HoneybadgerCheckinCommand extends Command
+class HoneybadgerCheckInCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -31,9 +31,9 @@ class HoneybadgerCheckinCommand extends Command
     public function handle(Reporter $honeybadger)
     {
         try {
-            $idOrName = $this->checkinIdOrName();
+            $idOrName = $this->checkInIdOrName();
             $honeybadger->checkin($idOrName);
-            $this->info(sprintf('Checkin %s was sent to Honeybadger', $idOrName));
+            $this->info(sprintf('Check-in %s was sent to Honeybadger', $idOrName));
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
@@ -44,7 +44,7 @@ class HoneybadgerCheckinCommand extends Command
      *
      * @return string
      */
-    private function checkinIdOrName(): string
+    private function checkInIdOrName(): string
     {
         return is_array($this->argument('id'))
             ? $this->argument('id')[0]
