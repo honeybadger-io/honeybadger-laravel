@@ -10,14 +10,12 @@ class HoneybadgerCheckInsSyncCommandTest extends TestCase
 {
     const CHECKINS = [
         [
-            'project_id' => 'p1234',
-            'name' => 'simple checkin test',
+            'slug' => 'simple-checkin-test',
             'scheduleType' => 'simple',
             'report_period' => '1 day',
         ],
         [
-            'project_id' => 'p1234',
-            'name' => 'cron checkin test',
+            'slug' => 'cron-checkin-test',
             'scheduleType' => 'cron',
             'cron_schedule' => '0 * * * *',
         ],
