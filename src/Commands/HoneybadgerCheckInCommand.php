@@ -10,7 +10,7 @@ class HoneybadgerCheckInCommand extends Command
 {
     /**
      * The name and signature of the console command.
-     * "id" can be the check-in ID or the check-in name.
+     * "id" can be the check-in ID or the check-in slug.
      *
      * @var string
      */
@@ -31,20 +31,15 @@ class HoneybadgerCheckInCommand extends Command
     public function handle(Reporter $honeybadger)
     {
         try {
-            $idOrName = $this->checkInIdOrName();
-            $honeybadger->checkin($idOrName);
-            $this->info(sprintf('Check-in %s was sent to Honeybadger', $idOrName));
+            $idOrSlug = $this->checkInIdOrSlug();
+            $honeybadger->checkin($idOrSlug);
+            $this->info(sprintf('Check-in %s was sent to Honeybadger', $idOrSlug));
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
     }
 
-    /**
-     * Get the API key from input.
-     *
-     * @return string
-     */
-    private function checkInIdOrName(): string
+    private function checkInIdOrSlug(): string
     {
         return is_array($this->argument('id'))
             ? $this->argument('id')[0]
