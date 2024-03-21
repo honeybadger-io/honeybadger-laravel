@@ -55,30 +55,26 @@ class AutomaticBreadcrumbsTest extends TestCase
             return response()->json([]);
         });
 
+        $matcher = $this->exactly(2);
         $honeybadger = $this->createMock(Reporter::class);
-        $honeybadger->expects($this->exactly(2))
+        $honeybadger->expects($matcher)
             ->method('addBreadcrumb')
-            ->withConsecutive(
-                [
-                    'Route matched',
-                    [
+            ->willReturnCallback(function ($message, $metadata, $category) use ($matcher) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals([
                         'uri' => 'test',
                         'methods' => 'GET,HEAD',
                         'handler' => 'Honeybadger\Tests\Fixtures\TestController@index',
                         'name' => 'testing',
-                    ],
-                    'request',
-                ],
-                [
-                    'Route matched',
-                    [
+                    ], $metadata),
+                    2 => $this->assertEquals([
                         'uri' => 'testClosure',
                         'methods' => 'POST',
                         'handler' => 'Closure',
                         'name' => null,
-                    ],
-                    'request',
-                ]);
+                    ], $metadata)
+                };
+            });
         $this->app->instance(Reporter::class, $honeybadger);
 
         $this->get('test');
@@ -104,7 +100,7 @@ class AutomaticBreadcrumbsTest extends TestCase
     public function adds_breadcrumbs_for_views()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [ViewRendered::class]);
-        Config::set('view.paths', [realpath(__DIR__.'/Fixtures/views')]);
+        Config::set('view.paths', [realpath(__DIR__ . '/Fixtures/views')]);
         Route::get('test', function () {
             return view('test');
         });
@@ -114,7 +110,7 @@ class AutomaticBreadcrumbsTest extends TestCase
             ->method('addBreadcrumb')
             ->with('View rendered', [
                 'name' => 'test',
-                'path' => realpath(__DIR__.'/Fixtures/views').'/test.blade.php',
+                'path' => realpath(__DIR__ . '/Fixtures/views') . '/test.blade.php',
             ], 'render');
 
         $this->app->instance(Reporter::class, $honeybadger);
@@ -134,35 +130,18 @@ class AutomaticBreadcrumbsTest extends TestCase
         $this->loadLaravelMigrations();
 
         Honeybadger::clearResolvedInstances();
+        $matcher = $this->exactly(4);
         $honeybadger = $this->createMock(Reporter::class);
-        $honeybadger->expects($this->exactly(4))
+        $honeybadger->expects($matcher)
             ->method('addBreadcrumb')
-            ->withConsecutive(
-                [
-                    'Database transaction started',
-                    ['connectionName' => 'test'],
-                    'query',
-                ],
-                [
-                    'Database query executed',
-                    $this->callback(function ($metadata) {
-                        return $metadata['sql'] === 'select * from ?'
-                            && $metadata['connectionName'] === 'test'
-                            && preg_match('/\d\.\d\dms/', $metadata['duration']);
-                    }),
-                    'query',
-                ],
-                [
-                    'Database transaction rolled back',
-                    ['connectionName' => 'test'],
-                    'query',
-                ],
-                [
-                    'Database transaction committed',
-                    ['connectionName' => 'test'],
-                    'query',
-                ]
-            );
+            ->willReturnCallback(function ($message, $metadata, $category) use ($matcher) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals('Database transaction started', $message),
+                    2 => $this->assertEquals('Database query executed', $message),
+                    3 => $this->assertEquals('Database transaction rolled back', $message),
+                    4 => $this->assertEquals('Database transaction committed', $message)
+                };
+            });
         $this->app->instance(Reporter::class, $honeybadger);
 
         DB::beginTransaction();
@@ -177,31 +156,16 @@ class AutomaticBreadcrumbsTest extends TestCase
         Config::set('honeybadger.breadcrumbs.automatic', [NotificationSending::class, NotificationSent::class]);
         Config::set('mail.default', 'log');
 
+        $matcher = $this->exactly(2);
         $honeybadger = $this->createMock(Reporter::class);
-        $honeybadger->expects($this->exactly(2))
+        $honeybadger->expects($matcher)
             ->method('addBreadcrumb')
-            ->withConsecutive(
-                [
-                    'Sending notification',
-                    [
-                        'notification' => TestNotification::class,
-                        'channel' => 'mail',
-                        'queue' => null,
-                        'notifiable' => TestUser::class,
-                    ],
-                    'notification',
-                ],
-                [
-                    'Notification sent',
-                    [
-                        'notification' => TestNotification::class,
-                        'channel' => 'mail',
-                        'queue' => null,
-                        'notifiable' => TestUser::class,
-                    ],
-                    'notification',
-                ]
-            );
+            ->willReturnCallback(function ($message, $metadata, $category) use ($matcher) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals('Sending notification', $message),
+                    2 => $this->assertEquals('Notification sent', $message),
+                };
+            });
         $this->app->instance(Reporter::class, $honeybadger);
 
         $user = new TestUser;
@@ -212,38 +176,19 @@ class AutomaticBreadcrumbsTest extends TestCase
     public function adds_breadcrumbs_for_mail()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [MailSending::class, MailSent::class]);
-        Config::set('view.paths', [realpath(__DIR__.'/Fixtures/views')]);
+        Config::set('view.paths', [realpath(__DIR__ . '/Fixtures/views')]);
         Config::set('mail.default', 'log');
 
+        $matcher = $this->exactly(2);
         $honeybadger = $this->createMock(Reporter::class);
-        $honeybadger->expects($this->exactly(2))
+        $honeybadger->expects($matcher)
             ->method('addBreadcrumb')
-            ->withConsecutive(
-                [
-                    'Sending mail',
-                    [
-                        'queue' => null,
-                        'replyTo' => null,
-                        'to' => 'chunkylover53@aol.com',
-                        'cc' => null,
-                        'bcc' => null,
-                        'subject' => 'HAhaHA',
-                    ],
-                    'mail',
-                ],
-                [
-                    'Mail sent',
-                    [
-                        'queue' => null,
-                        'replyTo' => null,
-                        'to' => 'chunkylover53@aol.com',
-                        'cc' => null,
-                        'bcc' => null,
-                        'subject' => 'HAhaHA',
-                    ],
-                    'mail',
-                ]
-            );
+            ->willReturnCallback(function ($message, $metadata, $category) use ($matcher) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals('Sending mail', $message),
+                    2 => $this->assertEquals('Mail sent', $message),
+                };
+            });
         $this->app->instance(Reporter::class, $honeybadger);
 
         Mail::to('chunkylover53@aol.com')->send(new TestMailable);
@@ -260,31 +205,26 @@ class AutomaticBreadcrumbsTest extends TestCase
 
         Config::set('honeybadger.breadcrumbs.automatic', [JobQueued::class]);
         Config::set('queue.default', 'database');
-        $this->loadMigrationsFrom(__DIR__.'/Fixtures/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/Fixtures/migrations');
 
+        $matcher = $this->exactly(2);
         $honeybadger = $this->createMock(Reporter::class);
-        $honeybadger->expects($this->exactly(2))
+        $honeybadger->expects($matcher)
             ->method('addBreadcrumb')
-            ->withConsecutive(
-                [
-                    'Job queued',
-                    [
+            ->willReturnCallback(function ($message, $metadata, $category) use ($matcher) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals([
                         'connectionName' => 'database',
                         'queue' => null,
                         'job' => 'Illuminate\Queue\CallQueuedClosure',
-                    ],
-                    'job',
-                ],
-                [
-                    'Job queued',
-                    [
+                    ], $metadata),
+                    2 => $this->assertEquals([
                         'connectionName' => 'database',
                         'queue' => null,
                         'job' => TestJob::class,
-                    ],
-                    'job',
-                ]
-            );
+                    ], $metadata)
+                };
+            });
         $this->app->instance(Reporter::class, $honeybadger);
 
         dispatch(function () {
@@ -304,25 +244,20 @@ class AutomaticBreadcrumbsTest extends TestCase
 
         Config::set('honeybadger.breadcrumbs.automatic', [CacheHit::class, CacheMiss::class]);
 
+        $matcher = $this->exactly(2);
         $honeybadger = $this->createMock(Reporter::class);
-        $honeybadger->expects($this->exactly(2))
+        $honeybadger->expects($matcher)
             ->method('addBreadcrumb')
-            ->withConsecutive(
-                [
-                    'Cache miss',
-                    [
+            ->willReturnCallback(function ($message, $metadata, $category) use ($matcher) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals([
                         'key' => 'user:profile',
-                    ],
-                    'query',
-                ],
-                [
-                    'Cache hit',
-                    [
+                    ], $metadata),
+                    2 => $this->assertEquals([
                         'key' => 'user:profile',
-                    ],
-                    'query',
-                ]
-            );
+                    ], $metadata)
+                };
+            });
         $this->app->instance(Reporter::class, $honeybadger);
 
         Cache::get('user:profile');

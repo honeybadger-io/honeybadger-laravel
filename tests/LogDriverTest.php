@@ -19,7 +19,7 @@ class LogDriverTest extends TestCase
 
         $logHandler = $this->getMockBuilder(LogHandler::class)
             ->disableOriginalConstructor()
-            ->setMethods(['write'])
+            ->onlyMethods(['write'])
             ->getMock();
 
         $logHandler->expects($this->once())
