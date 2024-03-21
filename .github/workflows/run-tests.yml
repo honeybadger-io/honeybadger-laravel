@@ -47,9 +47,9 @@ jobs:
     name: PHP ${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.deps }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
       - name: Cache dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ~/.composer/cache/files
           key: >-
