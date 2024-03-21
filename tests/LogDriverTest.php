@@ -12,7 +12,7 @@ class LogDriverTest extends TestCase
     public function the_log_driver_can_be_correctly_registered_and_used()
     {
         $this->app['config']->set('logging.channels.honeybadger', [
-            'driver'  => 'custom',
+            'driver' => 'custom',
             'via' => HoneybadgerLogDriver::class,
             'name' => 'asdf', // optional point of customization
         ]);

@@ -17,8 +17,8 @@ abstract class MailBreadcrumb extends Breadcrumb
             'queue' => $event->data['queue'] ?? null,
             'replyTo' => $this->extractAddresses($event->message->getReplyTo()),
             'to' => $this->extractAddresses($event->message->getTo()),
-            'cc' => $this->extractAddresses(($event->message->getCc() ?? [])),
-            'bcc' => $this->extractAddresses(($event->message->getBcc() ?? [])),
+            'cc' => $this->extractAddresses($event->message->getCc() ?? []),
+            'bcc' => $this->extractAddresses($event->message->getBcc() ?? []),
             'subject' => $event->message->getSubject(),
         ];
     }

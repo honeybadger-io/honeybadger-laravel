@@ -71,7 +71,7 @@ class HoneybadgerDeployCommand extends Command
         $config = Config::get('honeybadger');
 
         return [
-            'api_key'  => $this->option('apiKey') ?? $config['api_key'],
+            'api_key' => $this->option('apiKey') ?? $config['api_key'],
             'deploy' => array_merge([
                 'revision' => $config['version'] ?? $this->gitHash(),
                 'environment' => $config['environment_name'],
