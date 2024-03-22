@@ -1,4 +1,4 @@
-name: Release gem
+name: Release package
 
 on:
   workflow_run:
