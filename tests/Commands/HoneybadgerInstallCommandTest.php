@@ -258,7 +258,7 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $command = $this->getMockBuilder(HoneybadgerInstallCommand::class)
             ->disableOriginalClone()
-            ->setMethods([
+            ->onlyMethods([
                 'requiredSecret',
                 'confirm',
                 'error',
@@ -279,7 +279,7 @@ class HoneybadgerInstallCommandTest extends TestCase
     {
         return $this->getMockBuilder(HoneybadgerInstallCommand::class)
             ->disableOriginalClone()
-            ->setMethods([
+            ->onlyMethods([
                 'requiredSecret',
                 'line',
                 'confirm',

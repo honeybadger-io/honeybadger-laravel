@@ -59,12 +59,15 @@ class CommandTasksTest extends TestCase
         $this->expectException(TaskFailed::class);
         $output = $this->createMock(OutputStyle::class);
 
-        $output->expects($this->exactly(2))
+        $matcher = $this->exactly(2);
+        $output->expects($matcher)
             ->method('writeLn')
-            ->withConsecutive(
-                ['Example successful task: <fg=green>✔</>'],
-                ['Example failed task: <fg=red>✘</>']
-            );
+            ->willReturnCallback(function ($output) use ($matcher) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals('Example successful task: <fg=green>✔</>', $output),
+                    2 => $this->assertEquals('Example failed task: <fg=red>✘</>', $output),
+                };
+            });
 
         $commandTasks = new CommandTasks;
         $commandTasks->setOutput($output);

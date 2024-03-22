@@ -14,7 +14,7 @@ class HoneybadgerLogDriver
         return tap(new Logger($config['name'] ?? 'honeybadger'), function ($logger) {
             $logHandler = App::makeWith(LogHandler::class, [
                 App::make(Reporter::class),
-                $config['level'] ?? 'error'
+                $config['level'] ?? 'error',
             ]);
             $logger->pushHandler($logHandler);
         });

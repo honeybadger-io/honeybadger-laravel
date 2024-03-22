@@ -42,7 +42,7 @@ class HoneybadgerTestCommandTest extends TestCase
 
         $command = $this->getMockBuilder(HoneybadgerTestCommand::class)
             ->disableOriginalClone()
-            ->setMethods(['info'])
+            ->onlyMethods(['info'])
             ->getMock();
 
         $command->expects($this->once())
@@ -65,7 +65,7 @@ class HoneybadgerTestCommandTest extends TestCase
 
         $command = $this->getMockBuilder(HoneybadgerTestCommand::class)
             ->disableOriginalClone()
-            ->setMethods(['error'])
+            ->onlyMethods(['error'])
             ->getMock();
 
         $command->expects($this->once())
@@ -90,7 +90,7 @@ class HoneybadgerTestCommandTest extends TestCase
 
         $command = $this->getMockBuilder(HoneybadgerTestCommand::class)
             ->disableOriginalClone()
-            ->setMethods(['error'])
+            ->onlyMethods(['error'])
             ->getMock();
 
         $command->expects($this->once())

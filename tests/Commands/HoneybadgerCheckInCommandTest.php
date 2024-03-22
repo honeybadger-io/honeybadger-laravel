@@ -39,7 +39,7 @@ class HoneybadgerCheckInCommandTest extends TestCase
 
         $command = $this->getMockBuilder(HoneybadgerCheckInCommand::class)
             ->disableOriginalClone()
-            ->setMethods(['info'])
+            ->onlyMethods(['info'])
             ->getMock();
 
         $command->expects($this->once())
@@ -62,7 +62,7 @@ class HoneybadgerCheckInCommandTest extends TestCase
 
         $command = $this->getMockBuilder(HoneybadgerCheckInCommand::class)
             ->disableOriginalClone()
-            ->setMethods(['error'])
+            ->onlyMethods(['error'])
             ->getMock();
 
         $command->expects($this->once())
