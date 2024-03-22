@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.0.0] - 2024-03-22
+### Added
+- Support for Laravel 11
+
 ## [3.18.2] - 2023-12-28
 ### Refactored
 - Check-Ins: check-in using slug
