@@ -1,15 +1,18 @@
 <?php
 
-namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
+namespace Honeybadger\HoneybadgerLaravel\Events;
 
-use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Illuminate\Routing\Events\RouteMatched as LaravelRouteMatched;
 
-class RouteMatched extends Breadcrumb
+class RouteMatched extends ApplicationEvent
 {
-    public $handles = LaravelRouteMatched::class;
+    public string $handles = LaravelRouteMatched::class;
 
-    public function handleEvent(LaravelRouteMatched $event)
+    /**
+     * @param LaravelRouteMatched $event
+     * @return EventPayload
+     */
+    public function getEventPayload($event): EventPayload
     {
         $route = $event->route;
         $metadata = [
@@ -19,6 +22,10 @@ class RouteMatched extends Breadcrumb
             'name' => $route->action['as'] ?? null,
         ];
 
-        Honeybadger::addBreadcrumb('Route matched', $metadata, 'request');
+        return new EventPayload(
+            'request',
+            'Route matched',
+            $metadata,
+        );
     }
 }

@@ -1,18 +1,21 @@
 <?php
 
-namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
+namespace Honeybadger\HoneybadgerLaravel\Events;
 
-use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Illuminate\Redis\Events\CommandExecuted;
 
 /**
  * Note that Laravel only dispatches Redis events if the user calls Redis::enableEvents() first.
  */
-class RedisCommandExecuted extends Breadcrumb
+class RedisCommandExecuted extends ApplicationEvent
 {
-    public $handles = CommandExecuted::class;
+    public string $handles = CommandExecuted::class;
 
-    public function handleEvent(CommandExecuted $event)
+    /**
+     * @param CommandExecuted $event
+     * @return EventPayload
+     */
+    public function getEventPayload($event): EventPayload
     {
         $metadata = [
             'connectionName' => $event->connectionName,
@@ -20,10 +23,14 @@ class RedisCommandExecuted extends Breadcrumb
             'duration' => number_format($event->time, 2, '.', '').'ms',
         ];
 
-        Honeybadger::addBreadcrumb('Redis command executed', $metadata, 'query');
+        return new EventPayload(
+            'query',
+            'Redis command executed',
+            $metadata,
+        );
     }
 
-    private function formatCommand(string $command, array $parameters)
+    private function formatCommand(string $command, array $parameters): string
     {
         $parameters = collect($parameters)->map(function ($parameter) {
             if (is_array($parameter)) {

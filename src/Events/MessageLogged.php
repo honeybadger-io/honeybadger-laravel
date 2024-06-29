@@ -1,15 +1,18 @@
 <?php
 
-namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
+namespace Honeybadger\HoneybadgerLaravel\Events;
 
-use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Illuminate\Log\Events\MessageLogged as LaravelMessageLogged;
 
-class MessageLogged extends Breadcrumb
+class MessageLogged extends ApplicationEvent
 {
-    public $handles = LaravelMessageLogged::class;
+    public string $handles = LaravelMessageLogged::class;
 
-    public function handleEvent(LaravelMessageLogged $event)
+    /**
+     * @param LaravelMessageLogged $event
+     * @return EventPayload
+     */
+    public function getEventPayload($event): EventPayload
     {
         $metadata = $event->context;
         $metadata['level'] = $event->level;
@@ -22,6 +25,10 @@ class MessageLogged extends Breadcrumb
             $metadata['line'] = $exception->getLine();
         }
 
-        Honeybadger::addBreadcrumb($event->message, $metadata, 'log');
+        return new EventPayload(
+            'log',
+            $event->message,
+            $metadata,
+        );
     }
 }

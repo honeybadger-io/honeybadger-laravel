@@ -1,16 +1,19 @@
 <?php
 
-namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
+namespace Honeybadger\HoneybadgerLaravel\Events;
 
-use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Events\QueryExecuted;
 
-class DatabaseQueryExecuted extends Breadcrumb
+class DatabaseQueryExecuted extends ApplicationEvent
 {
-    public $handles = QueryExecuted::class;
+    public string $handles = QueryExecuted::class;
 
-    public function handleEvent(QueryExecuted $event)
+    /**
+     * @param QueryExecuted $event
+     * @return EventPayload
+     */
+    public function getEventPayload($event): EventPayload
     {
         $metadata = [
             'connectionName' => $event->connectionName,
@@ -18,7 +21,11 @@ class DatabaseQueryExecuted extends Breadcrumb
             'duration' => number_format($event->time, 2, '.', '').'ms',
         ];
 
-        Honeybadger::addBreadcrumb('Database query executed', $metadata, 'query');
+        return new EventPayload(
+            'query',
+            'Database query executed',
+            $metadata,
+        );
     }
 
     /**
