@@ -2,6 +2,7 @@
 
 namespace Honeybadger\Tests;
 
+use Honeybadger\LogEventHandler;
 use Honeybadger\LogHandler;
 use Honeybadger\Honeybadger;
 use Honeybadger\Contracts\Reporter;
@@ -27,5 +28,11 @@ class HoneybadgerServiceProviderTest extends TestCase
     public function it_registers_the_log_handler()
     {
         $this->assertInstanceOf(LogHandler::class, $this->app[LogHandler::class]);
+    }
+
+    /** @test */
+    public function it_registers_the_log_event_handler()
+    {
+        $this->assertInstanceOf(LogEventHandler::class, $this->app[LogEventHandler::class]);
     }
 }
