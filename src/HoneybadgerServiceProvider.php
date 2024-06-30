@@ -185,7 +185,12 @@ class HoneybadgerServiceProvider extends ServiceProvider
         $mergedEvents = [];
         if ($breadcrumbsEnabled) {
             $breadcrumbEvents = (array) config('honeybadger.breadcrumbs.automatic', HoneybadgerLaravel::DEFAULT_EVENTS);
-            $mergedEvents = array_merge($mergedEvents, $breadcrumbEvents);
+            // Replace deprecated event names with new ones
+            $breadcrumbEvents = array_map(function ($event) {
+                return str_replace('HoneybadgerLaravel\Breadcrumbs', 'HoneybadgerLaravel\Events', $event);
+            }, $breadcrumbEvents);
+
+            $mergedEvents = $breadcrumbEvents;
         }
 
         if ($eventsEnabled) {

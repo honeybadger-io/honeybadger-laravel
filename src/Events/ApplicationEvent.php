@@ -46,10 +46,7 @@ abstract class ApplicationEvent
             return false;
         }
 
-        $eventsEnabled = config('honeybadger.breadcrumbs.automatic', HoneybadgerLaravel::DEFAULT_EVENTS);
-        $deprecatedClassName = str_replace('HoneybadgerLaravel\Events', 'HoneybadgerLaravel\Breadcrumbs', static::class);
-
-        return in_array(static::class, $eventsEnabled) || in_array($deprecatedClassName, $eventsEnabled);
+        return in_array(static::class, config('honeybadger.breadcrumbs.automatic', HoneybadgerLaravel::DEFAULT_EVENTS));
     }
 
     private function isEventEnabled(): bool {

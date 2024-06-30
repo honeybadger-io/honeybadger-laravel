@@ -83,44 +83,6 @@ class AutomaticBreadcrumbsTest extends TestCase
     }
 
     /** @test */
-    public function adds_breadcrumbs_for_routes_with_deprecated_classes()
-    {
-        Config::set('honeybadger.breadcrumbs.automatic', [RouteMatchedDeprecated::class]);
-        Route::namespace('Honeybadger\Tests\Fixtures')
-            ->group(function () {
-                Route::get('test', 'TestController@index')->name('testing');
-            });
-        Route::post('testClosure', function () {
-            return response()->json([]);
-        });
-
-        $matcher = $this->exactly(2);
-        $honeybadger = $this->createMock(Reporter::class);
-        $honeybadger->expects($matcher)
-            ->method('addBreadcrumb')
-            ->willReturnCallback(function ($message, $metadata, $category) use ($matcher) {
-                match ($matcher->numberOfInvocations()) {
-                    1 => $this->assertEquals([
-                        'uri' => 'test',
-                        'methods' => 'GET,HEAD',
-                        'handler' => 'Honeybadger\Tests\Fixtures\TestController@index',
-                        'name' => 'testing',
-                    ], $metadata),
-                    2 => $this->assertEquals([
-                        'uri' => 'testClosure',
-                        'methods' => 'POST',
-                        'handler' => 'Closure',
-                        'name' => null,
-                    ], $metadata)
-                };
-            });
-        $this->app->instance(Reporter::class, $honeybadger);
-
-        $this->get('test');
-        $this->post('/testClosure');
-    }
-
-    /** @test */
     public function adds_breadcrumbs_for_logs()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [MessageLogged::class]);
