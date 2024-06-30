@@ -185,7 +185,8 @@ class HoneybadgerServiceProvider extends ServiceProvider
         $mergedEvents = [];
         if ($breadcrumbsEnabled) {
             $breadcrumbEvents = (array) config('honeybadger.breadcrumbs.automatic', HoneybadgerLaravel::DEFAULT_EVENTS);
-            // Replace deprecated event names with new ones
+
+            // Replace deprecated event names with the new ones - need to make sure we don't register them twice
             $breadcrumbEvents = array_map(function ($event) {
                 return str_replace('HoneybadgerLaravel\Breadcrumbs', 'HoneybadgerLaravel\Events', $event);
             }, $breadcrumbEvents);
