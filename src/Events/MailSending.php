@@ -2,10 +2,9 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Events;
 
-use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Illuminate\Mail\Events\MessageSending;
 
-class MailSending extends MailBreadcrumb
+class MailSending extends MailEvent
 {
     public string $handles = MessageSending::class;
 
