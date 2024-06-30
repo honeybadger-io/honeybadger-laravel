@@ -1,18 +1,14 @@
 <?php
 
-namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
+namespace Honeybadger\HoneybadgerLaravel\Events;
 
 use Illuminate\Notifications\Events\NotificationFailed;
 use Illuminate\Notifications\Events\NotificationSending;
 use Illuminate\Notifications\Events\NotificationSent;
 
-abstract class NotificationBreadcrumb extends Breadcrumb
+abstract class NotificationEvent extends ApplicationEvent
 {
-    /**
-     * @param  NotificationSending|NotificationFailed|NotificationSent  $event
-     * @return array
-     */
-    protected function getMetadata($event): array
+    protected function getMetadata(NotificationSent|NotificationSending|NotificationFailed $event): array
     {
         return [
             'notification' => get_class($event->notification),

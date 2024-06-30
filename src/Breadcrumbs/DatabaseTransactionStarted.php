@@ -2,17 +2,9 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
-use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
-use Illuminate\Database\Events\TransactionBeginning;
-
-class DatabaseTransactionStarted extends Breadcrumb
+/**
+ * @deprecated Use {@link \Honeybadger\HoneybadgerLaravel\Events\DatabaseTransactionStarted} instead
+ */
+class DatabaseTransactionStarted extends \Honeybadger\HoneybadgerLaravel\Events\DatabaseTransactionStarted
 {
-    public $handles = TransactionBeginning::class;
-
-    public function handleEvent(TransactionBeginning $event)
-    {
-        Honeybadger::addBreadcrumb('Database transaction started', [
-            'connectionName' => $event->connectionName,
-        ], 'query');
-    }
 }

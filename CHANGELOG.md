@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.1.0] - 2024-06-29
+### Added
+- Events: Honeybadger.event() method to send events to Honeybadger Insights
+- Events: Custom logger channel to send logs as events to Honeybadger Insights
+- Events: Automatic logging of application events to Honeybadger Insights
+
+### Refactored
+- Breadcrumbs: Modified automatic breadcrumbs collection to reusable classes to share with Events integration 
+
 ## [4.0.0] - 2024-03-22
 ### Added
 - Support for Laravel 11

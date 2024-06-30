@@ -1,6 +1,7 @@
 <?php
 
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs;
+use Honeybadger\BulkEventDispatcher;
+use Honeybadger\HoneybadgerLaravel\HoneybadgerLaravel;
 
 return [
     /**
@@ -77,10 +78,12 @@ return [
     /**
      * Older PHP functions use the Error class, while modern PHP mostly uses Exception.
      * Specify if you'd like Honeybadger to report both types of errors.
+     * The shutdown handler is required flushing any remaining events that were queued using Honeybadger.event().
      */
     'handlers' => [
         'exception' => true,
         'error' => true,
+        'shutdown' => true,
     ],
 
     /**
@@ -111,27 +114,10 @@ return [
         'enabled' => true,
 
         /**
-         * Events which should automatically be recorded by the Honeybadger client.
+         * Events which should automatically be recorded by the Honeybadger client as breadcrumbs.
          * Note that to track redis events, you need to call `Redis::enableEvents()` in your app.
          */
-        'automatic' => [
-            Breadcrumbs\DatabaseQueryExecuted::class,
-            Breadcrumbs\DatabaseTransactionStarted::class,
-            Breadcrumbs\DatabaseTransactionCommitted::class,
-            Breadcrumbs\DatabaseTransactionRolledBack::class,
-            Breadcrumbs\CacheHit::class,
-            Breadcrumbs\CacheMiss::class,
-            Breadcrumbs\JobQueued::class,
-            Breadcrumbs\MailSending::class,
-            Breadcrumbs\MailSent::class,
-            Breadcrumbs\MessageLogged::class,
-            Breadcrumbs\NotificationSending::class,
-            Breadcrumbs\NotificationSent::class,
-            Breadcrumbs\NotificationFailed::class,
-            Breadcrumbs\RedisCommandExecuted::class,
-            Breadcrumbs\RouteMatched::class,
-            Breadcrumbs\ViewRendered::class,
-        ],
+        'automatic' => HoneybadgerLaravel::DEFAULT_EVENTS,
     ],
 
     /**
@@ -141,4 +127,28 @@ return [
      * Learn more about checkins at https://docs.honeybadger.io/api/reporting-check-ins/.
      */
     'checkins' => [],
+
+    'events' => [
+        /**
+         * Enable sending application events to Honeybadger Insights.
+         * Setting this to false will disable automatic events collection and the event() function.
+         */
+        'enabled' => false,
+
+        /**
+         * The number of events to queue before sending them to Honeybadger.
+         */
+        'bulk_threshold' => BulkEventDispatcher::BULK_THRESHOLD,
+
+        /**
+         * The number of seconds to wait before sending queued events to Honeybadger.
+         */
+        'dispatch_interval_seconds' => BulkEventDispatcher::DISPATCH_INTERVAL_SECONDS,
+
+        /**
+         * Events which should automatically be sent to Honeybadger Insights.
+         * Note that to track redis events, you need to call `Redis::enableEvents()` in your app.
+         */
+        'automatic' => HoneybadgerLaravel::DEFAULT_EVENTS,
+    ],
 ];

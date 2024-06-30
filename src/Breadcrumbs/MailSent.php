@@ -2,16 +2,9 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
-use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
-use Illuminate\Mail\Events\MessageSent;
-
-class MailSent extends MailBreadcrumb
+/**
+ * @deprecated Use {@link \Honeybadger\HoneybadgerLaravel\Events\MailSent} instead
+ */
+class MailSent extends \Honeybadger\HoneybadgerLaravel\Events\MailSent
 {
-    public $handles = MessageSent::class;
-
-    public function handleEvent(MessageSent $event)
-    {
-        $metadata = parent::getMetadata($event);
-        Honeybadger::addBreadcrumb('Mail sent', $metadata, 'mail');
-    }
 }
