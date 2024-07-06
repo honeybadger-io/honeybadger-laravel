@@ -62,9 +62,10 @@
             }
         }
     },
-    "repositories": [{
-        "type": "git",
-        "url": "https://github.com/honeybadger-io/honeybadger-php.git"
-    }
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/honeybadger-io/honeybadger-php.git"
+        }
     ]
 }

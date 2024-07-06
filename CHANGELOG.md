@@ -4,16 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.1.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.0.0...v4.1.0) (2024-07-06)
 
-## [4.1.0] - 2024-06-29
-### Added
-- Events: Honeybadger.event() method to send events to Honeybadger Insights
-- Events: Custom logger channel to send logs as events to Honeybadger Insights
-- Events: Automatic logging of application events to Honeybadger Insights
+### Features
+
+* Events: Honeybadger.event() method to send events to Honeybadger Insights ([#125](https://github.com/honeybadger-io/honeybadger-laravel/issues/125)) ([868d0f7](https://github.com/honeybadger-io/honeybadger-laravel/commit/868d0f72fd7d09571bf89c6ea05ca619efd72756))
+* Events: Custom logger channel to send logs as events to Honeybadger Insights
+* Events: Automatic logging of application events to Honeybadger Insights
 
 ### Refactored
-- Breadcrumbs: Modified automatic breadcrumbs collection to reusable classes to share with Events integration 
+
+* Breadcrumbs: Modified automatic breadcrumbs collection to reusable classes to share with Events integration 
 
 ## [4.0.0] - 2024-03-22
 ### Added
