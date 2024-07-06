@@ -21,6 +21,10 @@ jobs:
         with:
           release-type: php
 
+      - name: Checkout
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/checkout@v3
+
       - name: Update version in HoneybadgerLaravel.php
         if: ${{ steps.release.outputs.release_created }}
         run: php scripts/SyncSourceCodeWithPackageVersion.php ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}
@@ -28,6 +32,6 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v5
         if: ${{ steps.release.outputs.release_created }}
         with:
-            commit_message: "chore: update version to ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}"
+            commit_message: "chore: update version to ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }} [skip ci]"
             commit_user_name: "honeybadger-robot"
             commit_user_email: "honeybadger-robot@honeybadger.io"
