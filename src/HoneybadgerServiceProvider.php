@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Honeybadger\CheckInsManager;
 use Honeybadger\Contracts\SyncCheckIns;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerCheckInsSyncCommand;
+use Honeybadger\LogEventHandler;
 use Honeybadger\LogHandler;
 use Honeybadger\Honeybadger;
 use Honeybadger\Contracts\Reporter;
@@ -24,7 +25,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      */
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->bindCommands();
@@ -38,7 +39,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'honeybadger');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'honeybadger');
         $this->registerBladeDirectives();
-        $this->setUpAutomaticBreadcrumbs();
+        $this->setUpAutomaticEvents();
     }
 
     /**
@@ -53,6 +54,10 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
         $this->app->bind(LogHandler::class, function ($app) {
             return new LogHandler($app[Reporter::class]);
+        });
+
+        $this->app->bind(LogEventHandler::class, function ($app) {
+            return new LogEventHandler($app[Reporter::class]);
         });
 
         $this->app->singleton('honeybadger.isLumen', function () {
@@ -172,15 +177,35 @@ class HoneybadgerServiceProvider extends ServiceProvider
         ], 'honeybadger-translations');
     }
 
-    protected function setUpAutomaticBreadcrumbs()
+    protected function setUpAutomaticEvents(): void
     {
-        if (config('honeybadger.breadcrumbs.enabled', true) === false) {
+        $breadcrumbsEnabled = config('honeybadger.breadcrumbs.enabled', true);
+        $eventsEnabled = config('honeybadger.events.enabled', false);
+
+        $mergedEvents = [];
+        if ($breadcrumbsEnabled) {
+            $breadcrumbEvents = (array) config('honeybadger.breadcrumbs.automatic', HoneybadgerLaravel::DEFAULT_EVENTS);
+
+            // Replace deprecated event names with the new ones - need to make sure we don't register them twice
+            $breadcrumbEvents = array_map(function ($event) {
+                return str_replace('HoneybadgerLaravel\Breadcrumbs', 'HoneybadgerLaravel\Events', $event);
+            }, $breadcrumbEvents);
+
+            $mergedEvents = $breadcrumbEvents;
+        }
+
+        if ($eventsEnabled) {
+            $events = (array) config('honeybadger.events.automatic', HoneybadgerLaravel::DEFAULT_EVENTS);
+            $mergedEvents = array_merge($mergedEvents, $events);
+        }
+
+        $mergedEvents = array_unique($mergedEvents);
+        if (empty($mergedEvents)) {
             return;
         }
 
-        $breadcrumbs = config('honeybadger.breadcrumbs.automatic', HoneybadgerLaravel::DEFAULT_BREADCRUMBS);
-        foreach ($breadcrumbs as $breadcrumb) {
-            (new $breadcrumb)->register();
+        foreach ($mergedEvents as $event) {
+            (new $event)->register();
         }
     }
 

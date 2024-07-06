@@ -3,20 +3,21 @@
 namespace Honeybadger\Tests;
 
 use Honeybadger\Contracts\Reporter;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\CacheHit;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\CacheMiss;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseQueryExecuted;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionCommitted;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionRolledBack;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\DatabaseTransactionStarted;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\JobQueued;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\MailSending;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\MailSent;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\MessageLogged;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationSending;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\NotificationSent;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\RouteMatched;
-use Honeybadger\HoneybadgerLaravel\Breadcrumbs\ViewRendered;
+use Honeybadger\HoneybadgerLaravel\Events\CacheHit;
+use Honeybadger\HoneybadgerLaravel\Events\CacheMiss;
+use Honeybadger\HoneybadgerLaravel\Events\DatabaseQueryExecuted;
+use Honeybadger\HoneybadgerLaravel\Events\DatabaseTransactionCommitted;
+use Honeybadger\HoneybadgerLaravel\Events\DatabaseTransactionRolledBack;
+use Honeybadger\HoneybadgerLaravel\Events\DatabaseTransactionStarted;
+use Honeybadger\HoneybadgerLaravel\Events\JobQueued;
+use Honeybadger\HoneybadgerLaravel\Events\MailSending;
+use Honeybadger\HoneybadgerLaravel\Events\MailSent;
+use Honeybadger\HoneybadgerLaravel\Events\MessageLogged;
+use Honeybadger\HoneybadgerLaravel\Events\NotificationSending;
+use Honeybadger\HoneybadgerLaravel\Events\NotificationSent;
+use Honeybadger\HoneybadgerLaravel\Events\RouteMatched;
+use Honeybadger\HoneybadgerLaravel\Breadcrumbs\RouteMatched as RouteMatchedDeprecated;
+use Honeybadger\HoneybadgerLaravel\Events\ViewRendered;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Honeybadger\Tests\Fixtures\TestJob;
 use Honeybadger\Tests\Fixtures\TestMailable;
@@ -47,6 +48,44 @@ class AutomaticBreadcrumbsTest extends TestCase
     public function adds_breadcrumbs_for_routes()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [RouteMatched::class]);
+        Route::namespace('Honeybadger\Tests\Fixtures')
+            ->group(function () {
+                Route::get('test', 'TestController@index')->name('testing');
+            });
+        Route::post('testClosure', function () {
+            return response()->json([]);
+        });
+
+        $matcher = $this->exactly(2);
+        $honeybadger = $this->createMock(Reporter::class);
+        $honeybadger->expects($matcher)
+            ->method('addBreadcrumb')
+            ->willReturnCallback(function ($message, $metadata, $category) use ($matcher) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals([
+                        'uri' => 'test',
+                        'methods' => 'GET,HEAD',
+                        'handler' => 'Honeybadger\Tests\Fixtures\TestController@index',
+                        'name' => 'testing',
+                    ], $metadata),
+                    2 => $this->assertEquals([
+                        'uri' => 'testClosure',
+                        'methods' => 'POST',
+                        'handler' => 'Closure',
+                        'name' => null,
+                    ], $metadata)
+                };
+            });
+        $this->app->instance(Reporter::class, $honeybadger);
+
+        $this->get('test');
+        $this->post('/testClosure');
+    }
+
+    /** @test */
+    public function adds_breadcrumbs_for_routes_with_deprecated_classes()
+    {
+        Config::set('honeybadger.breadcrumbs.automatic', [RouteMatchedDeprecated::class]);
         Route::namespace('Honeybadger\Tests\Fixtures')
             ->group(function () {
                 Route::get('test', 'TestController@index')->name('testing');

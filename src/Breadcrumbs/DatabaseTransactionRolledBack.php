@@ -2,17 +2,9 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Breadcrumbs;
 
-use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
-use Illuminate\Database\Events\TransactionRolledBack;
-
-class DatabaseTransactionRolledBack extends Breadcrumb
+/**
+ * @deprecated Use {@link \Honeybadger\HoneybadgerLaravel\Events\DatabaseTransactionRolledBack} instead
+ */
+class DatabaseTransactionRolledBack extends \Honeybadger\HoneybadgerLaravel\Events\DatabaseTransactionRolledBack
 {
-    public $handles = TransactionRolledBack::class;
-
-    public function handleEvent(TransactionRolledBack $event)
-    {
-        Honeybadger::addBreadcrumb('Database transaction rolled back', [
-            'connectionName' => $event->connectionName,
-        ], 'query');
-    }
 }
