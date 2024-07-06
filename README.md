@@ -35,7 +35,6 @@ Releases are automated, using [Github Actions](https://github.com/honeybadger-io
 - When a PR is merged on master, the [run-tests.yml](https://github.com/honeybadger-io/honeybadger-laravel/blob/master/.github/workflows/run-tests.yml) workflow is executed, which runs the tests.
 - If the tests pass, the [release.yml](https://github.com/honeybadger-io/honeybadger-laravel/blob/master/.github/workflows/release.yml) workflow will be executed.
 - Depending on the commit message, a release PR will be created with the suggested the version bump and changelog. Note: Not all commit messages trigger a new release, for example, chore: ... will not trigger a release.
-- ‼️ **MANUAL STEP** - Before merging the PR, you should update the version in `HoneybadgerLaravel.php` to match the new version bump.
 - If the release PR is merged, the release.yml workflow will be executed again, and this time it will create a github release.
 
 ## Credits
