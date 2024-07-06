@@ -43,7 +43,7 @@ class DatabaseQueryExecuted extends ApplicationEvent
         $sql = preg_replace([$numericData, $singleQuotedData, $newlines], '?', $sql);
 
         $doubleQuoters = ['pgsql', 'sqlite', 'postgis'];
-        if (in_array($connection->getConfig('driver'), $doubleQuoters)) {
+        if (!in_array($connection->getConfig('driver'), $doubleQuoters)) {
             $sql = preg_replace($doubleQuotedData, '?', $sql);
         }
 
