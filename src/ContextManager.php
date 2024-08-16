@@ -76,7 +76,7 @@ class ContextManager
     public function setUserContext($request)
     {
         try {
-            if ($request->user()) {
+            if ($request->user() && is_object($request->user()) && method_exists($request->user(), 'getAuthIdentifier')) {
                 $this->honeybadger->context(
                     'user_id',
                     $request->user()->getAuthIdentifier()
