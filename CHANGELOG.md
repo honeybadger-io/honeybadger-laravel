@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.1.1](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.1.0...v4.1.1) (2024-08-16)
+
+
+### Bug Fixes
+
+* check for getAuthIdentifier before calling it ([6064a21](https://github.com/honeybadger-io/honeybadger-laravel/commit/6064a2133de93feb3f286346eef2cdfa262703fe))
+
 ## [4.1.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.0.0...v4.1.0) (2024-07-06)
 
 ### Features
