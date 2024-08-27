@@ -23,6 +23,7 @@ class DatabaseQueryExecuted extends ApplicationEvent
 
         return new EventPayload(
             'query',
+            'db.executed',
             'Database query executed',
             $metadata,
         );

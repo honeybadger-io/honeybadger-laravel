@@ -25,6 +25,7 @@ class RedisCommandExecuted extends ApplicationEvent
 
         return new EventPayload(
             'query',
+            'redis.executed',
             'Redis command executed',
             $metadata,
         );

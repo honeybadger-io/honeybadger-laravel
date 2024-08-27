@@ -33,6 +33,7 @@ class ViewRendered extends ApplicationEvent
 
         return new EventPayload(
             'render',
+            'view.rendered',
             'View rendered',
             $metadata,
         );

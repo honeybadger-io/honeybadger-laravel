@@ -16,6 +16,7 @@ class CacheMiss extends ApplicationEvent
     {
         return new EventPayload(
             'query',
+            'cache.miss',
             'Cache miss',
             ['key' => $event->key],
         );

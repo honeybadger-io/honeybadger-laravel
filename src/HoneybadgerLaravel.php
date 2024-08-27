@@ -30,6 +30,7 @@ class HoneybadgerLaravel extends Honeybadger
         Events\NotificationFailed::class,
         Events\RedisCommandExecuted::class,
         Events\RouteMatched::class,
+        Events\RequestHandled::class,
         Events\ViewRendered::class,
     ];
 

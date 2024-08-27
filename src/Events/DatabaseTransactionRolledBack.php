@@ -16,6 +16,7 @@ class DatabaseTransactionRolledBack extends ApplicationEvent
     {
         return new EventPayload(
             'query',
+            'db.transaction.rolledback',
             'Database transaction rolled back',
             ['connectionName' => $event->connectionName],
         );

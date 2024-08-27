@@ -16,6 +16,7 @@ class DatabaseTransactionCommitted extends ApplicationEvent
     {
         return new EventPayload(
             'query',
+            'db.transaction.committed',
             'Database transaction committed',
             ['connectionName' => $event->connectionName],
         );

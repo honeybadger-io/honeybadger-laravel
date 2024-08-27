@@ -18,6 +18,7 @@ class NotificationSent extends NotificationEvent
 
         return new EventPayload(
             'notification',
+            'notification.sent',
             'Notification sent',
             $metadata,
         );

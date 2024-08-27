@@ -16,6 +16,7 @@ class DatabaseTransactionStarted extends ApplicationEvent
     {
         return new EventPayload(
             'query',
+            'db.transaction.started',
             'Database transaction started',
             ['connectionName' => $event->connectionName],
         );

@@ -25,6 +25,7 @@ class JobQueued extends ApplicationEvent
 
         return new EventPayload(
             'job',
+            'job.queued',
             'Job queued',
             $metadata,
         );

@@ -26,15 +26,11 @@ abstract class ApplicationEvent
             }
 
             if ($breadcrumbEnabled) {
-                Honeybadger::addBreadcrumb($payload->message, $payload->metadata, $payload->type);
+                Honeybadger::addBreadcrumb($payload->message, $payload->metadata, $payload->category);
             }
 
             if ($eventEnabled) {
-                $merged = array_merge($payload->metadata, [
-                    'event_type' => $payload->type,
-                    'message' => $payload->message
-                ]);
-                Honeybadger::event($merged);
+                Honeybadger::event($payload->type, $payload->metadata);
             }
         } catch (\Throwable $e) {
             // Do nothing; we shouldn't crash the user's app for this.

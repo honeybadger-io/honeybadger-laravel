@@ -27,6 +27,7 @@ class MessageLogged extends ApplicationEvent
 
         return new EventPayload(
             'log',
+            'log',
             $event->message,
             $metadata,
         );
