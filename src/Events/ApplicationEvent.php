@@ -5,6 +5,7 @@ namespace Honeybadger\HoneybadgerLaravel\Events;
 use Honeybadger\HoneybadgerLaravel\Concerns\HandlesEvents;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerLaravel;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
+use Illuminate\Support\Facades\Log;
 
 abstract class ApplicationEvent
 {
@@ -23,6 +24,12 @@ abstract class ApplicationEvent
         try {
             if ($breadcrumbEnabled || $eventEnabled) {
                 $payload = $this->getEventPayload($event);
+
+                // set requestId for all events, if available
+                $logContext = Log::sharedContext();
+                if (isset($logContext['requestId']) && !isset($payload->metadata['requestId'])) {
+                    $payload->metadata['requestId'] = $logContext['requestId'];
+                }
             }
 
             if ($breadcrumbEnabled) {

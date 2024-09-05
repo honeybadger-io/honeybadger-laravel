@@ -35,6 +35,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
             $this->registerPublishableAssets();
         }
 
+        $this->registerMiddleware();
         $this->registerEventHooks();
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'honeybadger');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'honeybadger');
@@ -236,5 +237,17 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
             return HoneybadgerLaravel::make($config);
         });
+    }
+
+    protected function registerMiddleware(): void
+    {
+        $router = $this->app['router'];
+        $router->aliasMiddleware('honeybadger.request_id', Middleware\AssignRequestId::class);
+
+        // Prepend the middleware to the middleware stack
+        $router->prependMiddlewareToGroup('web', Middleware\AssignRequestId::class);
+        $router->prependMiddlewareToGroup('api', Middleware\AssignRequestId::class);
+
+
     }
 }
