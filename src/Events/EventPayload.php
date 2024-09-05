@@ -4,12 +4,12 @@ namespace Honeybadger\HoneybadgerLaravel\Events;
 
 class EventPayload {
     /**
-     * @var string The breadcrumb category of the event
+     * @var string The category of the event, used in notice breadcrumbs
      */
     public string $category;
 
     /**
-     * @var string The type of the event
+     * @var string The type of the event, used in Insights
      */
     public string $type;
 

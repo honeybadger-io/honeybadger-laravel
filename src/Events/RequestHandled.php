@@ -23,11 +23,11 @@ class RequestHandled extends ApplicationEvent
         $metadata = [
             'uri' => $request->url(),
             'method' => $request->getMethod(),
-            'status_code' => $response->getStatusCode(),
+            'statusCode' => $response->getStatusCode(),
             'duration' => number_format((microtime(true) - LARAVEL_START) * 1000, 2, '.', '').'ms',
             'controller' => $controller,
             'action' => $method,
-            'route_name' => $request->route()->getName(),
+            'routeName' => $request->route()->getName(),
         ];
 
         return new EventPayload(
