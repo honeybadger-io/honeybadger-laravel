@@ -138,6 +138,10 @@ class AutomaticBreadcrumbsTest extends TestCase
     /** @test */
     public function adds_breadcrumbs_for_views()
     {
+        $this->withHeaders([
+            'X-Request-Id' => '1234',
+        ]);
+
         Config::set('honeybadger.breadcrumbs.automatic', [ViewRendered::class]);
         Config::set('view.paths', [realpath(__DIR__.'/Fixtures/views')]);
         Route::get('test', function () {
@@ -150,6 +154,7 @@ class AutomaticBreadcrumbsTest extends TestCase
             ->with('View rendered', [
                 'name' => 'test',
                 'path' => realpath(__DIR__.'/Fixtures/views').'/test.blade.php',
+                'requestId' => '1234',
             ], 'render');
 
         $this->app->instance(Reporter::class, $honeybadger);
