@@ -20,6 +20,9 @@ class AssignRequestId
         if ($request->headers->has('Request-Id')) {
             $requestId = $request->headers->get('Request-Id');
         }
+        else if ($request->headers->has('X-Request-Id')) {
+            $requestId = $request->headers->get('X-Request-Id');
+        }
         else {
             $requestId = (string) Str::uuid();
 
