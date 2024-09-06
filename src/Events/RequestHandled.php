@@ -2,14 +2,14 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Events;
 
-use Illuminate\Foundation\Http\Events\RequestHandled as LaravalRequestHandled;
+use Illuminate\Foundation\Http\Events\RequestHandled as LaravelRequestHandled;
 
 class RequestHandled extends ApplicationEvent
 {
-    public string $handles = LaravalRequestHandled::class;
+    public string $handles = LaravelRequestHandled::class;
 
     /**
-     * @param LaravalRequestHandled $event
+     * @param LaravelRequestHandled $event
      * @return EventPayload
      */
     public function getEventPayload($event): EventPayload
@@ -17,8 +17,15 @@ class RequestHandled extends ApplicationEvent
         $request = $event->request;
         $response = $event->response;
 
-        $action = $request->route()->getActionName();
-        list($controller, $method) = explode('@', $action);
+        $routeName = null;
+        $method = null;
+        $controller = null;
+        $route = $request->route();
+        if (isset($route)) {
+            $routeName = $route->getName();
+            $method = $route->getActionMethod();
+            $controller = $route->getControllerClass();
+        }
 
         $metadata = [
             'uri' => $request->url(),
@@ -27,7 +34,7 @@ class RequestHandled extends ApplicationEvent
             'duration' => number_format((microtime(true) - LARAVEL_START) * 1000, 2, '.', '').'ms',
             'controller' => $controller,
             'action' => $method,
-            'routeName' => $request->route()->getName(),
+            'routeName' => $routeName,
         ];
 
         return new EventPayload(
