@@ -5,7 +5,7 @@ namespace Honeybadger\HoneybadgerLaravel\Events;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger;
 use Illuminate\Queue\Events\JobProcessed as LaravelJobProcessed;
 
-class JobProcessed
+class JobProcessed extends ApplicationEvent
 {
     public string $handles = LaravelJobProcessed::class;
 
