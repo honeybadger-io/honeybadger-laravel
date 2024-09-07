@@ -31,7 +31,7 @@ class RequestHandled extends ApplicationEvent
             'uri' => $request->url(),
             'method' => $request->getMethod(),
             'statusCode' => $response->getStatusCode(),
-            'duration' => number_format((microtime(true) - LARAVEL_START) * 1000, 2, '.', '').'ms',
+            'duration' => $this->getDurationInMs(LARAVEL_START),
             'controller' => $controller,
             'action' => $method,
             'routeName' => $routeName,

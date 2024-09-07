@@ -43,6 +43,19 @@ abstract class ApplicationEvent
         }
     }
 
+    protected function getDurationInMs(float $startTime): ?string
+    {
+        if (!isset($startTime)) {
+            return null;
+        }
+
+        $duration = microtime(true) - $startTime;
+
+        // Insights adds three zeros (000) to the number if I add the 'ms' suffix ¯\_(ツ)_/¯
+        // return floor($duration * 1000) . 'ms';
+        return floor($duration * 1000);
+    }
+
     private function isBreadcrumbEnabled(): bool {
         if (!config('honeybadger.breadcrumbs.enabled', true)) {
             return false;

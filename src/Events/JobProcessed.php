@@ -53,7 +53,7 @@ class JobProcessed extends ApplicationEvent
 
             // duration in seconds of the job processing
             // calculated by measuring the time difference since the JobProcessing event was raised
-            'duration' => $this->getDuration(),
+            'duration' => $this->getDurationInMs($this->startTime),
         ];
 
         return new EventPayload(
@@ -81,18 +81,4 @@ class JobProcessed extends ApplicationEvent
         $dispatcher->listen($this->handles, [$this, 'handle']);
 
     }
-
-    /**
-     * Calculate the duration of the job processing,
-     * by measuring the time difference since the JobProcessing event was raised.
-     */
-    private function getDuration(): ?float {
-        if (!isset($this->startTime)) {
-            return null;
-        }
-
-        $endTime = microtime(true);
-        return floor(($endTime - $this->startTime) * 1000);
-    }
-
 }
