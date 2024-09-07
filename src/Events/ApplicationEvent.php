@@ -24,12 +24,6 @@ abstract class ApplicationEvent
         try {
             if ($breadcrumbEnabled || $eventEnabled) {
                 $payload = $this->getEventPayload($event);
-
-                // set requestId for all events, if available
-                $logContext = Log::sharedContext();
-                if (isset($logContext['requestId']) && !isset($payload->metadata['requestId'])) {
-                    $payload->metadata['requestId'] = $logContext['requestId'];
-                }
             }
 
             if ($breadcrumbEnabled) {
@@ -37,6 +31,11 @@ abstract class ApplicationEvent
             }
 
             if ($eventEnabled) {
+                // set requestId, if available
+                $logContext = Log::sharedContext();
+                if (isset($logContext['requestId']) && !isset($payload->metadata['requestId'])) {
+                    $payload->metadata['requestId'] = $logContext['requestId'];
+                }
                 Honeybadger::event($payload->type, $payload->metadata);
             }
         } catch (\Throwable $e) {
