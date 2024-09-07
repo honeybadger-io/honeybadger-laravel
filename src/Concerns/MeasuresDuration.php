@@ -18,7 +18,7 @@ trait MeasuresDuration
         if (array_key_exists($name, $this->durations)) {
             $start = $this->durations[$name];
             $end = microtime(true);
-            $duration = ($end - $start) * 1000;
+            $duration = floor(($end - $start) * 1000);
             unset($this->durations[$name]);
             return $duration;
         } else {

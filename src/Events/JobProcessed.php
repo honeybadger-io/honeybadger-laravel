@@ -19,7 +19,6 @@ class JobProcessed extends ApplicationEvent
 
         $metadata = [
             'connectionName' => $event->connectionName,
-            'queue' => $event->job->queue,
             'job' => get_class($event->job),
             'duration' => Honeybadger::time($jobClass)
         ];

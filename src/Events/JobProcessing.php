@@ -21,7 +21,6 @@ class JobProcessing extends ApplicationEvent
 
         $metadata = [
             'connectionName' => $event->connectionName,
-            'queue' => $event->job->queue,
             'job' => $jobClass,
         ];
 
