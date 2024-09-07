@@ -5,6 +5,7 @@ namespace Honeybadger\HoneybadgerLaravel;
 use Honeybadger\Contracts\Reporter;
 use Honeybadger\Exceptions\ServiceException;
 use Honeybadger\Honeybadger;
+use Honeybadger\HoneybadgerLaravel\Concerns\MeasuresDuration;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +13,8 @@ use Throwable;
 
 class HoneybadgerLaravel extends Honeybadger
 {
+    use MeasuresDuration;
+
     const VERSION = '4.1.1';
 
     const DEFAULT_EVENTS = [
@@ -22,6 +25,8 @@ class HoneybadgerLaravel extends Honeybadger
         Events\CacheHit::class,
         Events\CacheMiss::class,
         Events\JobQueued::class,
+        Events\JobProcessing::class,
+        Events\JobProcessed::class,
         Events\MailSending::class,
         Events\MailSent::class,
         Events\MessageLogged::class,

@@ -5,6 +5,7 @@ namespace Honeybadger\HoneybadgerLaravel\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * @method static float|null time(string $name)
  * @method static void event(string|array $eventTypeOrPayload, array $payload = null)
  * @method static void checkin(string $key)
  * @method static array rawNotification(callable $callable)
