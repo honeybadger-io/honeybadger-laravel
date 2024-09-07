@@ -21,11 +21,11 @@ class JobProcessed extends ApplicationEvent
         $job = $event->job;
         $metadata = [
             'connectionName' => $event->connectionName,
-            'job' => get_class($job),
-            'id' => $job->getJobId(),
 
-            // job name could be different from the actual job class name
-            'name' => $job->getName(),
+            // we have to call 'resolveName' because sometimes the actual job is wrapped (i.e. DatabaseJob -> Job)
+            'job' => $job->resolveName(),
+
+            'id' => $job->getJobId(),
 
             // number of attempts made to process the job
             'attempts' => $job->attempts(),

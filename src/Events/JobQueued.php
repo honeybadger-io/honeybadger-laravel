@@ -19,8 +19,10 @@ class JobQueued extends ApplicationEvent
     {
         $metadata = [
             'connectionName' => $event->connectionName,
-            'queue' => $event->job->queue,
+            'queue' => $event->queue,
             'job' => get_class($event->job),
+            'id' => $event->id,
+            'delay' => $event->delay,
         ];
 
         return new EventPayload(
