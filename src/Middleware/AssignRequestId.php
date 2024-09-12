@@ -26,7 +26,7 @@ class AssignRequestId
         else {
             $requestId = (string) Str::uuid();
 
-            $request->headers->set('Request-Id', $requestId);
+            $request->headers->set('X-Request-Id', $requestId);
         }
 
         Log::shareContext([

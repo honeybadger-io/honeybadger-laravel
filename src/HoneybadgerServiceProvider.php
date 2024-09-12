@@ -244,14 +244,5 @@ class HoneybadgerServiceProvider extends ServiceProvider
     {
         $kernel = app(Kernel::class);
         $kernel->prependMiddleware(Middleware\AssignRequestId::class);
-
-        // $router = $this->app['router'];
-        // $router->aliasMiddleware('honeybadger.request_id', Middleware\AssignRequestId::class);
-
-        // Prepend the middleware to the middleware stack
-        // $router->prependMiddlewareToGroup('web', Middleware\AssignRequestId::class);
-        // $router->prependMiddlewareToGroup('api', Middleware\AssignRequestId::class);
-
-
     }
 }
