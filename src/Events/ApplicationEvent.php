@@ -50,10 +50,7 @@ abstract class ApplicationEvent
         }
 
         $duration = microtime(true) - $startTime;
-
-        // Insights adds three zeros (000) to the number if I add the 'ms' suffix ¯\_(ツ)_/¯
-        // return floor($duration * 1000) . 'ms';
-        return floor($duration * 1000);
+        return floor($duration) . 'ms';
     }
 
     private function isBreadcrumbEnabled(): bool {
