@@ -4,7 +4,6 @@ namespace Honeybadger\HoneybadgerLaravel\Events;
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Facades\Http;
 
 class ResponseReceived extends ApplicationEvent
 {
@@ -25,7 +24,7 @@ class ResponseReceived extends ApplicationEvent
     }
 
     public function register(): void {
-        Http::globalMiddleware(function ($handler) {
+        \Illuminate\Support\Facades\Http::globalMiddleware(function ($handler) {
             return function (Request $request, $options) use ($handler) {
                 $startTime = microtime(true);
 
