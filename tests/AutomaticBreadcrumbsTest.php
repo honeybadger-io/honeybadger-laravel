@@ -150,6 +150,7 @@ class AutomaticBreadcrumbsTest extends TestCase
             ->with('View rendered', [
                 'name' => 'test',
                 'path' => realpath(__DIR__.'/Fixtures/views').'/test.blade.php',
+                'duration' => '0ms'
             ], 'render');
 
         $this->app->instance(Reporter::class, $honeybadger);
