@@ -43,6 +43,13 @@ abstract class ApplicationEvent
         }
     }
 
+    /**
+     * Calculate the duration in milliseconds.
+     * Note: As of this writing, Honeybadger Insights displays duration in microseconds.
+     *
+     * @param float $startTime
+     * @return string|null Duration in milliseconds i.e. 5ms
+     */
     protected function getDurationInMs(float $startTime): ?string
     {
         if (!isset($startTime)) {
@@ -50,7 +57,7 @@ abstract class ApplicationEvent
         }
 
         $duration = microtime(true) - $startTime;
-        return floor($duration) . 'ms';
+        return floor($duration * 1000) . 'ms';
     }
 
     private function isBreadcrumbEnabled(): bool {
