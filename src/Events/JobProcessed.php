@@ -51,7 +51,7 @@ class JobProcessed extends ApplicationEvent
             // timestamp indicating when the job should timeout
             'retryUntil' => $job->retryUntil(),
 
-            // duration in seconds of the job processing
+            // duration in milliseconds of the job processing
             // calculated by measuring the time difference since the JobProcessing event was raised
             'duration' => $this->getDurationInMs($this->startTime),
         ];

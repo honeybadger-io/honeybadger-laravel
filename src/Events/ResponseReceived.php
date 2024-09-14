@@ -2,17 +2,26 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Events;
 
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Http\Client\Events\RequestSending;
+use Illuminate\Http\Client\Events\ResponseReceived as LaravelResponseReceived;
 
 class ResponseReceived extends ApplicationEvent
 {
+    public string $handles = LaravelResponseReceived::class;
+
+    private float $startTime;
+
+    /**
+     * @param LaravelResponseReceived $event
+     * @return EventPayload
+     */
     public function getEventPayload($event): EventPayload
     {
         $metadata = [
-            'uri' => $event['request']->getUri(),
-            'statusCode' => $event['response']->getStatusCode(),
-            'duration' => $event['duration'],
+            'uri' => $event->request->url(),
+            'statusCode' => $event->response->status(),
+            'duration' => $this->getDurationInMs($this->startTime),
         ];
 
         return new EventPayload(
@@ -24,21 +33,13 @@ class ResponseReceived extends ApplicationEvent
     }
 
     public function register(): void {
-        \Illuminate\Support\Facades\Http::globalMiddleware(function ($handler) {
-            return function (Request $request, $options) use ($handler) {
-                $startTime = microtime(true);
+        /** @var Dispatcher $dispatcher */
+        $dispatcher = app('events');
 
-                return $handler($request, $options)
-                    ->then(function (Response $response) use ($request, $startTime) {
-                        $this->handle([
-                            'request' => $request,
-                            'response' => $response,
-                            'duration' => $this->getDurationInMs($startTime),
-                        ]);
-
-                        return $response;
-                    });
-            };
+        $dispatcher->listen(RequestSending::class, function ($event) {
+            $this->startTime = microtime(true);
         });
+
+        $dispatcher->listen($this->handles, [$this, 'handle']);
     }
 }
