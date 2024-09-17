@@ -18,6 +18,7 @@ class MailSending extends MailEvent
 
         return new EventPayload(
             'mail',
+            'mail.sending',
             'Sending mail',
             $metadata,
         );

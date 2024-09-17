@@ -19,6 +19,7 @@ class NotificationSending extends NotificationEvent
 
         return new EventPayload(
             'notification',
+            'notification.sending',
             'Sending notification',
             $metadata,
         );

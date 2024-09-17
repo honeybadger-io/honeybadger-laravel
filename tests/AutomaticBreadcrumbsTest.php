@@ -145,12 +145,22 @@ class AutomaticBreadcrumbsTest extends TestCase
         });
 
         $honeybadger = $this->createMock(Reporter::class);
+
+        /**
+         * [
+         * 'name' => 'test',
+         * 'path' => realpath(__DIR__.'/Fixtures/views').'/test.blade.php',
+         * 'duration' => 'Xms'
+         * ]
+         */
         $honeybadger->expects($this->once())
             ->method('addBreadcrumb')
-            ->with('View rendered', [
-                'name' => 'test',
-                'path' => realpath(__DIR__.'/Fixtures/views').'/test.blade.php',
-            ], 'render');
+            ->with('View rendered',
+                $this->callback(function ($metadata) {
+                    return $metadata['name'] === 'test'
+                        && $metadata['path'] === realpath(__DIR__.'/Fixtures/views').'/test.blade.php';
+                }),
+                'render');
 
         $this->app->instance(Reporter::class, $honeybadger);
 

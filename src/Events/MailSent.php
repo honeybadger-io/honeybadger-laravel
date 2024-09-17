@@ -19,6 +19,7 @@ class MailSent extends MailEvent
 
         return new EventPayload(
             'mail',
+            'mail.sent',
             'Mail sent',
             $metadata,
         );

@@ -24,6 +24,7 @@ class RouteMatched extends ApplicationEvent
 
         return new EventPayload(
             'request',
+            'route.matched',
             'Route matched',
             $metadata,
         );

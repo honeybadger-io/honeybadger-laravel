@@ -17,6 +17,7 @@ use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerInstallCommand;
 use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
 use Illuminate\Console\Scheduling\Event;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -35,6 +36,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
             $this->registerPublishableAssets();
         }
 
+        $this->registerMiddleware();
         $this->registerEventHooks();
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'honeybadger');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'honeybadger');
@@ -236,5 +238,11 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
             return HoneybadgerLaravel::make($config);
         });
+    }
+
+    protected function registerMiddleware(): void
+    {
+        $kernel = app(Kernel::class);
+        $kernel->prependMiddleware(Middleware\AssignRequestId::class);
     }
 }

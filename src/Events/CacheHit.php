@@ -16,6 +16,7 @@ class CacheHit extends ApplicationEvent
     {
         return new EventPayload(
             'query',
+            'cache.hit',
             'Cache hit',
             ['key' => $event->key],
         );

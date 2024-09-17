@@ -18,6 +18,7 @@ class NotificationFailed extends NotificationEvent
 
         return new EventPayload(
             'notification',
+            'notification.failed',
             'Notification failed',
             $metadata,
         );

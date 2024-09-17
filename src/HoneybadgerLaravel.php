@@ -22,6 +22,7 @@ class HoneybadgerLaravel extends Honeybadger
         Events\CacheHit::class,
         Events\CacheMiss::class,
         Events\JobQueued::class,
+        Events\JobProcessed::class,
         Events\MailSending::class,
         Events\MailSent::class,
         Events\MessageLogged::class,
@@ -29,7 +30,9 @@ class HoneybadgerLaravel extends Honeybadger
         Events\NotificationSent::class,
         Events\NotificationFailed::class,
         Events\RedisCommandExecuted::class,
+        Events\ResponseReceived::class,
         Events\RouteMatched::class,
+        Events\RequestHandled::class,
         Events\ViewRendered::class,
     ];
 
