@@ -1,6 +1,7 @@
 name: Release package
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: [Run Tests]
     types: [completed]
@@ -27,20 +28,14 @@ jobs:
         with:
           ref: ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
 
-      - name: Job Summary
-        if: ${{ steps.release.outputs.prs_created == 'true' }}
-        run: |
-          echo "Release PR created with the following outputs:" >> $GITHUB_STEP_SUMMARY
-          echo "${{ toJSON(steps.release.outputs) }}" >> $GITHUB_STEP_SUMMARY
-
       - name: Update version in HoneybadgerLaravel.php
         if: ${{ steps.release.outputs.prs_created == 'true' }}
-        run: php scripts/SyncSourceCodeWithPackageVersion.php ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}
+        run: php scripts/SyncSourceCodeWithPackageVersion.php ${{ fromJSON(steps.release.outputs.pr).title }}
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         with:
           create_branch: false
-          commit_message: "chore: update version to ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }} [skip ci]"
+          commit_message: "chore: update version [skip ci]"
           commit_user_name: "honeybadger-robot"
           commit_user_email: "honeybadger-robot@honeybadger.io"
