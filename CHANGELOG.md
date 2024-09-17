@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.2.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.1.1...v4.2.0) (2024-09-17)
+
+
+### Features
+
+* send RequestHandled, JobProcessed and ResponseReceived events to insights ([#130](https://github.com/honeybadger-io/honeybadger-laravel/issues/130)) ([7f68015](https://github.com/honeybadger-io/honeybadger-laravel/commit/7f680155335cdfa7df81c09e6dedf51a7de93fcf))
+
+
+### Miscellaneous Chores
+
+* read version from pr title ([6a4f1a1](https://github.com/honeybadger-io/honeybadger-laravel/commit/6a4f1a1977343e4b19c02726f3fdf68e72d03864))
+* read version from pr title ([9a30719](https://github.com/honeybadger-io/honeybadger-laravel/commit/9a30719b5779edf9409885ac4e1680393d402d28))
+* read version from pr title ([1e900b5](https://github.com/honeybadger-io/honeybadger-laravel/commit/1e900b50ff019370a7a5ed20dd300ee9b5b0150a))
+
 ## [4.1.1](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.1.0...v4.1.1) (2024-08-16)
 
 
