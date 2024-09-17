@@ -17,9 +17,7 @@ class RequestHandled extends ApplicationEvent
         $request = $event->request;
         $response = $event->response;
 
-        $routeName = null;
-        $method = null;
-        $controller = null;
+        $routeName = $method = $controller = null;
         $route = $request->route();
         if (isset($route)) {
             $routeName = $route->getName();

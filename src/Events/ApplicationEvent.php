@@ -22,20 +22,18 @@ abstract class ApplicationEvent
         $eventEnabled = $this->isEventEnabled();
 
         try {
-            if ($breadcrumbEnabled || $eventEnabled) {
-                $payload = $this->getEventPayload($event);
+            if (!($breadcrumbEnabled || $eventEnabled)) {
+                return;
             }
+
+            $payload = $this->getEventPayload($event);
 
             if ($breadcrumbEnabled) {
                 Honeybadger::addBreadcrumb($payload->message, $payload->metadata, $payload->category);
             }
 
             if ($eventEnabled) {
-                // set requestId, if available
-                $logContext = Log::sharedContext();
-                if (isset($logContext['requestId']) && !isset($payload->metadata['requestId'])) {
-                    $payload->metadata['requestId'] = $logContext['requestId'];
-                }
+                $this->setRequestId($payload);
                 Honeybadger::event($payload->type, $payload->metadata);
             }
         } catch (\Throwable $e) {
@@ -82,5 +80,12 @@ abstract class ApplicationEvent
         }
 
         return in_array(static::class, config('honeybadger.events.automatic', HoneybadgerLaravel::DEFAULT_EVENTS));
+    }
+
+    private function setRequestId($payload): void {
+        $logContext = Log::sharedContext();
+        if (isset($logContext['requestId']) && !isset($payload->metadata['requestId'])) {
+            $payload->metadata['requestId'] = $logContext['requestId'];
+        }
     }
 }
