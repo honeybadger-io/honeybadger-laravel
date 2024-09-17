@@ -30,7 +30,7 @@ jobs:
 
       - name: Update version in HoneybadgerLaravel.php
         if: ${{ steps.release.outputs.prs_created == 'true' }}
-        run: php scripts/SyncSourceCodeWithPackageVersion.php ${{ fromJSON(steps.release.outputs.pr).title }}
+        run: php scripts/SyncSourceCodeWithPackageVersion.php "${{ fromJSON(steps.release.outputs.pr).title" }}
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         if: ${{ steps.release.outputs.prs_created == 'true' }}
