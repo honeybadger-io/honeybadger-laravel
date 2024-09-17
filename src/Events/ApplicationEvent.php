@@ -57,7 +57,7 @@ abstract class ApplicationEvent
         }
 
         $duration = microtime(true) - $startTime;
-        return floor($duration * 1000) . 'ms';
+        return number_format($duration * 1000, 3) . 'ms';
     }
 
     private function isBreadcrumbEnabled(): bool {
