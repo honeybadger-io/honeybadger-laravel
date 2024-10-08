@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.2.1](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.2.0...v4.2.1) (2024-10-08)
+
+
+### Bug Fixes
+
+* read component name from closure ([#133](https://github.com/honeybadger-io/honeybadger-laravel/issues/133)) ([ad58db3](https://github.com/honeybadger-io/honeybadger-laravel/commit/ad58db3affbdcf371336a06b12c6b55bb0fbceca))
+
 ## [4.2.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.1.1...v4.2.0) (2024-09-17)
 
 
