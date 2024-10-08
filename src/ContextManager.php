@@ -23,10 +23,14 @@ class ContextManager
 
     public function setRouteAction(Request $request)
     {
-        if (app('honeybadger.isLumen')) {
-            $this->setLumenRouteActionContext($request);
-        } else {
-            $this->setLaravelRouteActionContext();
+        try {
+            if (app('honeybadger.isLumen')) {
+                $this->setLumenRouteActionContext($request);
+            } else {
+                $this->setLaravelRouteActionContext();
+            }
+        } catch (\Exception $e) {
+            // swallow
         }
     }
 
@@ -60,16 +64,28 @@ class ContextManager
 
     private function setLaravelRouteActionContext()
     {
-        if (Route::getCurrentRoute()) {
-            $routeAction = explode('@', Route::getCurrentRoute()->getActionName());
+        $currentRoute = Route::getCurrentRoute();
+        if ($currentRoute === null) {
+            return;
+        }
 
-            if (! empty($routeAction[0])) {
-                $this->honeybadger->setComponent($routeAction[0] ?? '');
-            }
+        $routeActionName = Route::getCurrentRoute()->getActionName();
 
-            if (! empty($routeAction[1])) {
-                $this->honeybadger->setAction($routeAction[1] ?? '');
-            }
+        if (gettype($routeActionName) === 'object' && get_class($routeActionName) === 'Closure') {
+            $reflection = new \ReflectionFunction($routeActionName);
+            $vars = $reflection->getStaticVariables();
+            $routeAction[0] = $vars['componentName'] ?? '';
+        }
+        else {
+            $routeAction = explode('@', $routeActionName);
+        }
+
+        if (! empty($routeAction[0])) {
+            $this->honeybadger->setComponent($routeAction[0] ?? '');
+        }
+
+        if (! empty($routeAction[1])) {
+            $this->honeybadger->setAction($routeAction[1] ?? '');
         }
     }
 
