@@ -12,7 +12,7 @@ use Throwable;
 
 class HoneybadgerLaravel extends Honeybadger
 {
-    const VERSION = '4.2.0';
+    const VERSION = '4.2.1';
 
     const DEFAULT_EVENTS = [
         Events\DatabaseQueryExecuted::class,
