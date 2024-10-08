@@ -69,7 +69,7 @@ class ContextManager
             return;
         }
 
-        $routeActionName = Route::getCurrentRoute()->getActionName();
+        $routeActionName = $currentRoute->getActionName();
 
         if (gettype($routeActionName) === 'object' && get_class($routeActionName) === 'Closure') {
             $reflection = new \ReflectionFunction($routeActionName);
