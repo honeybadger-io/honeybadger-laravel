@@ -36,6 +36,6 @@ jobs:
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         with:
           create_branch: false
-          commit_message: "chore: update version [skip ci]"
+          commit_message: "chore: update version"
           commit_user_name: "honeybadger-robot"
           commit_user_email: "honeybadger-robot@honeybadger.io"
