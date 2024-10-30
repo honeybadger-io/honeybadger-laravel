@@ -15,6 +15,19 @@ return [
     'personal_auth_token' => env('HONEYBADGER_PERSONAL_AUTH_TOKEN'),
 
     /**
+     * The endpoint for the Honeybadger API.
+     * If you are using the EU region, set this to 'https://eu-api.honeybadger.io/v1'.
+     */
+    'endpoint' => env('HONEYBADGER_ENDPOINT', 'https://api.honeybadger.io/v1'),
+
+    /**
+     * The endpoint for the Honeybadger App.
+     * This is used to synchronize check-ins with Honeybadger.
+     * If you are using the EU region, set this to 'https://eu-app.honeybadger.io'.
+     */
+    'app_endpoint' => env('HONEYBADGER_APP_ENDPOINT', 'https://app.honeybadger.io'),
+
+    /**
      * The application environment.
      */
     'environment_name' => env('APP_ENV'),

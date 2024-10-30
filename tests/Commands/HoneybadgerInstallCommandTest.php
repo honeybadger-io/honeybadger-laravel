@@ -56,8 +56,57 @@ class HoneybadgerInstallCommandTest extends TestCase
 
         $this->assertEquals([
             'Write HONEYBADGER_API_KEY to .env' => true,
+            'Write HONEYBADGER_API_KEY and HONEYBADGER_VERIFY_SSL placeholders to .env.example' => true,
             'Write HONEYBADGER_API_KEY placeholder to .env.example' => true,
-            'Write HONEYBADGER_VERIFY_SSL placeholder to .env.example' => true,
+            'Publish the config file' => true,
+            'Send test exception to Honeybadger' => [
+                'id' => '1234',
+            ],
+        ], $commandTasks->getResults());
+    }
+
+    /** @test */
+    public function writes_endpoint_values_to_env_files()
+    {
+        $installer = $this->createMock(Installer::class);
+
+        $installer->method('sendTestException')
+            ->willReturn(['id' => '1234']);
+
+        $installer->method('writeConfig')
+            ->willReturn(true);
+
+        $installer->method('shouldPublishConfig')
+            ->willReturn(true);
+
+        $installer->method('publishLaravelConfig')
+            ->willReturn(true);
+
+        $this->app[Installer::class] = $installer;
+
+        $commandTasks = new CommandTasks;
+
+        $commandTasks->doNotThrowOnError();
+
+        $this->app[CommandTasks::class] = $commandTasks;
+
+        $command = $this->commandMock();
+
+        $this->app[Kernel::class]->registerCommand($command);
+
+        $this->artisan('honeybadger:install', [
+            'apiKey' => 'supersecret',
+            '--endpoint' => 'https://self-hosted.honeybadger.io',
+            '--appEndpoint' => 'https://self-hosted-app.honeybadger.io',
+        ]);
+
+        $this->assertEquals([
+            'Write HONEYBADGER_API_KEY to .env' => true,
+            'Write HONEYBADGER_API_KEY and HONEYBADGER_VERIFY_SSL placeholders to .env.example' => true,
+            'Write HONEYBADGER_ENDPOINT to .env' => true,
+            'Write HONEYBADGER_ENDPOINT to .env.example' => true,
+            'Write HONEYBADGER_APP_ENDPOINT to .env' => true,
+            'Write HONEYBADGER_APP_ENDPOINT to .env.example' => true,
             'Publish the config file' => true,
             'Send test exception to Honeybadger' => [
                 'id' => '1234',
