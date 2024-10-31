@@ -2,7 +2,6 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
-use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\CommandTasks;
 use Honeybadger\HoneybadgerLaravel\Concerns\RequiredInput;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer;
@@ -15,12 +14,15 @@ class HoneybadgerInstallCommand extends Command
 {
     use RequiredInput;
 
+    private const HONEYBADGER_API_URL_EU = "https://eu-api.honeybadger.io/v1";
+    private const HONEYBADGER_APP_URL_EU = "https://eu-app.honeybadger.io";
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'honeybadger:install {apiKey?} {--endpoint=} {--appEndpoint=}';
+    protected $signature = 'honeybadger:install {apiKey?} {--eu} {--endpoint=} {--appEndpoint=}';
 
     /**
      * The console command description.
@@ -92,6 +94,12 @@ class HoneybadgerInstallCommand extends Command
         $config = [
             'api_key' => $this->argument('apiKey') ?? $this->promptForApiKey(),
         ];
+
+        $euStack = $this->option('eu');
+        if ($euStack) {
+            $config['endpoint'] = self::HONEYBADGER_API_URL_EU;
+            $config['app_endpoint'] = self::HONEYBADGER_APP_URL_EU;
+        }
 
         $endpoint = $this->option('endpoint');
         if ($endpoint != null) {
@@ -170,7 +178,7 @@ class HoneybadgerInstallCommand extends Command
             }
         );
 
-        if (isset($this->config['endpoint']) && $this->config['endpoint'] != Honeybadger::API_URL) {
+        if (isset($this->config['endpoint'])) {
             $this->tasks->addTask(
                 'Write HONEYBADGER_ENDPOINT to .env',
                 function () {
@@ -191,7 +199,7 @@ class HoneybadgerInstallCommand extends Command
             );
         }
 
-        if (isset($this->config['app_endpoint']) && $this->config['app_endpoint'] != Honeybadger::APP_URL) {
+        if (isset($this->config['app_endpoint'])) {
             $this->tasks->addTask(
                 'Write HONEYBADGER_APP_ENDPOINT to .env',
                 function () {
