@@ -57,7 +57,6 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->assertEquals([
             'Write HONEYBADGER_API_KEY to .env' => true,
             'Write HONEYBADGER_API_KEY and HONEYBADGER_VERIFY_SSL placeholders to .env.example' => true,
-            'Write HONEYBADGER_API_KEY placeholder to .env.example' => true,
             'Publish the config file' => true,
             'Send test exception to Honeybadger' => [
                 'id' => '1234',
@@ -237,7 +236,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         $taskResults = $commandTasks->getResults();
 
         $this->assertFalse($taskResults['Write HONEYBADGER_API_KEY to .env']);
-        $this->assertFalse($taskResults['Write HONEYBADGER_API_KEY placeholder to .env.example']);
+        $this->assertFalse($taskResults['Write HONEYBADGER_API_KEY and HONEYBADGER_VERIFY_SSL placeholders to .env.example']);
     }
 
     /** @test */
