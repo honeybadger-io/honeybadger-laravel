@@ -13,7 +13,7 @@ abstract class ApplicationEvent
 
     public string $handles;
 
-    abstract public function getEventPayload($event): EventPayload;
+    abstract public function getEventPayload($event): EventPayload | null;
 
     public function handle($event): void
     {
@@ -27,6 +27,10 @@ abstract class ApplicationEvent
             }
 
             $payload = $this->getEventPayload($event);
+
+            if ($payload == null) {
+                return;
+            }
 
             if ($breadcrumbEnabled) {
                 Honeybadger::addBreadcrumb($payload->message, $payload->metadata, $payload->category);

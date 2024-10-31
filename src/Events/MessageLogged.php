@@ -10,10 +10,16 @@ class MessageLogged extends ApplicationEvent
 
     /**
      * @param LaravelMessageLogged $event
-     * @return EventPayload
+     * @return EventPayload | null
      */
-    public function getEventPayload($event): EventPayload
+    public function getEventPayload($event): EventPayload | null
     {
+        // todo: check if this can be improved
+        if (str_contains($event->message, 'Illuminate\\Log\\Events\\MessageLogged')) {
+            // prevent infinite loop
+            return null;
+        }
+
         $metadata = $event->context;
         $metadata['level'] = $event->level;
 
