@@ -16,9 +16,9 @@ return [
 
     /**
      * The endpoint for the Honeybadger API.
-     * If you are using the EU region, set this to 'https://eu-api.honeybadger.io/v1'.
+     * If you are using the EU region, set this to 'https://eu-api.honeybadger.io'.
      */
-    'endpoint' => env('HONEYBADGER_ENDPOINT', 'https://api.honeybadger.io/v1'),
+    'endpoint' => env('HONEYBADGER_ENDPOINT', 'https://api.honeybadger.io'),
 
     /**
      * The endpoint for the Honeybadger App.
