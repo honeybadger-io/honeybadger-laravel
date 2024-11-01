@@ -48,7 +48,7 @@ class HoneybadgerDeployCommand extends Command
     {
         $config = Config::get('honeybadger');
 
-        $endpoint = $config['endpoint'] ?? Honeybadger::API_URL;
+        $endpoint = $config['endpoint'] ?? (Honeybadger::API_URL . 'v1');
 
         $params = $this->resolveParams($config);
 
