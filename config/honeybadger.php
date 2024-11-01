@@ -1,6 +1,7 @@
 <?php
 
 use Honeybadger\BulkEventDispatcher;
+use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerLaravel;
 
 return [
@@ -16,16 +17,16 @@ return [
 
     /**
      * The endpoint for the Honeybadger API.
-     * If you are using the EU region, set this to 'https://eu-api.honeybadger.io'.
+     * If you are using the EU region, set this to 'https://eu-api.honeybadger.io/'.
      */
-    'endpoint' => env('HONEYBADGER_ENDPOINT', 'https://api.honeybadger.io'),
+    'endpoint' => env('HONEYBADGER_ENDPOINT', Honeybadger::API_URL),
 
     /**
      * The endpoint for the Honeybadger App.
      * This is used to synchronize check-ins with Honeybadger.
-     * If you are using the EU region, set this to 'https://eu-app.honeybadger.io'.
+     * If you are using the EU region, set this to 'https://eu-app.honeybadger.io/'.
      */
-    'app_endpoint' => env('HONEYBADGER_APP_ENDPOINT', 'https://app.honeybadger.io'),
+    'app_endpoint' => env('HONEYBADGER_APP_ENDPOINT', Honeybadger::APP_URL),
 
     /**
      * The application environment.
