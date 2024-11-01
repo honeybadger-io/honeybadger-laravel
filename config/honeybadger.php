@@ -117,7 +117,7 @@ return [
          * Events which should automatically be recorded by the Honeybadger client as breadcrumbs.
          * Note that to track redis events, you need to call `Redis::enableEvents()` in your app.
          */
-        'automatic' => HoneybadgerLaravel::DEFAULT_EVENTS,
+        'automatic' => HoneybadgerLaravel::DEFAULT_BREADCRUMB_EVENTS,
     ],
 
     /**

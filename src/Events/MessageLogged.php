@@ -2,8 +2,14 @@
 
 namespace Honeybadger\HoneybadgerLaravel\Events;
 
+use Honeybadger\HoneybadgerLaravel\HoneybadgerLogEventDriver;
 use Illuminate\Log\Events\MessageLogged as LaravelMessageLogged;
 
+/**
+ * Note: This event should not be used for the Events API.
+ * To send logs to Honeybadger Events API, use the {@link HoneybadgerLogEventDriver} as a log channel instead.
+ * The log channel driver comes with built-in support for log levels and infinite loop protection (it uses Monolog).
+ */
 class MessageLogged extends ApplicationEvent
 {
     public string $handles = LaravelMessageLogged::class;

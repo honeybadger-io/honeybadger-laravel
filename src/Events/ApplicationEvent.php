@@ -63,7 +63,7 @@ abstract class ApplicationEvent
             return false;
         }
 
-        $eventsEnabled = config('honeybadger.breadcrumbs.automatic', HoneybadgerLaravel::DEFAULT_EVENTS);
+        $eventsEnabled = config('honeybadger.breadcrumbs.automatic', HoneybadgerLaravel::DEFAULT_BREADCRUMB_EVENTS);
         if (in_array(static::class, $eventsEnabled)) {
             return true;
         }
