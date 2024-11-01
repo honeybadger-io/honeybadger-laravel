@@ -25,7 +25,6 @@ class HoneybadgerLaravel extends Honeybadger
         Events\JobProcessed::class,
         Events\MailSending::class,
         Events\MailSent::class,
-        // Events\MessageLogged::class,
         Events\NotificationSending::class,
         Events\NotificationSent::class,
         Events\NotificationFailed::class,
