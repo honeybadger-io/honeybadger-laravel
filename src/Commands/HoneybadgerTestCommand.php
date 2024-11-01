@@ -4,6 +4,7 @@ namespace Honeybadger\HoneybadgerLaravel\Commands;
 
 use Exception;
 use Honeybadger\Contracts\Reporter;
+use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\Exceptions\TestException;
 use Illuminate\Console\Command;
 
@@ -39,7 +40,12 @@ class HoneybadgerTestCommand extends Command
                 throw new Exception('There was an error sending the exception to Honeybadger');
             }
 
-            $noticeUrl = "https://app.honeybadger.io/notice/$id";
+            $appEndpoint = config('honeybadger.app_endpoint') ?? Honeybadger::APP_URL;
+            if (!str_ends_with($appEndpoint, '/')) {
+                $appEndpoint .= '/';
+            }
+
+            $noticeUrl = $appEndpoint . "notice/$id";
             $this->info("Successfully sent a test exception to Honeybadger: $noticeUrl");
         } catch (Exception $e) {
             $this->error($e->getMessage());
