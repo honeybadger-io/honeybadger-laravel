@@ -25,7 +25,6 @@ class HoneybadgerLaravel extends Honeybadger
         Events\JobProcessed::class,
         Events\MailSending::class,
         Events\MailSent::class,
-        Events\MessageLogged::class,
         Events\NotificationSending::class,
         Events\NotificationSent::class,
         Events\NotificationFailed::class,
@@ -34,6 +33,11 @@ class HoneybadgerLaravel extends Honeybadger
         Events\RouteMatched::class,
         Events\RequestHandled::class,
         Events\ViewRendered::class,
+    ];
+
+    const DEFAULT_BREADCRUMB_EVENTS = [
+        ...self::DEFAULT_EVENTS,
+        Events\MessageLogged::class,
     ];
 
     public static function make(array $config): Reporter
@@ -45,9 +49,11 @@ class HoneybadgerLaravel extends Honeybadger
                 'version' => self::VERSION.'/'.Honeybadger::VERSION,
             ],
             'service_exception_handler' => function (ServiceException $e) {
-                // Note: If you are using Honeybadger as a Logger, this exception
-                // can end up being reported to Honeybadger depending on your log level configuration.
                 Log::warning($e);
+            },
+            'events_exception_handler' => function (ServiceException $e) {
+                // noop; we don't want to throw exceptions in the event handlers
+                // nor do we want to log them, because they will create a lot of noise.
             },
         ], $config));
     }
