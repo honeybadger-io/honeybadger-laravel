@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.3.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.2.2...v4.3.0) (2024-11-01)
+
+
+### Features
+
+* add support for eu endpoints with install command ([#139](https://github.com/honeybadger-io/honeybadger-laravel/issues/139)) ([c2d6a63](https://github.com/honeybadger-io/honeybadger-laravel/commit/c2d6a63b0284ce7649826b29285d237e54be6666))
+
+
+### Bug Fixes
+
+* stop using the MessageLogged event for events api ([#142](https://github.com/honeybadger-io/honeybadger-laravel/issues/142)) ([452b8dd](https://github.com/honeybadger-io/honeybadger-laravel/commit/452b8ddb950845b95ba432e002c2b9c39fdfe680))
+
 ## [4.2.2](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.2.1...v4.2.2) (2024-10-11)
 
 
