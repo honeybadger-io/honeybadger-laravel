@@ -19,7 +19,7 @@ class HoneybadgerInstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'honeybadger:install {apiKey?}';
+    protected $signature = 'honeybadger:install {apiKey?} {--endpoint=} {--appEndpoint=}';
 
     /**
      * The console command description.
@@ -88,9 +88,20 @@ class HoneybadgerInstallCommand extends Command
      */
     private function gatherConfig(): array
     {
-        return [
+        $config = [
             'api_key' => $this->argument('apiKey') ?? $this->promptForApiKey(),
         ];
+
+        $endpoint = $this->option('endpoint');
+        if ($endpoint != null) {
+            $config['endpoint'] = $endpoint;
+        }
+        $appEndpoint = $this->option('appEndpoint');
+        if ($appEndpoint != null) {
+            $config['app_endpoint'] = $appEndpoint;
+        }
+
+        return $config;
     }
 
     /**
@@ -146,27 +157,58 @@ class HoneybadgerInstallCommand extends Command
         );
 
         $this->tasks->addTask(
-            'Write HONEYBADGER_API_KEY placeholder to .env.example',
+            'Write HONEYBADGER_API_KEY and HONEYBADGER_VERIFY_SSL placeholders to .env.example',
             function () {
                 return $this->installer->writeConfig(
                     [
                         'HONEYBADGER_API_KEY' => '',
-                        'HONEYBADGER_VERIFY_SSL' => 'true',
+                        'HONEYBADGER_VERIFY_SSL' => '',
                     ],
                     base_path('.env.example')
                 );
             }
         );
 
-        $this->tasks->addTask(
-            'Write HONEYBADGER_VERIFY_SSL placeholder to .env.example',
-            function () {
-                return $this->installer->writeConfig(
-                    ['HONEYBADGER_VERIFY_SSL' => ''],
-                    base_path('.env.example')
-                );
-            }
-        );
+        if (isset($this->config['endpoint'])) {
+            $this->tasks->addTask(
+                'Write HONEYBADGER_ENDPOINT to .env',
+                function () {
+                    return $this->installer->writeConfig([
+                        'HONEYBADGER_ENDPOINT' => $this->config['endpoint'],
+                    ], base_path('.env'));
+                }
+            );
+
+            $this->tasks->addTask(
+                'Write HONEYBADGER_ENDPOINT to .env.example',
+                function () {
+                    return $this->installer->writeConfig([
+                        'HONEYBADGER_ENDPOINT' => $this->config['endpoint'],
+
+                    ], base_path('.env.example'));
+                }
+            );
+        }
+
+        if (isset($this->config['app_endpoint'])) {
+            $this->tasks->addTask(
+                'Write HONEYBADGER_APP_ENDPOINT to .env',
+                function () {
+                    return $this->installer->writeConfig([
+                        'HONEYBADGER_APP_ENDPOINT' => $this->config['app_endpoint'],
+                    ], base_path('.env'));
+                }
+            );
+
+            $this->tasks->addTask(
+                'Write HONEYBADGER_APP_ENDPOINT to .env.example',
+                function () {
+                    return $this->installer->writeConfig([
+                        'HONEYBADGER_APP_ENDPOINT' => $this->config['app_endpoint'],
+                    ], base_path('.env.example'));
+                }
+            );
+        }
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Honeybadger\HoneybadgerLaravel\Commands;
 
 use GuzzleHttp\Client;
+use Honeybadger\Honeybadger;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,10 +46,17 @@ class HoneybadgerDeployCommand extends Command
      */
     public function handle()
     {
-        $params = $this->resolveParams();
+        $config = Config::get('honeybadger');
+
+        $endpoint = $config['endpoint'] ?? Honeybadger::API_URL;
+        if (!str_ends_with($endpoint, '/')) {
+            $endpoint .= '/';
+        }
+
+        $params = $this->resolveParams($config);
 
         $response = $this->client->post(
-            'https://api.honeybadger.io/v1/deploys',
+            $endpoint . 'v1/deploys',
             [
                 'form_params' => $params,
             ]
@@ -66,10 +74,8 @@ class HoneybadgerDeployCommand extends Command
         $this->info(sprintf('Deployment %s successfully sent', $params['deploy']['revision']));
     }
 
-    private function resolveParams(): array
+    private function resolveParams($config): array
     {
-        $config = Config::get('honeybadger');
-
         return [
             'api_key' => $this->option('apiKey') ?? $config['api_key'],
             'deploy' => array_merge([
