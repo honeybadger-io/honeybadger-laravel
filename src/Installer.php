@@ -58,7 +58,7 @@ class Installer implements InstallerContract
     /**
      * {@inheritdoc}
      */
-    public function publishLumenConfig(string $stubPath = null): bool
+    public function publishLumenConfig(?string $stubPath = null): bool
     {
         if (! is_dir(base_path('config'))) {
             mkdir(base_path('config'));
