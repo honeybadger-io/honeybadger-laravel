@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.3.1](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.3.0...v4.3.1) (2024-12-17)
+
+
+### Performance Improvements
+
+* add PHP 8.4 to test matrix ([#146](https://github.com/honeybadger-io/honeybadger-laravel/issues/146)) ([a57cd79](https://github.com/honeybadger-io/honeybadger-laravel/commit/a57cd796f146f5bfc967685e89618fa509ef0b6e))
+
 ## [4.3.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.2.2...v4.3.0) (2024-11-01)
 
 
