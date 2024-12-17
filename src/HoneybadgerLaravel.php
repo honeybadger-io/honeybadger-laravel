@@ -58,7 +58,7 @@ class HoneybadgerLaravel extends Honeybadger
         ], $config));
     }
 
-    public function notify(Throwable $throwable, Request $request = null, array $additionalParams = []): array
+    public function notify(Throwable $throwable, ?Request $request = null, array $additionalParams = []): array
     {
         $this->setRouteActionAndUserContext($request ?: request());
 
