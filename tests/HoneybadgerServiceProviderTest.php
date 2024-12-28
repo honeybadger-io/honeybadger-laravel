@@ -2,11 +2,14 @@
 
 namespace Honeybadger\Tests;
 
+use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
+use Honeybadger\HoneybadgerLaravel\Middleware\AssignRequestId;
 use Honeybadger\LogEventHandler;
 use Honeybadger\LogHandler;
 use Honeybadger\Honeybadger;
 use Honeybadger\Contracts\Reporter;
 use Honeybadger\HoneybadgerLaravel\Facades\Honeybadger as HoneybadgerFacade;
+use Illuminate\Contracts\Http\Kernel;
 
 class HoneybadgerServiceProviderTest extends TestCase
 {
@@ -34,5 +37,30 @@ class HoneybadgerServiceProviderTest extends TestCase
     public function it_registers_the_log_event_handler()
     {
         $this->assertInstanceOf(LogEventHandler::class, $this->app[LogEventHandler::class]);
+    }
+
+    /** @test */
+    public function it_registers_middleware_by_default()
+    {
+        $this->partialMock(Kernel::class, function ($mock) {
+            $mock->shouldReceive('prependMiddleware')
+                ->with(AssignRequestId::class)
+                ->once();
+        });
+        $provider = new HoneybadgerServiceProvider($this->app);
+        $provider->boot();
+    }
+
+    /** @test */
+    public function it_does_not_register_middleware_when_disabled()
+    {
+        $this->app['config']->set('honeybadger.middleware', []);
+        $this->partialMock(Kernel::class, function ($mock) {
+            $mock->shouldReceive('prependMiddleware')
+                ->with(AssignRequestId::class)
+                ->never();
+        });
+        $provider = new HoneybadgerServiceProvider($this->app);
+        $provider->boot();
     }
 }

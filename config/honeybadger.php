@@ -3,6 +3,7 @@
 use Honeybadger\BulkEventDispatcher;
 use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerLaravel;
+use Honeybadger\HoneybadgerLaravel\Middleware\AssignRequestId;
 
 return [
     /**
@@ -165,4 +166,8 @@ return [
          */
         'automatic' => HoneybadgerLaravel::DEFAULT_EVENTS,
     ],
+
+    'middleware' => [
+        AssignRequestId::class
+    ]
 ];

@@ -245,7 +245,19 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
     protected function registerMiddleware(): void
     {
+        $middleware = config('honeybadger.middleware', [
+            // the default middleware if the config is not found - this should happen for
+            // all versions of the package up to and including 4.3.1
+            Middleware\AssignRequestId::class,
+        ]);
+
+        if ($middleware == null || !is_array($middleware)) {
+            return;
+        }
+
         $kernel = app(Kernel::class);
-        $kernel->prependMiddleware(Middleware\AssignRequestId::class);
+        foreach ($middleware as $class) {
+            $kernel->prependMiddleware($class);
+        }
     }
 }
