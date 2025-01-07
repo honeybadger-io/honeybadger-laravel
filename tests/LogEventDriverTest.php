@@ -95,6 +95,14 @@ class LogEventDriverTest extends TestCase
             {
                 return $this->events;
             }
+
+            public function beforeNotify(callable $callback): void
+            {
+            }
+
+            public function beforeEvent(callable $callback): void
+            {
+            }
         };
     }
 
