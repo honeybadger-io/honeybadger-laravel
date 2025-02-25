@@ -32,7 +32,7 @@
     "require-dev": {
         "larapack/dd": "^1.0",
         "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^8.0|^9.0|^10.0",
+        "orchestra/testbench": "^8.0|^9.0|^10.0|^11.0",
         "phpunit/phpunit": "^10.5|^11.0"
     },
     "autoload": {
@@ -52,6 +52,8 @@
     "config": {
         "sort-packages": true
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "laravel": {
             "providers": [
