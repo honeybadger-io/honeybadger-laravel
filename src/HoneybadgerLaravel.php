@@ -60,7 +60,11 @@ class HoneybadgerLaravel extends Honeybadger
 
     public function notify(Throwable $throwable, ?Request $request = null, array $additionalParams = []): array
     {
-        $this->setRouteActionAndUserContext($request ?: request());
+        $this->setRouteActionAndUserContext($request ?: \Illuminate\Support\Facades\Request::instance());
+
+        if (!$this->shouldReport($throwable)) {
+            return [];
+        }
 
         $result = parent::notify($throwable, $request, $additionalParams);
 
