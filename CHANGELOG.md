@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.4.1](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.4.0...v4.4.1) (2025-02-26)
+
+
+### Bug Fixes
+
+* get request instance using facade ([#154](https://github.com/honeybadger-io/honeybadger-laravel/issues/154)) ([5b8933f](https://github.com/honeybadger-io/honeybadger-laravel/commit/5b8933fe46422026184498f0cf36a7efc487eac1))
+
 ## [4.4.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.3.1...v4.4.0) (2025-01-07)
 
 
