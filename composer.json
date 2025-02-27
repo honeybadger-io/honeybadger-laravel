@@ -24,15 +24,15 @@
         "php": "^8.1",
         "honeybadger-io/honeybadger-php": ">=2.23.0",
         "sixlive/dotenv-editor": "^1.1|^2.0",
-        "illuminate/console": "^10.0|^11.0",
-        "illuminate/support": "^10.0|^11.0",
-        "monolog/monolog": "^2.0|^3.2",
+        "illuminate/console": "^10.0|^11.0|^12.0",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "monolog/monolog": "^2.10|^3.8",
         "ext-json": "*"
     },
     "require-dev": {
         "larapack/dd": "^1.0",
         "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^8.0|^9.0",
+        "orchestra/testbench": "^8.0|^9.0|^10.0",
         "phpunit/phpunit": "^10.5|^11.0"
     },
     "autoload": {
@@ -52,6 +52,8 @@
     "config": {
         "sort-packages": true
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "laravel": {
             "providers": [

@@ -76,7 +76,7 @@ class LogEventDriverTest extends TestCase
                 return $this;
             }
 
-            public function event($eventTypeOrPayload, array $payload = null): void
+            public function event($eventTypeOrPayload, ?array $payload = null): void
             {
                 $this->events[] = [$eventTypeOrPayload, $payload];
             }
