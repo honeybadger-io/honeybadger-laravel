@@ -161,6 +161,11 @@ return [
         'dispatch_interval_seconds' => BulkEventDispatcher::DISPATCH_INTERVAL_SECONDS,
 
         /**
+         * The percentage of events to send
+         */
+        'sample_rate' => 100,
+
+        /**
          * Events which should automatically be sent to Honeybadger Insights.
          * Note that to track redis events, you need to call `Redis::enableEvents()` in your app.
          */
