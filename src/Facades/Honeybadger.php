@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static void event(string|array $eventTypeOrPayload, array $payload = null)
+ * @method static void flushEvents()
  * @method static void checkin(string $key)
  * @method static array rawNotification(callable $callable)
  * @method static array customNotification(array $payload)

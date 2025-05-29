@@ -249,7 +249,14 @@ class HoneybadgerServiceProvider extends ServiceProvider
             // the default middleware if the config is not found - this should happen for
             // all versions of the package up to and including 4.3.1
             Middleware\AssignRequestId::class,
+            Middleware\FlushEvents::class,
         ]);
+
+        // For versions greater than 4.3.1 until 4.6.0, the middleware config did not include FlushEvents,
+        // but we always want to flush events at the end of the request, regardless of the config.
+        if (!in_array(Middleware\FlushEvents::class, $middleware)) {
+            $middleware[] = Middleware\FlushEvents::class;
+        }
 
         if ($middleware == null || !is_array($middleware)) {
             return;
@@ -257,7 +264,15 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
         $kernel = app(Kernel::class);
         foreach ($middleware as $class) {
-            $kernel->prependMiddleware($class);
+            if ($class === Middleware\FlushEvents::class) {
+                // We prefer to append FlushEvents middleware at the bottom of the stack.
+                // Hopefully it the terminate method will be called after all other middleware.
+                $kernel->pushMiddleware($class);
+            }
+            else {
+                // For all other middleware, we prefer to have them at the top of the stack.
+                $kernel->prependMiddleware($class);
+            }
         }
     }
 }
