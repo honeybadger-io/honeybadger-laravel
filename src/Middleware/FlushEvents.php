@@ -10,9 +10,8 @@ class FlushEvents
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle($request, $next): Response
     {
         return $next($request);
     }
@@ -20,7 +19,7 @@ class FlushEvents
     /**
      * Handle tasks after the response has been sent to the browser.
      */
-    public function terminate(\Illuminate\Http\Request $request, \Illuminate\Http\Response $response): void
+    public function terminate($request, $response): void
     {
         Honeybadger::flushEvents();
     }
