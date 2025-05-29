@@ -245,20 +245,9 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
     protected function registerMiddleware(): void
     {
-        $middleware = config('honeybadger.middleware', [
-            // the default middleware if the config is not found - this should happen for
-            // all versions of the package up to and including 4.3.1
-            Middleware\AssignRequestId::class,
-            Middleware\FlushEvents::class,
-        ]);
+        $middleware = $this->getMiddleware();
 
-        // For versions greater than 4.3.1 until 4.6.0, the middleware config did not include FlushEvents,
-        // but we always want to flush events at the end of the request, regardless of the config.
-        if (!in_array(Middleware\FlushEvents::class, $middleware)) {
-            $middleware[] = Middleware\FlushEvents::class;
-        }
-
-        if ($middleware == null || !is_array($middleware)) {
+        if (empty($middleware)) {
             return;
         }
 
@@ -274,5 +263,29 @@ class HoneybadgerServiceProvider extends ServiceProvider
                 $kernel->prependMiddleware($class);
             }
         }
+    }
+
+    private function getMiddleware(): array
+    {
+        $middleware = config('honeybadger.middleware', [
+            // the default middleware if the config is not found - this should happen for
+            // all versions of the package up to and including 4.3.1
+            Middleware\AssignRequestId::class,
+            Middleware\FlushEvents::class,
+        ]);
+
+        if ($middleware == null || !is_array($middleware)) {
+            // We could consider null a valid value to indicate no middleware should be registered,
+            // not even the FlushEvents middleware.
+            $middleware = [];
+        }
+
+        // For versions greater than 4.3.1 until 4.6.0, the middleware config did not include FlushEvents,
+        // but we always want to flush events at the end of the request, regardless of the config.
+        if (!in_array(Middleware\FlushEvents::class, $middleware)) {
+            $middleware[] = Middleware\FlushEvents::class;
+        }
+
+        return $middleware;
     }
 }
