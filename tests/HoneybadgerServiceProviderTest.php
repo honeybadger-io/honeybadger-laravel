@@ -4,6 +4,7 @@ namespace Honeybadger\Tests;
 
 use Honeybadger\HoneybadgerLaravel\HoneybadgerServiceProvider;
 use Honeybadger\HoneybadgerLaravel\Middleware\AssignRequestId;
+use Honeybadger\HoneybadgerLaravel\Middleware\FlushEvents;
 use Honeybadger\LogEventHandler;
 use Honeybadger\LogHandler;
 use Honeybadger\Honeybadger;
@@ -46,19 +47,28 @@ class HoneybadgerServiceProviderTest extends TestCase
             $mock->shouldReceive('prependMiddleware')
                 ->with(AssignRequestId::class)
                 ->once();
+
+            $mock->shouldReceive('pushMiddleware')
+                ->with(FlushEvents::class)
+                ->once();
         });
         $provider = new HoneybadgerServiceProvider($this->app);
         $provider->boot();
     }
 
     /** @test */
-    public function it_does_not_register_middleware_when_disabled()
+    public function it_registers_only_flush_events_middleware_when_disabled()
     {
         $this->app['config']->set('honeybadger.middleware', []);
         $this->partialMock(Kernel::class, function ($mock) {
             $mock->shouldReceive('prependMiddleware')
                 ->with(AssignRequestId::class)
                 ->never();
+
+            // flush events middleware is always registered
+            $mock->shouldReceive('pushMiddleware')
+                ->with(FlushEvents::class)
+                ->once();
         });
         $provider = new HoneybadgerServiceProvider($this->app);
         $provider->boot();

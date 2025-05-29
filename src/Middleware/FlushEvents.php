@@ -20,7 +20,7 @@ class FlushEvents
     /**
      * Handle tasks after the response has been sent to the browser.
      */
-    public function terminate(Request $request, Response $response): void
+    public function terminate(\Illuminate\Http\Request $request, \Illuminate\Http\Response $response): void
     {
         Honeybadger::flushEvents();
     }
