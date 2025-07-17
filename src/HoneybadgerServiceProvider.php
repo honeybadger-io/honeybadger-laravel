@@ -18,6 +18,7 @@ use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
 use Illuminate\Console\Scheduling\Event;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -220,8 +221,16 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
     protected function registerReporters(): void
     {
-        $this->app->singleton(Reporter::class, function ($app) {
-            return HoneybadgerLaravel::make($app['config']['honeybadger']);
+        $this->app->singleton(Reporter::class, function (Application $app) {
+            $config = $app['config']['honeybadger'];
+            if (!isset($config['handlers'])) {
+                $config['handlers'] = [];
+            }
+            // We only want the shutdown handler (to send events) when the app is running through a CLI command (i.e. queue:work).
+            // When the app is running normally, we register the FlushEvents middleware to send events.
+            $config['handlers']['shutdown'] = $app->runningInConsole();
+
+            return HoneybadgerLaravel::make($config);
         });
 
         $this->app->alias(Reporter::class, Honeybadger::class);
@@ -269,20 +278,21 @@ class HoneybadgerServiceProvider extends ServiceProvider
     {
         $middleware = config('honeybadger.middleware', [
             // the default middleware if the config is not found - this should happen for
-            // all versions of the package up to and including 4.3.1
+            // all versions of the package up to and including 4.3.1.
             Middleware\AssignRequestId::class,
             Middleware\FlushEvents::class,
         ]);
 
         if ($middleware == null || !is_array($middleware)) {
-            // We could consider null a valid value to indicate no middleware should be registered,
-            // not even the FlushEvents middleware.
+            // Note: We could consider null a valid value to indicate no middleware should be registered,
+            //       not even the FlushEvents middleware,
+            //       but we default to registering them if events are enabled (see below).
             $middleware = [];
         }
 
         // For versions greater than 4.3.1 until 4.6.0, the middleware config did not include FlushEvents,
-        // but we always want to flush events at the end of the request, regardless of the config.
-        if (!in_array(Middleware\FlushEvents::class, $middleware)) {
+        // but we always want to flush events at the end of the request, if they are enabled.
+        if (config('honeybadger.events.enabled') && !in_array(Middleware\FlushEvents::class, $middleware)) {
             $middleware[] = Middleware\FlushEvents::class;
         }
 

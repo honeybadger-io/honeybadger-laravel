@@ -60,6 +60,7 @@ class HoneybadgerServiceProviderTest extends TestCase
     public function it_registers_only_flush_events_middleware_when_disabled()
     {
         $this->app['config']->set('honeybadger.middleware', []);
+        $this->app['config']->set('honeybadger.events.enabled', true);
         $this->partialMock(Kernel::class, function ($mock) {
             $mock->shouldReceive('prependMiddleware')
                 ->with(AssignRequestId::class)
