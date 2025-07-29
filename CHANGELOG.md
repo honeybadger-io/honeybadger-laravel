@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.6.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.5.0...v4.6.0) (2025-07-29)
+
+
+### Features
+
+* flushEvents with terminable middleware ([#161](https://github.com/honeybadger-io/honeybadger-laravel/issues/161)) ([f3c58d2](https://github.com/honeybadger-io/honeybadger-laravel/commit/f3c58d2457a89bc5d6307f8f887b9a162f513142))
+
 ## [4.5.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.4.2...v4.5.0) (2025-05-02)
 
 
