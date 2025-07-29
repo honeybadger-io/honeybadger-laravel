@@ -4,6 +4,7 @@ use Honeybadger\BulkEventDispatcher;
 use Honeybadger\Honeybadger;
 use Honeybadger\HoneybadgerLaravel\HoneybadgerLaravel;
 use Honeybadger\HoneybadgerLaravel\Middleware\AssignRequestId;
+use Honeybadger\HoneybadgerLaravel\Middleware\FlushEvents;
 
 return [
     /**
@@ -173,6 +174,7 @@ return [
     ],
 
     'middleware' => [
-        AssignRequestId::class
-    ]
+        AssignRequestId::class,
+        FlushEvents::class,
+    ],
 ];

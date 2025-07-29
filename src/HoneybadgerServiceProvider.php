@@ -18,6 +18,7 @@ use Honeybadger\HoneybadgerLaravel\Commands\HoneybadgerTestCommand;
 use Honeybadger\HoneybadgerLaravel\Contracts\Installer as InstallerContract;
 use Illuminate\Console\Scheduling\Event;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -220,8 +221,16 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
     protected function registerReporters(): void
     {
-        $this->app->singleton(Reporter::class, function ($app) {
-            return HoneybadgerLaravel::make($app['config']['honeybadger']);
+        $this->app->singleton(Reporter::class, function (Application $app) {
+            $config = $app['config']['honeybadger'];
+            if (!isset($config['handlers'])) {
+                $config['handlers'] = [];
+            }
+            // We only want the shutdown handler (to send events) when the app is running through a CLI command (i.e. queue:work).
+            // When the app is running normally, we register the FlushEvents middleware to send events.
+            $config['handlers']['shutdown'] = $app->runningInConsole();
+
+            return HoneybadgerLaravel::make($config);
         });
 
         $this->app->alias(Reporter::class, Honeybadger::class);
@@ -245,19 +254,48 @@ class HoneybadgerServiceProvider extends ServiceProvider
 
     protected function registerMiddleware(): void
     {
-        $middleware = config('honeybadger.middleware', [
-            // the default middleware if the config is not found - this should happen for
-            // all versions of the package up to and including 4.3.1
-            Middleware\AssignRequestId::class,
-        ]);
+        $middleware = $this->getMiddleware();
 
-        if ($middleware == null || !is_array($middleware)) {
+        if (empty($middleware)) {
             return;
         }
 
         $kernel = app(Kernel::class);
         foreach ($middleware as $class) {
-            $kernel->prependMiddleware($class);
+            if ($class === Middleware\FlushEvents::class) {
+                // We prefer to append FlushEvents middleware at the bottom of the stack.
+                // Hopefully the terminate method will be called after all other middleware.
+                $kernel->pushMiddleware($class);
+            }
+            else {
+                // For all other middleware, we prefer to have them at the top of the stack.
+                $kernel->prependMiddleware($class);
+            }
         }
+    }
+
+    private function getMiddleware(): array
+    {
+        $middleware = config('honeybadger.middleware', [
+            // the default middleware if the config is not found - this should happen for
+            // all versions of the package up to and including 4.3.1.
+            Middleware\AssignRequestId::class,
+            Middleware\FlushEvents::class,
+        ]);
+
+        if ($middleware == null || !is_array($middleware)) {
+            // Note: We could consider null a valid value to indicate no middleware should be registered,
+            //       not even the FlushEvents middleware,
+            //       but we default to registering them if events are enabled (see below).
+            $middleware = [];
+        }
+
+        // For versions greater than 4.3.1 until 4.6.0, the middleware config did not include FlushEvents,
+        // but we always want to flush events at the end of the request, if they are enabled.
+        if (config('honeybadger.events.enabled') && !in_array(Middleware\FlushEvents::class, $middleware)) {
+            $middleware[] = Middleware\FlushEvents::class;
+        }
+
+        return $middleware;
     }
 }
