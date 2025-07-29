@@ -264,7 +264,7 @@ class HoneybadgerServiceProvider extends ServiceProvider
         foreach ($middleware as $class) {
             if ($class === Middleware\FlushEvents::class) {
                 // We prefer to append FlushEvents middleware at the bottom of the stack.
-                // Hopefully it the terminate method will be called after all other middleware.
+                // Hopefully the terminate method will be called after all other middleware.
                 $kernel->pushMiddleware($class);
             }
             else {
