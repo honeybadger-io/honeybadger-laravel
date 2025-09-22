@@ -71,7 +71,7 @@ class LogEventDriverTest extends TestCase
                 return $this;
             }
 
-            public function clear(): Reporter
+            public function clear($clearEventContext = false): Reporter
             {
                 return $this;
             }
@@ -84,6 +84,16 @@ class LogEventDriverTest extends TestCase
             public function flushEvents(): void
             {
                 $this->events = [];
+            }
+
+            public function eventContext($key, $value = null): Reporter
+            {
+                return $this;
+            }
+
+            public function clearEventContext(): Reporter
+            {
+                return $this;
             }
 
             /**
