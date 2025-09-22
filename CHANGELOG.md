@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.7.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.6.0...v4.7.0) (2025-09-22)
+
+
+### Features
+
+* add eventContext in facade ([#164](https://github.com/honeybadger-io/honeybadger-laravel/issues/164)) ([6d738fe](https://github.com/honeybadger-io/honeybadger-laravel/commit/6d738fea098a80e2ad0f62eb0beb30f202411d75))
+
 ## [4.6.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.5.0...v4.6.0) (2025-07-29)
 
 
