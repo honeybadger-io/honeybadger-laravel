@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Honeybadger\Contracts\Reporter context(int|string|array $key, $value = null)
  * @method static \Honeybadger\Contracts\Reporter addBreadcrumb(string $message, array $metadata = [], string $category = 'custom')
  * @method static \Honeybadger\Contracts\Reporter resetContext()
- * @method static \Honeybadger\Contracts\Reporter clear()
+ * @method static \Honeybadger\Contracts\Reporter clear(bool $clearEventContext = false)
+ * @method static \Honeybadger\Contracts\Reporter clearEventContext()
+ * @method static \Honeybadger\Contracts\Reporter eventContext(int|string|array $key, $value = null)
  */
 class Honeybadger extends Facade
 {
