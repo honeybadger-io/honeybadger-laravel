@@ -43,3 +43,4 @@ Releases are automated, using [Github Actions](https://github.com/honeybadger-io
 
 ## License
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
