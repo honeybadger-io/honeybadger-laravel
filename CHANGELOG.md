@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.7.1](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.7.0...v4.7.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* require orchestra/testbench ^9.2 for Laravel 11 ([#168](https://github.com/honeybadger-io/honeybadger-laravel/issues/168)) ([d56b382](https://github.com/honeybadger-io/honeybadger-laravel/commit/d56b3823261c925a90d4ec0cffb805876e8b7f3b)), closes [#167](https://github.com/honeybadger-io/honeybadger-laravel/issues/167)
+
 ## [4.7.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.6.0...v4.7.0) (2025-09-22)
 
 
