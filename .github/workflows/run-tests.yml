@@ -52,7 +52,12 @@ jobs:
           coverage: none
 
       - name: Install Laravel ${{ matrix.laravel }}
-        run: composer require "laravel/framework:${{ matrix.laravel }}" --with-all-dependencies --no-interaction
+        run: |
+          if [ "${{ matrix.laravel }}" == "dev-master" ]; then
+            composer require "laravel/framework:dev-master" "orchestra/testbench:^11.0@dev" "phpunit/phpunit:^12.5.8" --with-all-dependencies --no-interaction
+          else
+            composer require "laravel/framework:${{ matrix.laravel }}" --with-all-dependencies --no-interaction
+          fi
 
       - name: Install dependencies (lowest)
         if: "${{ matrix.deps == 'lowest' }}"
