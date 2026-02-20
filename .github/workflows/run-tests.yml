@@ -28,8 +28,12 @@ jobs:
           - latest
         exclude:
           - {php: '8.5', deps: 'lowest'}
+        include:
+          - {php: '8.5', laravel: 'dev-master', deps: 'latest'}
+          - {php: '8.4', laravel: 'dev-master', deps: 'latest'}
 
     name: PHP ${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.deps }}
+    continue-on-error: ${{ matrix.laravel == 'dev-master' }}
 
     steps:
       - name: Checkout code

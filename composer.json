@@ -24,15 +24,15 @@
         "php": "^8.2",
         "honeybadger-io/honeybadger-php": ">=2.24.1",
         "sixlive/dotenv-editor": "^1.1|^2.0",
-        "illuminate/console": "^11.0|^12.0",
-        "illuminate/support": "^11.0|^12.0",
+        "illuminate/console": "^11.0|^12.0|^13.0",
+        "illuminate/support": "^11.0|^12.0|^13.0",
         "monolog/monolog": "^2.10|^3.8",
         "ext-json": "*"
     },
     "require-dev": {
         "larapack/dd": "^1.0",
         "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^9.2|^10.0",
+        "orchestra/testbench": "^9.2|^10.0|^11.0",
         "phpunit/phpunit": "^10.5|^11.0"
     },
     "autoload": {
