@@ -24,16 +24,16 @@
         "php": "^8.1",
         "honeybadger-io/honeybadger-php": ">=2.24.1",
         "sixlive/dotenv-editor": "^1.1|^2.0",
-        "illuminate/console": "^10.0|^11.0|^12.0",
-        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/console": "^10.0|^11.0|^12.0|^13.0",
+        "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
         "monolog/monolog": "^2.10|^3.8",
         "ext-json": "*"
     },
     "require-dev": {
         "larapack/dd": "^1.0",
         "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^8.0|^9.2|^10.0",
-        "phpunit/phpunit": "^10.5|^11.0"
+        "orchestra/testbench": "^8.0|^9.2|^10.0|^11.0",
+        "phpunit/phpunit": "^10.5|^11.0|^12.5.12"
     },
     "autoload": {
         "psr-4": {
