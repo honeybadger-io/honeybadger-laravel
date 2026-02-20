@@ -14,34 +14,29 @@ use Illuminate\Contracts\Http\Kernel;
 
 class HoneybadgerServiceProviderTest extends TestCase
 {
-    /** @test */
-    public function facade_will_resolve_an_instance()
+    public function test_facade_will_resolve_an_instance()
     {
         $this->assertEquals('honeybadger', HoneybadgerFacade::getFacadeAccessor());
     }
 
-    /** @test */
-    public function aliases_are_set()
+    public function test_aliases_are_set()
     {
         $this->assertInstanceOf(Honeybadger::class, $this->app[Reporter::class]);
         $this->assertInstanceOf(Honeybadger::class, $this->app[Honeybadger::class]);
         $this->assertInstanceOf(Honeybadger::class, $this->app['honeybadger']);
     }
 
-    /** @test */
-    public function it_registers_the_log_handler()
+    public function test_it_registers_the_log_handler()
     {
         $this->assertInstanceOf(LogHandler::class, $this->app[LogHandler::class]);
     }
 
-    /** @test */
-    public function it_registers_the_log_event_handler()
+    public function test_it_registers_the_log_event_handler()
     {
         $this->assertInstanceOf(LogEventHandler::class, $this->app[LogEventHandler::class]);
     }
 
-    /** @test */
-    public function it_registers_middleware_by_default()
+    public function test_it_registers_middleware_by_default()
     {
         $this->partialMock(Kernel::class, function ($mock) {
             $mock->shouldReceive('prependMiddleware')
@@ -56,8 +51,7 @@ class HoneybadgerServiceProviderTest extends TestCase
         $provider->boot();
     }
 
-    /** @test */
-    public function it_registers_only_flush_events_middleware_when_disabled()
+    public function test_it_registers_only_flush_events_middleware_when_disabled()
     {
         $this->app['config']->set('honeybadger.middleware', []);
         $this->app['config']->set('honeybadger.events.enabled', true);

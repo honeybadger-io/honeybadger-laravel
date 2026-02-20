@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 class UserContextMiddlewareTest extends TestCase
 {
-    /** @test */
-    public function it_adds_the_user_context()
+    public function test_it_adds_the_user_context()
     {
         $honeybadger = $this->createMock(Reporter::class);
 
@@ -38,8 +37,7 @@ class UserContextMiddlewareTest extends TestCase
         });
     }
 
-    /** @test */
-    public function it_sets_action_and_context()
+    public function test_it_sets_action_and_context()
     {
         $honeybadger = $this->createMock(Honeybadger::class);
 
@@ -62,8 +60,7 @@ class UserContextMiddlewareTest extends TestCase
         $this->get('test');
     }
 
-    /** @test */
-    public function it_does_not_set_action_for_a_closure()
+    public function test_it_does_not_set_action_for_a_closure()
     {
         $honeybadger = $this->createMock(Honeybadger::class);
 
@@ -83,8 +80,7 @@ class UserContextMiddlewareTest extends TestCase
         $this->get('test');
     }
 
-    /** @test */
-    public function it_does_not_set_action_for_invokable_controllers()
+    public function test_it_does_not_set_action_for_invokable_controllers()
     {
         $honeybadger = $this->createMock(Honeybadger::class);
 

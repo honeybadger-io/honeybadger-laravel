@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 class ReporterTest extends TestCase
 {
-    /** @test */
-    public function it_automatically_adds_the_user_context()
+    public function test_it_automatically_adds_the_user_context()
     {
         request()->setUserResolver(function () {
             return new class {
@@ -47,8 +46,7 @@ class ReporterTest extends TestCase
         $badger->notify(new \Exception('Test exception'));
     }
 
-    /** @test */
-    public function it_automatically_sets_action_and_context()
+    public function test_it_automatically_sets_action_and_context()
     {
         request()->setUserResolver(function () {
             return new class {

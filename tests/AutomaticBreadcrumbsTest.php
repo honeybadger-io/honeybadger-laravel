@@ -44,8 +44,7 @@ class AutomaticBreadcrumbsTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function adds_breadcrumbs_for_routes()
+    public function test_adds_breadcrumbs_for_routes()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [RouteMatched::class]);
         Route::namespace('Honeybadger\Tests\Fixtures')
@@ -82,8 +81,7 @@ class AutomaticBreadcrumbsTest extends TestCase
         $this->post('/testClosure');
     }
 
-    /** @test */
-    public function adds_breadcrumbs_for_routes_with_deprecated_classes()
+    public function test_adds_breadcrumbs_for_routes_with_deprecated_classes()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [RouteMatchedDeprecated::class]);
         Route::namespace('Honeybadger\Tests\Fixtures')
@@ -120,8 +118,7 @@ class AutomaticBreadcrumbsTest extends TestCase
         $this->post('/testClosure');
     }
 
-    /** @test */
-    public function adds_breadcrumbs_for_logs()
+    public function test_adds_breadcrumbs_for_logs()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [MessageLogged::class]);
 
@@ -135,8 +132,7 @@ class AutomaticBreadcrumbsTest extends TestCase
         Log::info('Covfefe');
     }
 
-    /** @test */
-    public function adds_breadcrumbs_for_views()
+    public function test_adds_breadcrumbs_for_views()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [ViewRendered::class]);
         Config::set('view.paths', [realpath(__DIR__.'/Fixtures/views')]);
@@ -167,8 +163,7 @@ class AutomaticBreadcrumbsTest extends TestCase
         $this->get('test');
     }
 
-    /** @test */
-    public function adds_breadcrumbs_for_database_queries()
+    public function test_adds_breadcrumbs_for_database_queries()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [
             DatabaseTransactionStarted::class,
@@ -199,8 +194,7 @@ class AutomaticBreadcrumbsTest extends TestCase
         DB::commit();
     }
 
-    /** @test */
-    public function adds_breadcrumbs_for_notifications()
+    public function test_adds_breadcrumbs_for_notifications()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [NotificationSending::class, NotificationSent::class]);
         Config::set('mail.default', 'log');
@@ -221,8 +215,7 @@ class AutomaticBreadcrumbsTest extends TestCase
         Notification::send($user, new TestNotification);
     }
 
-    /** @test */
-    public function adds_breadcrumbs_for_mail()
+    public function test_adds_breadcrumbs_for_mail()
     {
         Config::set('honeybadger.breadcrumbs.automatic', [MailSending::class, MailSent::class]);
         Config::set('view.paths', [realpath(__DIR__.'/Fixtures/views')]);
@@ -243,8 +236,7 @@ class AutomaticBreadcrumbsTest extends TestCase
         Mail::to('chunkylover53@aol.com')->send(new TestMailable);
     }
 
-    /** @test */
-    public function adds_breadcrumbs_for_jobs()
+    public function test_adds_breadcrumbs_for_jobs()
     {
         if (version_compare($this->app->version(), '8.24.0', '<')) {
             $this->markTestSkipped('The JobQueued event was introduced in Laravel 8.24.0.');
@@ -282,8 +274,7 @@ class AutomaticBreadcrumbsTest extends TestCase
         dispatch(new TestJob);
     }
 
-    /** @test */
-    public function adds_breadcrumbs_for_cache()
+    public function test_adds_breadcrumbs_for_cache()
     {
         if (version_compare($this->app->version(), '8.24.0', '<')) {
             $this->markTestSkipped('The JobQueued event was introduced in Laravel 8.24.0.');

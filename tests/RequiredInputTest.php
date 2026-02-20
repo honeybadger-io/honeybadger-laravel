@@ -7,8 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class RequiredInputTest extends TestCase
 {
-    /** @test */
-    public function answer_is_returned_if_input_is_given()
+    public function test_answer_is_returned_if_input_is_given()
     {
         $command = new class {
             use RequiredInput;
@@ -29,8 +28,7 @@ class RequiredInputTest extends TestCase
         $this->assertEquals('secret answer', $answer);
     }
 
-    /** @test */
-    public function answer_is_required()
+    public function test_answer_is_required()
     {
         $command = new class {
             use RequiredInput;
