@@ -18,8 +18,7 @@ class HoneybadgerTestCommandTest extends TestCase
         Config::set('honeybadger.report_data', true);
     }
 
-    /** @test */
-    public function it_sends_a_test_exception_to_honeybadger()
+    public function test_it_sends_a_test_exception_to_honeybadger()
     {
         $mock = $this->createMock(Reporter::class);
         $mock->expects($this->once())
@@ -31,8 +30,7 @@ class HoneybadgerTestCommandTest extends TestCase
         $this->artisan('honeybadger:test');
     }
 
-    /** @test */
-    public function it_outputs_success()
+    public function test_it_outputs_success()
     {
         $mock = $this->createMock(Reporter::class);
         $mock->method('notify')
@@ -54,8 +52,7 @@ class HoneybadgerTestCommandTest extends TestCase
         $this->artisan('honeybadger:test');
     }
 
-    /** @test */
-    public function it_outputs_an_error()
+    public function test_it_outputs_an_error()
     {
         $mock = $this->createMock(Reporter::class);
         $mock->method('notify')
@@ -79,8 +76,7 @@ class HoneybadgerTestCommandTest extends TestCase
         $this->artisan('honeybadger:test');
     }
 
-    /** @test */
-    public function it_outputs_an_error_based_on_honeybadger_response()
+    public function test_it_outputs_an_error_based_on_honeybadger_response()
     {
         $mock = $this->createMock(Reporter::class);
         $mock->method('notify')

@@ -40,8 +40,7 @@ class HoneybadgetDeployCommandTest extends TestCase
             });
     }
 
-    /** @test */
-    public function default_params_resolve()
+    public function test_default_params_resolve()
     {
         $this->app['config']->set('honeybadger', [
             'api_key' => 'secret1234',
@@ -63,8 +62,7 @@ class HoneybadgetDeployCommandTest extends TestCase
         ], $this->client->options);
     }
 
-    /** @test */
-    public function revision_falls_back_to_git_hash()
+    public function test_revision_falls_back_to_git_hash()
     {
         $this->app['config']->set('honeybadger', array_merge(
             $this->app['config']->get('honeybadger'),
@@ -79,8 +77,7 @@ class HoneybadgetDeployCommandTest extends TestCase
         );
     }
 
-    /** @test */
-    public function params_from_options_override_defaults()
+    public function test_params_from_options_override_defaults()
     {
         $this->app['config']->set('honeybadger', [
             'api_key' => 'secret1234',
@@ -109,8 +106,7 @@ class HoneybadgetDeployCommandTest extends TestCase
         ], $this->client->options);
     }
 
-    /** @test */
-    public function invalid_status_codes_trigger_an_exception()
+    public function test_invalid_status_codes_trigger_an_exception()
     {
         $this->client->setResponse(new Response(500));
 
@@ -127,8 +123,7 @@ class HoneybadgetDeployCommandTest extends TestCase
         }
     }
 
-    /** @test */
-    public function invalid_response_trigger_an_exception()
+    public function test_invalid_response_trigger_an_exception()
     {
         $this->client->setResponse(new Response(200, [], json_encode(['status' => 'BAD'])));
 

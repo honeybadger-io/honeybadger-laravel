@@ -30,8 +30,7 @@ class HoneybadgerCheckInsSyncCommandTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_reads_check_ins_from_config()
+    public function test_it_reads_check_ins_from_config()
     {
         $mock = $this->createMock(SyncCheckIns::class);
         $mock->expects($this->once())

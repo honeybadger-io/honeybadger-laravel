@@ -10,10 +10,10 @@ use PHPUnit\Framework\MockObject\Exception;
 
 class LogEventDriverTest extends TestCase
 {
-    /** @test
+    /**
      * @throws Exception
      */
-    public function the_log_driver_can_be_correctly_registered_and_used()
+    public function test_the_log_driver_can_be_correctly_registered_and_used()
     {
         $this->app['config']->set('logging.channels.honeybadger', [
             'driver' => 'custom',

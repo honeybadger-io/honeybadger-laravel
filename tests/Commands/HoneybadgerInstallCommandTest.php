@@ -18,8 +18,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         Config::set('honeybadger.report_data', true);
     }
 
-    /** @test */
-    public function prompts_for_options_and_outputs_all_successful_operations()
+    public function test_prompts_for_options_and_outputs_all_successful_operations()
     {
         $installer = $this->createMock(Installer::class);
 
@@ -64,8 +63,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         ], $commandTasks->getResults());
     }
 
-    /** @test */
-    public function writes_endpoint_values_to_env_files()
+    public function test_writes_endpoint_values_to_env_files()
     {
         $installer = $this->createMock(Installer::class);
 
@@ -113,8 +111,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         ], $commandTasks->getResults());
     }
 
-    /** @test */
-    public function the_correct_config_gets_published_for_lumen()
+    public function test_the_correct_config_gets_published_for_lumen()
     {
         $this->app['honeybadger.isLumen'] = true;
 
@@ -147,8 +144,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->assertTrue($commandTasks->getResults()['Publish the config file']);
     }
 
-    /** @test */
-    public function publish_does_not_run_if_config_file_exists()
+    public function test_publish_does_not_run_if_config_file_exists()
     {
         $installer = $this->createMock(Installer::class);
 
@@ -180,8 +176,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         );
     }
 
-    /** @test */
-    public function sends_a_test_to_honeybadger()
+    public function test_sends_a_test_to_honeybadger()
     {
         $installer = $this->createMock(Installer::class);
 
@@ -209,8 +204,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->assertEquals('asdf123', Config::get('honeybadger.api_key'));
     }
 
-    /** @test */
-    public function gracefully_handles_env_file_not_existing()
+    public function test_gracefully_handles_env_file_not_existing()
     {
         $installer = $this->createMock(Installer::class);
 
@@ -239,8 +233,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         $this->assertFalse($taskResults['Write HONEYBADGER_API_KEY and HONEYBADGER_VERIFY_SSL placeholders to .env.example']);
     }
 
-    /** @test */
-    public function prompt_for_api_keys_does_not_get_called_if_key_is_passed()
+    public function test_prompt_for_api_keys_does_not_get_called_if_key_is_passed()
     {
         $this->app[Installer::class] = $this->createMock(Installer::class);
 
@@ -257,8 +250,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function the_success_block_is_output_with_link_to_notice()
+    public function test_the_success_block_is_output_with_link_to_notice()
     {
         $installer = $this->createMock(Installer::class);
 
@@ -290,8 +282,7 @@ class HoneybadgerInstallCommandTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function outputs_retry_text_if_any_tasks_fail()
+    public function test_outputs_retry_text_if_any_tasks_fail()
     {
         $installer = $this->createMock(Installer::class);
 

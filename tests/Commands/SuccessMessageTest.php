@@ -7,8 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class SuccessMessageTest extends TestCase
 {
-    /** @test */
-    public function message_is_formatted_with_the_notice_url()
+    public function test_message_is_formatted_with_the_notice_url()
     {
         $message = <<<'EX'
 

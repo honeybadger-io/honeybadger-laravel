@@ -8,8 +8,7 @@ use Illuminate\Console\OutputStyle;
 
 class CommandTasksTest extends TestCase
 {
-    /** @test */
-    public function outputs_successful_tasks()
+    public function test_outputs_successful_tasks()
     {
         $output = $this->createMock(OutputStyle::class);
 
@@ -30,8 +29,7 @@ class CommandTasksTest extends TestCase
         ], $commandTasks->getResults());
     }
 
-    /** @test */
-    public function outputs_unsuccessful_tasks()
+    public function test_outputs_unsuccessful_tasks()
     {
         $this->expectException(TaskFailed::class);
         $output = $this->createMock(OutputStyle::class);
@@ -53,8 +51,7 @@ class CommandTasksTest extends TestCase
         ], $commandTasks->getResults());
     }
 
-    /** @test */
-    public function outputs_multiple_tasks()
+    public function test_outputs_multiple_tasks()
     {
         $this->expectException(TaskFailed::class);
         $output = $this->createMock(OutputStyle::class);
@@ -86,8 +83,7 @@ class CommandTasksTest extends TestCase
         ], $commandTasks->getResults());
     }
 
-    /** @test */
-    public function whether_any_tasks_have_failed()
+    public function test_whether_any_tasks_have_failed()
     {
         $this->expectException(TaskFailed::class);
 
@@ -104,8 +100,7 @@ class CommandTasksTest extends TestCase
         $this->assertTrue($commandTasks->hasFailedTasks());
     }
 
-    /** @test */
-    public function whether_any_tasks_have_passed()
+    public function test_whether_any_tasks_have_passed()
     {
         $commandTasks = new CommandTasks;
         $commandTasks->addTask('Example successful task', function () {

@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Config;
 
 class InstallerTest extends TestCase
 {
-    /** @test */
-    public function gracefully_handles_env_file_not_existing()
+    public function test_gracefully_handles_env_file_not_existing()
     {
         $honeybadger = $this->createMock(Reporter::class);
 
@@ -26,8 +25,7 @@ class InstallerTest extends TestCase
         $this->assertFalse($result);
     }
 
-    /** @test */
-    public function environment_configuration_can_be_written()
+    public function test_environment_configuration_can_be_written()
     {
         $honeybadger = $this->createMock(Reporter::class);
 
@@ -49,8 +47,7 @@ class InstallerTest extends TestCase
         @unlink(__DIR__.'/tmp/.env');
     }
 
-    /** @test */
-    public function a_test_exception_is_sent()
+    public function test_a_test_exception_is_sent()
     {
         $honeybadger = $this->createMock(Reporter::class);
 
@@ -65,8 +62,7 @@ class InstallerTest extends TestCase
         $installer->sendTestException();
     }
 
-    /** @test */
-    public function a_test_exception_is_sent_with_config()
+    public function test_a_test_exception_is_sent_with_config()
     {
         $honeybadger = $this->createMock(Reporter::class);
 
@@ -85,8 +81,7 @@ class InstallerTest extends TestCase
         $installer->sendTestException();
     }
 
-    /** @test */
-    public function publishes_config_for_laravel()
+    public function test_publishes_config_for_laravel()
     {
         $honeybadger = $this->createMock(Reporter::class);
 
@@ -99,8 +94,7 @@ class InstallerTest extends TestCase
         $this->assertTrue($installer->publishLaravelConfig());
     }
 
-    /** @test */
-    public function config_should_be_published()
+    public function test_config_should_be_published()
     {
         $honeybadger = $this->createMock(Reporter::class);
 
@@ -115,8 +109,7 @@ class InstallerTest extends TestCase
         @rmdir(__DIR__.'/tmp/config');
     }
 
-    /** @test */
-    public function publish_should_not_overwrite_existing_config()
+    public function test_publish_should_not_overwrite_existing_config()
     {
         $honeybadger = $this->createMock(Reporter::class);
 
@@ -133,8 +126,7 @@ class InstallerTest extends TestCase
         @rmdir(__DIR__.'/tmp/config');
     }
 
-    /** @test */
-    public function publishes_lumen_config()
+    public function test_publishes_lumen_config()
     {
         $honeybadger = $this->createMock(Reporter::class);
 

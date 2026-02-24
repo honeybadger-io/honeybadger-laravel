@@ -18,8 +18,7 @@ class HoneybadgerCheckInCommandTest extends TestCase
         Config::set('honeybadger.report_data', true);
     }
 
-    /** @test */
-    public function it_sends_a_test_exception_to_honeybadger()
+    public function test_it_sends_a_test_exception_to_honeybadger()
     {
         $mock = $this->createMock(Reporter::class);
         $mock->expects($this->once())
@@ -31,8 +30,7 @@ class HoneybadgerCheckInCommandTest extends TestCase
         $this->artisan('honeybadger:checkin', ['id' => '1234']);
     }
 
-    /** @test */
-    public function it_outputs_success()
+    public function test_it_outputs_success()
     {
         $mock = $this->createMock(Reporter::class);
         $this->app->instance(Honeybadger::class, $mock);
@@ -51,8 +49,7 @@ class HoneybadgerCheckInCommandTest extends TestCase
         $this->artisan('honeybadger:checkin', ['id' => '1234']);
     }
 
-    /** @test */
-    public function it_outputs_an_error()
+    public function test_it_outputs_an_error()
     {
         $mock = $this->createMock(Reporter::class);
         $mock->method('checkin')
