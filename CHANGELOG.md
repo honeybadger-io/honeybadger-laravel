@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.0.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.7.1...v5.0.0) (2026-03-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* add PHP 8.5, drop PHP 8.1 and Laravel 10 ([#171](https://github.com/honeybadger-io/honeybadger-laravel/issues/171))
+
+### Features
+
+* add PHP 8.5, drop PHP 8.1 and Laravel 10 ([#171](https://github.com/honeybadger-io/honeybadger-laravel/issues/171)) ([5f0a502](https://github.com/honeybadger-io/honeybadger-laravel/commit/5f0a5029c49c3309e5d593322fa23748a1562ee8))
+
 ## [4.7.1](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.7.0...v4.7.1) (2026-02-01)
 
 
