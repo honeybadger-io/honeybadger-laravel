@@ -29,7 +29,7 @@ love: making developers awesome.
 Happy 'badgering!
 
 Sincerely,
-Ben, Josh and Starr
+The Honeybadger Crew
 https://www.honeybadger.io/about/
 ⚡ --- End --------------------------------------------------------------------
 
