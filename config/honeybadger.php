@@ -149,7 +149,7 @@ return [
          * Enable sending application events to Honeybadger Insights.
          * Setting this to false will disable automatic events collection and the event() function.
          */
-        'enabled' => false,
+        'enabled' => true,
 
         /**
          * The number of events to queue before sending them to Honeybadger.
