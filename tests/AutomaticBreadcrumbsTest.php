@@ -246,10 +246,13 @@ class AutomaticBreadcrumbsTest extends TestCase
 
         Config::set('honeybadger.breadcrumbs.automatic', [JobQueued::class]);
         Config::set('queue.default', 'database');
+
+        $honeybadger = $this->createMock(Reporter::class);
+        $this->app->instance(Reporter::class, $honeybadger);
+
         $this->loadMigrationsFrom(__DIR__.'/Fixtures/migrations');
 
         $matcher = $this->exactly(2);
-        $honeybadger = $this->createMock(Reporter::class);
         $honeybadger->expects($matcher)
             ->method('addBreadcrumb')
             ->willReturnCallback(function ($message, $metadata, $category) use ($matcher) {
@@ -266,7 +269,7 @@ class AutomaticBreadcrumbsTest extends TestCase
                     ], $metadata)
                 };
             });
-        $this->app->instance(Reporter::class, $honeybadger);
+
 
         dispatch(function () {
             // nothing doin'
