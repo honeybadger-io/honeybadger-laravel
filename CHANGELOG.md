@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [5.1.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v5.0.0...v5.1.0) (2026-05-14)
+
+
+### Features
+
+* enable Honeybadger Insights event tracking by default ([#174](https://github.com/honeybadger-io/honeybadger-laravel/issues/174)) ([49ff33b](https://github.com/honeybadger-io/honeybadger-laravel/commit/49ff33bfdf5e320eb049d20fbde00ebecc354582))
+
+
+### Bug Fixes
+
+* ensure correct instance order for Honeybadger mock test ([#175](https://github.com/honeybadger-io/honeybadger-laravel/issues/175)) ([f3579b4](https://github.com/honeybadger-io/honeybadger-laravel/commit/f3579b47150c550d9a8c6a1ba27573c56cc5b8c1))
+* update success message sign-off to 'The Honeybadger Crew' ([#173](https://github.com/honeybadger-io/honeybadger-laravel/issues/173)) ([813fbac](https://github.com/honeybadger-io/honeybadger-laravel/commit/813fbac84065869ba6b289b133162e7692f3a515))
+
+
+### Miscellaneous Chores
+
+* add workflow_dispatch trigger to run-tests.yml ([f90cc5a](https://github.com/honeybadger-io/honeybadger-laravel/commit/f90cc5a23833fb4416591587da9ba6ca6b9ad537))
+
 ## [5.0.0](https://github.com/honeybadger-io/honeybadger-laravel/compare/v4.7.1...v5.0.0) (2026-03-06)
 
 
