@@ -246,10 +246,13 @@ class AutomaticBreadcrumbsTest extends TestCase
 
         Config::set('honeybadger.breadcrumbs.automatic', [JobQueued::class]);
         Config::set('queue.default', 'database');
+
+        $honeybadger = $this->createMock(Reporter::class);
+        $this->app->instance(Reporter::class, $honeybadger);
+
         $this->loadMigrationsFrom(__DIR__.'/Fixtures/migrations');
 
         $matcher = $this->exactly(2);
-        $honeybadger = $this->createMock(Reporter::class);
         $honeybadger->expects($matcher)
             ->method('addBreadcrumb')
             ->willReturnCallback(function ($message, $metadata, $category) use ($matcher) {
@@ -258,15 +261,19 @@ class AutomaticBreadcrumbsTest extends TestCase
                         'connectionName' => 'database',
                         'queue' => null,
                         'job' => 'Illuminate\Queue\CallQueuedClosure',
+                        'id' => 1,
+                        'delay' => null,
                     ], $metadata),
                     2 => $this->assertEquals([
                         'connectionName' => 'database',
                         'queue' => null,
                         'job' => TestJob::class,
+                        'id' => 2,
+                        'delay' => null,
                     ], $metadata)
                 };
             });
-        $this->app->instance(Reporter::class, $honeybadger);
+
 
         dispatch(function () {
             // nothing doin'
