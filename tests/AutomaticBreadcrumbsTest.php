@@ -261,11 +261,15 @@ class AutomaticBreadcrumbsTest extends TestCase
                         'connectionName' => 'database',
                         'queue' => null,
                         'job' => 'Illuminate\Queue\CallQueuedClosure',
+                        'id' => 1,
+                        'delay' => null,
                     ], $metadata),
                     2 => $this->assertEquals([
                         'connectionName' => 'database',
                         'queue' => null,
                         'job' => TestJob::class,
+                        'id' => 2,
+                        'delay' => null,
                     ], $metadata)
                 };
             });

@@ -33,7 +33,7 @@
         "larapack/dd": "^1.0",
         "mockery/mockery": "^1.4",
         "orchestra/testbench": "^9.2|^10.0|^11.0",
-        "phpunit/phpunit": "^10.5|^11.0"
+        "phpunit/phpunit": "^10.5|^11.0|^12.0|^13.0"
     },
     "autoload": {
         "psr-4": {
