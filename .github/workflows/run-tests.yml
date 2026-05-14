@@ -55,8 +55,6 @@ jobs:
       - name: Install Laravel ${{ matrix.laravel }}
         run: |
           if [ "${{ matrix.laravel }}" == "dev-master" ]; then
-        # temporary fix because the latest version of testbench does not accept dev-master for laravel/framework.
-        # previous versions of testbench throw error
             composer require "laravel/framework:^13.0.x-dev" "orchestra/testbench:^11.1@dev" "phpunit/phpunit:^13.1.0" --with-all-dependencies --no-interaction
           else
             composer require "laravel/framework:${{ matrix.laravel }}" --with-all-dependencies --no-interaction
